@@ -28,223 +28,245 @@ $primary-invert: $pink-invert;
 // Custom CSS
 html,
 body {
-    height: 100%;
-    overflow: auto;
-    background-color: $darker-blue;
+  height: 100%;
+  overflow: auto;
+  background-color: $darker-blue;
 }
 
 .audio-control {
-    position: relative;
-    height: auto;
-    padding: 5px;
+  position: relative;
+  height: auto;
+  padding: 5px;
 }
 
 .intro {
-    height: 400px;
-    background-color: #fffaf0;
+  height: 400px;
+  background-color: #fffaf0;
 }
 
 .info {
-    position: relative;
-    height: auto;
-    background-color: $dark-blue;
-    bottom: auto;
+  position: relative;
+  height: auto;
+  background-color: $dark-blue;
+  bottom: auto;
 }
 
 .full-height {
-    height: 100%;
-    width: 100%;
-    margin: 0px;
+  height: 100%;
+  width: 100%;
+  margin: 0px;
 }
 
 .left-top {
-    position: relative;
-    min-height: 50%;
+  position: relative;
+  height: 100%;
 }
 
 .right-top {
-    position: relative;
-    min-height: 50%;
-    overflow: hidden;
-    text-align: center;
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  text-align: center;
 }
 
 .left-bottom {
-    position: relative;
-    min-height: 33%;
+  position: relative;
+  min-height: 33%;
 }
 
 .middle-bottom {
-    position: relative;
-    min-height: 33%;
+  position: relative;
+  min-height: 33%;
 }
 
 .right-bottom {
-    position: relative;
-    min-height: 33%;
+  position: relative;
+  min-height: 33%;
 }
 
 #footer {
-    top: 12px;
-    position: relative;
-    bottom: 0px;
-    height: auto;
-    background-color: $darker-blue;
-    color: #fff;
+  top: 12px;
+  position: relative;
+  bottom: 0px;
+  height: auto;
+  background-color: $darker-blue;
+  color: #fff;
 }
 
 #footer-link {
-    color: $yellow;
+  color: $yellow;
 }
 
 #footer-link:hover {
-    color: $pinkish;
+  color: $pinkish;
 }
 
 .text-area {
-    position: absolute;
-    bottom: 0;
+  //   display: flex;
+  //   align-self: center;
+  //   justify-self: center;
+  //   justify-content: center;
+  //   align-items: center;
+}
+
+.idk {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  //   align-self: center;
+  //   justify-self: center;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .element {
-    display: inline;
+  display: inline;
 }
 
 #me {
-    object-fit: contain;
-    height: 100%;
-    width: auto;
-    box-shadow: 0px 0px 74px -19px #000;
+  object-fit: contain;
+  height: 100%;
+  width: auto;
+  box-shadow: 0px 0px 74px -19px #000;
 }
 
 #me-container {
-    position: absolute;
-    height: 65%;
-    padding-top: 20px;
-    padding-bottom: 30px;
+  position: absolute;
+  height: 65%;
+  padding-top: 20px;
+  padding-bottom: 30px;
 }
 
 .typed-cursor {
-    font-size: 2rem;
+  font-size: 2rem;
 }
 
 .socials {
-    display: inline-block;
-    vertical-align: middle;
-    font-size: 100px;
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 100px;
 }
 
 .social-button {
-    display: inline-block;
-    margin: 0px 40px 0px 40px;
-    vertical-align: middle;
+  display: inline-block;
+  margin: 0px 40px 0px 40px;
+  vertical-align: middle;
 }
 
 .contact {
-    position: relative;
-    margin-top: 30px;
+  position: relative;
+  margin-top: 30px;
 }
 
 #contact-at {
-    font-size: 30px;
+  font-size: 30px;
 }
 
 #email {
-    font-size: 40px;
+  font-size: 40px;
 }
 
 .exp-title {
-    color: $darker-blue;
+  color: $darker-blue;
 }
 
 a {
-    color: $darker-blue;
-    text-decoration: none;
-    transition: 0.3s;
+  color: $darker-blue;
+  text-decoration: none;
+  transition: 0.3s;
 }
 
 a:hover {
-    color: $pinkish;
-    text-decoration: none;
-    cursor: pointer;
+  color: $pinkish;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 audio {
-    display: none;
+  display: none;
 }
 
 #play-pause {
-    color: white;
-    background-color: $darker-blue;
-    transition: 0.3s;
+  color: white;
+  background-color: $darker-blue;
+  transition: 0.3s;
 }
 
 #play-pause:hover {
-    background-color: $pinkish;
+  background-color: $pinkish;
 }
 
 #header {
-    color: #fff;
+  color: #fff;
 }
 
 #hr {
-    background-color: $pinkish;
+  background-color: $pinkish;
 }
 
 #playlist {
-    position: relative;
-    margin-left: 20px;
-    margin-right: 20px;
-    height: 300px;
-    width: 90%;
-    box-shadow: 0px 0px 52px -26px #000;
+  position: relative;
+  margin-left: 20px;
+  margin-right: 20px;
+  height: 300px;
+  width: 90%;
+  box-shadow: 0px 0px 52px -26px #000;
 }
 
 .date {
-    color: $dark-blue;
-    font-weight: bold;
-    text-align: right;
-    padding: 12px 16px;
+  color: $dark-blue;
+  font-weight: bold;
+  text-align: right;
+  padding: 12px 16px;
 }
 
 #twitter-blue {
-    color: $twitter-blue;
-    font-weight: bold;
+  color: $twitter-blue;
+  font-weight: bold;
 }
 // for transition to tablet-mobile
 @media only screen and (max-width: 1200px) {
-    .contact {
-        margin-top: 25px;
-    }
+  .contact {
+    margin-top: 25px;
+  }
 
-    #contact-at {
-        font-size: 15px;
-    }
+  #contact-at {
+    font-size: 15px;
+  }
 
-    #email {
-        font-size: 20px;
-    }
+  #email {
+    font-size: 20px;
+  }
 
-    .typed-cursor {
-        font-size: 1.5rem;
-    }
+  .typed-cursor {
+    font-size: 1.5rem;
+  }
 
-    .socials {
-        display: inline-block;
-        vertical-align: middle;
-        font-size: 50px;
-    }
+  .socials {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 50px;
+  }
 
-    .social-button {
-        display: inline-block;
-        margin: 0px 20px 0px 20px;
-        vertical-align: middle;
-    }
+  .social-button {
+    display: inline-block;
+    margin: 0px 20px 0px 20px;
+    vertical-align: middle;
+  }
 }
 
 // for mobile only
 @media only screen and (max-width: 769px) {
-    .typed-cursor {
-        font-size: 1rem;
-    }
+  .typed-cursor {
+    font-size: 1rem;
+  }
+
+  .left-top {
+    height: 50%;
+  }
+
+  .right-top {
+    height: 50%;
+  }
 }

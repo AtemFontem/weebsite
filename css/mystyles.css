@@ -14990,11 +14990,11 @@ body {
 
 .left-top {
   position: relative;
-  min-height: 50%; }
+  height: 100%; }
 
 .right-top {
   position: relative;
-  min-height: 50%;
+  height: 100%;
   overflow: hidden;
   text-align: center; }
 
@@ -15024,9 +15024,13 @@ body {
 #footer-link:hover {
   color: #f76c6c; }
 
-.text-area {
-  position: absolute;
-  bottom: 0; }
+.idk {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; }
 
 .element {
   display: inline; }
@@ -15134,4 +15138,8 @@ audio {
 
 @media only screen and (max-width: 769px) {
   .typed-cursor {
-    font-size: 1rem; } }
+    font-size: 1rem; }
+  .left-top {
+    height: 50%; }
+  .right-top {
+    height: 50%; } }
