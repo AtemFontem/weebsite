@@ -1,0 +1,11 @@
+<div class="experience-item-wrapper">
+  {{ range where site.RegularPages "Section" "experience"}}
+  <div class="experience-item">
+    <h3>
+      >
+      <a class="link" href="{{.Params.website}}" target="_blank">{{.Title}}</a>
+    </h3>
+    {{.Content}}
+  </div>
+  {{end}}
+</div>

@@ -1,0 +1,6 @@
+baseURL = 'https://adirar111.github.io'
+languageCode = 'en-us'
+title = "aymen's website"
+
+[blackfriday]
+    smartypants = false
