@@ -134,16 +134,19 @@ a:hover {
   justify-content: space-between;
 }
 
-.left-tape {
+.side-tape {
   height: 2rem;
+  top: 50px;
+}
+
+.left-tape {
   transform: rotate(-32deg);
-  top: 45px;
+  left: -5px;
 }
 
 .right-tape {
-  height: 2rem;
   transform: rotate(32deg);
-  top: 45px;
+  right: -5px;
 }
 
 .experience {
