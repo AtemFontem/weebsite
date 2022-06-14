@@ -163,6 +163,7 @@ a:hover {
 .experience-title {
   font-size: 1.5em;
   margin-top: 30px;
+  text-align: center;
 }
 
 .experience-item-wrapper {
