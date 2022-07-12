@@ -102,7 +102,11 @@ body {
   width: 100%;
   display: flex;
   justify-content: space-around;
-  padding-top: 24px;
+  align-items: center;
+}
+
+.resume {
+  padding: 8px 0px;
 }
 
 .compooter {
