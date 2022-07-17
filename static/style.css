@@ -178,7 +178,6 @@ a:hover {
 }
 
 .experience-item {
-  width: 70%;
   border-radius: 16px;
   background-color: var(--wave-med-blue);
   color: var(--wave-foam-white);
@@ -206,6 +205,10 @@ a:hover {
   .experience-container {
     margin: 0rem 64px;
   }
+
+  .experience-item {
+    width: 50%;
+  }
 }
 
 @media screen and (max-width: 900px) {
@@ -219,5 +222,9 @@ a:hover {
 
   .playlist {
     width: 100%;
+  }
+
+  .experience-item {
+    width: 70%;
   }
 }
