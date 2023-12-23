@@ -29,7 +29,7 @@ const makeItThree = (arr: any[]) => {
   return [...newArr, [...arr.slice(lastTriplet)]];
 };
 
-const photos = await Astro.glob("../photolog/**/*.jpeg");
+const photos = await Astro.glob("../../public/photolog/**/*.jpeg");
 const fileNames = photos.map((photo) => photo.default.src);
 fileNames.sort((a, b) => {
   if (extractYear(a) > extractYear(b)) {
