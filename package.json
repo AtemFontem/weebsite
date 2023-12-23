@@ -1,0 +1,20 @@
+{
+  "name": "",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "pretty": "prettier --write \"src/**/*.{astro, ts, md}\""
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.3.4",
+    "astro": "^4.0.7",
+    "prettier": "^3.1.1",
+    "prettier-plugin-astro": "^0.12.2",
+    "typescript": "^5.3.3"
+  }
+}

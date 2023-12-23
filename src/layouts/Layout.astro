@@ -1,0 +1,82 @@
+---
+import Header from "../components/header.astro";
+
+interface Props {
+  title?: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Astro description" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="png" href="/favicon.png" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title ? title : "aymenis.online"}</title>
+  </head>
+  <body>
+    <Header />
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --background: #fffcf8;
+    --text: #3c4f34;
+    --link: #57a348;
+  }
+
+  @font-face {
+    font-family: bold;
+    src: url(/IBMPlexMono-Bold.ttf);
+  }
+
+  @font-face {
+    font-family: semibold;
+    src: url(/IBMPlexMono-SemiBold.ttf);
+  }
+
+  html {
+    background: var(--background);
+    color: var(--text);
+  }
+
+  a {
+    color: var(--link);
+  }
+
+  h1 {
+    font-size: 32px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  h1,
+  h2 {
+    font-family: bold;
+  }
+
+  p,
+  footer {
+    font-family: semibold;
+    font-size: 16px;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    padding: 13px;
+    gap: 24px;
+  }
+
+  ul {
+    list-style-type: none;
+  }
+</style>

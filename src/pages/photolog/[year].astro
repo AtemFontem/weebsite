@@ -1,0 +1,18 @@
+---
+import FooteredLayout from "../../layouts/FooteredLayout.astro";
+import PhotoLog from "../../components/PhotoLog.astro";
+
+export function getStaticPaths() {
+  return [
+    { params: { year: "2023" } },
+    { params: { year: "2022" } },
+    { params: { year: "2021" } },
+  ];
+}
+
+const { year } = Astro.params;
+---
+
+<FooteredLayout>
+  <PhotoLog year={Number(year)} />
+</FooteredLayout>

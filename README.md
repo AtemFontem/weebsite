@@ -1,3 +1,3 @@
-# a website! o.o
+# aymenis.online
 
-[woo hoo](https://adirar111.github.io)
+my website. current iteration: photo archive.

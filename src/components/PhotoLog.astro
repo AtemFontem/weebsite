@@ -1,0 +1,96 @@
+---
+type Props = {
+  year?: number;
+};
+
+const { year } = Astro.props;
+
+const extractFileName = (str: string) => {
+  const extensionIncluded = /\d+.jpeg/g.exec(str)[0];
+  return Number(extensionIncluded.substring(0, extensionIncluded.indexOf(".")));
+};
+
+const extractYear = (str: string) => {
+  const fileNameIncluded = /\d*\/\d*.jpeg/g.exec(str)[0];
+  return Number(fileNameIncluded.substring(0, fileNameIncluded.indexOf("/")));
+};
+
+const makeItThree = (arr: any[]) => {
+  const newArr = [];
+
+  let lastTriplet = 0;
+  for (let i = 0; i < arr.length; i++) {
+    if (i > 0 && i % 3 == 0) {
+      newArr.push([arr[i - 3], arr[i - 2], arr[i - 1]]);
+      lastTriplet = i;
+    }
+  }
+
+  return [...newArr, [...arr.slice(lastTriplet)]];
+};
+
+const photos = await Astro.glob("../photolog/**/*.jpeg");
+const fileNames = photos.map((photo) => photo.default.src);
+fileNames.sort((a, b) => {
+  if (extractYear(a) > extractYear(b)) {
+    return -11;
+  }
+
+  return extractFileName(a) > extractFileName(b) ? -1 : 1;
+});
+
+const filteredByYear = fileNames.filter((file) =>
+  year ? extractYear(file) === year : true,
+);
+const tripletedFileNames = makeItThree(filteredByYear);
+---
+
+<div class="column">
+  {
+    tripletedFileNames.map((triplet) => (
+      <div class="row">
+        {triplet.map((photoSrc) => (
+          <div>
+            <img src={photoSrc} />
+          </div>
+        ))}
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  .column {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    padding: 24px;
+    margin: 0px 10%;
+  }
+
+  .row {
+    display: flex;
+    flex: 25%;
+    padding: 0px, 20px;
+    width: 100%;
+    height: 100%;
+    gap: 48px;
+  }
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  @media only screen and (max-width: 700px) {
+    .row {
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .column {
+      gap: 12px;
+      padding: 0px;
+    }
+  }
+</style>
