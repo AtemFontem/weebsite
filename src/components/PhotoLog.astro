@@ -1,4 +1,6 @@
 ---
+import { generateImageSrcForYear } from "../photolog-metadata";
+
 type Props = {
   year?: number;
 };
@@ -29,18 +31,14 @@ const makeItThree = (arr: any[]) => {
   return [...newArr, [...arr.slice(lastTriplet)]];
 };
 
-const photos = await Astro.glob("../../public/photolog/**/*.jpeg");
-const fileNames = photos.map((photo) => photo.default.src);
-fileNames.sort((a, b) => {
-  if (extractYear(a) > extractYear(b)) {
-    return -11;
-  }
+const photos = [
+  ...generateImageSrcForYear("2023"),
+  ...generateImageSrcForYear("2022"),
+  ...generateImageSrcForYear("2021"),
+];
 
-  return extractFileName(a) > extractFileName(b) ? -1 : 1;
-});
-
-const filteredByYear = fileNames.filter((file) =>
-  year ? extractYear(file) === year : true,
+const filteredByYear = photos.filter((photo) =>
+  year ? extractYear(photo) === year : true,
 );
 const tripletedFileNames = makeItThree(filteredByYear);
 ---
