@@ -6,12 +6,12 @@ type Props = {
 const { year } = Astro.props;
 
 const extractFileName = (str: string) => {
-  const extensionIncluded = /\d+.jpeg/g.exec(str)[0];
+  const extensionIncluded = /\d+.jpeg/g.exec(str)?.[0] ?? "0";
   return Number(extensionIncluded.substring(0, extensionIncluded.indexOf(".")));
 };
 
 const extractYear = (str: string) => {
-  const fileNameIncluded = /\d*\/\d*.jpeg/g.exec(str)[0];
+  const fileNameIncluded = /\d*\/\d*.jpeg/g.exec(str)?.[0] ?? "0";
   return Number(fileNameIncluded.substring(0, fileNameIncluded.indexOf("/")));
 };
 
