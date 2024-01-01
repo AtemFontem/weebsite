@@ -49,7 +49,9 @@ const tripletedFileNames = makeItThree(filteredByYear);
       <div class="row">
         {triplet.map((photoSrc) => (
           <div class="img-container">
-            <img src={photoSrc} />
+            <a href={photoSrc}>
+              <img src={photoSrc} loading="lazy" />
+            </a>
           </div>
         ))}
       </div>
