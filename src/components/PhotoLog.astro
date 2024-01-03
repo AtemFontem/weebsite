@@ -39,11 +39,11 @@ const tripletedFileNames = makeItThree(filteredByYear);
 
 <script>
   const scrollKey = "SCROLL";
-  window.addEventListener("scroll", (event) => {
-    window.sessionStorage.setItem(scrollKey, window.scrollY);
+  window.addEventListener("scroll", () => {
+    window.sessionStorage.setItem(scrollKey, String(window.scrollY));
   });
   window.addEventListener("load", () => {
-    const y = sessionStorage.getItem(scrollKey) || 0;
+    const y = Number(sessionStorage.getItem(scrollKey)) || 0;
     window.scrollTo({ left: 0, top: y, behavior: "smooth" });
   });
 </script>
