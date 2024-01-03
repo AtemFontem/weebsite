@@ -46,7 +46,7 @@ const tripletedFileNames = makeItThree(filteredByYear);
 
   window.addEventListener("pageshow", () => {
     const y = Number(sessionStorage.getItem(scrollKey)) || 0;
-    setTimeout(() => window.scrollTo(0, y), 100);
+    window.scrollTo(0, y);
   });
 </script>
 
