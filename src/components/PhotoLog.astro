@@ -39,16 +39,15 @@ const tripletedFileNames = makeItThree(filteredByYear);
 
 <script>
   const scrollKey = "SCROLL";
+
   window.addEventListener("scroll", () => {
     window.sessionStorage.setItem(scrollKey, String(window.scrollY));
   });
 
-  const onLoad = () => {
+  window.addEventListener("pageshow", () => {
     const y = Number(sessionStorage.getItem(scrollKey)) || 0;
     setTimeout(() => window.scrollTo(0, y), 100);
-  }
-
-  window.addEventListener("pageshow", onLoad);
+  });
 </script>
 
 <div class="column">
