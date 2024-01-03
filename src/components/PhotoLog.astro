@@ -48,11 +48,7 @@ const tripletedFileNames = makeItThree(filteredByYear);
     setTimeout(() => window.scrollTo(0, y), 100);
   }
 
-  if (document.readyState != "loading") {
-    onLoad()
-  } else {
-    window.addEventListener("DOMContentLoaded", onLoad);
-  }
+  window.addEventListener("pageshow", onLoad);
 </script>
 
 <div class="column">
