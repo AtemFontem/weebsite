@@ -44,7 +44,7 @@ const tripletedFileNames = makeItThree(filteredByYear);
   });
   window.addEventListener("load", () => {
     const y = Number(sessionStorage.getItem(scrollKey)) || 0;
-    window.scrollTo(0, y);
+    setTimeout(() => window.scrollTo(0, y), 100);
   });
 </script>
 
