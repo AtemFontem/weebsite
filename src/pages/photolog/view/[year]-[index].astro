@@ -1,0 +1,48 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import {
+  generateImageSrcForYear,
+  extractYear,
+  extractFileName,
+} from "../../../photolog-utils";
+
+export function getStaticPaths() {
+  const photos: string[] = [
+    ...generateImageSrcForYear("2023"),
+    ...generateImageSrcForYear("2022"),
+    ...generateImageSrcForYear("2021"),
+  ];
+
+  return photos.map((photoSrc) => {
+    return {
+      params: { year: extractYear(photoSrc), index: extractFileName(photoSrc) },
+    };
+  });
+}
+
+const { year, index } = Astro.params;
+const imageSrc = `/photolog/${year}/${index}.jpeg`;
+---
+
+<Layout>
+  <div class="img-container">
+    <img src={imageSrc} />
+  </div>
+</Layout>
+
+<style>
+  .img-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  img {
+    width: 60%;
+  }
+
+  @media only screen and (max-width: 700px) {
+    img {
+      width: 100%;
+    }
+  }
+</style>

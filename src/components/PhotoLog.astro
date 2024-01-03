@@ -1,5 +1,9 @@
 ---
-import { generateImageSrcForYear } from "../photolog-metadata";
+import {
+  generateImageSrcForYear,
+  extractYear,
+  extractFileName,
+} from "../photolog-utils";
 
 type Props = {
   year?: number;
@@ -7,17 +11,7 @@ type Props = {
 
 const { year } = Astro.props;
 
-const extractFileName = (str: string) => {
-  const extensionIncluded = /\d+.jpeg/g.exec(str)?.[0] ?? "0";
-  return Number(extensionIncluded.substring(0, extensionIncluded.indexOf(".")));
-};
-
-const extractYear = (str: string) => {
-  const fileNameIncluded = /\d*\/\d*.jpeg/g.exec(str)?.[0] ?? "0";
-  return Number(fileNameIncluded.substring(0, fileNameIncluded.indexOf("/")));
-};
-
-const makeItThree = (arr: any[]) => {
+const makeItThree = (arr: string[]) => {
   const newArr = [];
 
   let lastTriplet = 0;
@@ -31,7 +25,7 @@ const makeItThree = (arr: any[]) => {
   return [...newArr, [...arr.slice(lastTriplet)]];
 };
 
-const photos = [
+const photos: string[] = [
   ...generateImageSrcForYear("2023"),
   ...generateImageSrcForYear("2022"),
   ...generateImageSrcForYear("2021"),
@@ -43,13 +37,28 @@ const filteredByYear = photos.filter((photo) =>
 const tripletedFileNames = makeItThree(filteredByYear);
 ---
 
+<script>
+  const scrollKey = "SCROLL";
+  window.addEventListener("scroll", (event) => {
+    window.sessionStorage.setItem(scrollKey, window.scrollY);
+  });
+  window.addEventListener("load", () => {
+    const y = sessionStorage.getItem(scrollKey) || 0;
+    window.scrollTo({ left: 0, top: y, behavior: "smooth" });
+  });
+</script>
+
 <div class="column">
   {
     tripletedFileNames.map((triplet) => (
       <div class="row">
         {triplet.map((photoSrc) => (
           <div class="img-container">
-            <a href={photoSrc}>
+            <a
+              href={`/photolog/view/${extractYear(photoSrc)}-${extractFileName(
+                photoSrc,
+              )}`}
+            >
               <img src={photoSrc} loading="lazy" />
             </a>
           </div>
