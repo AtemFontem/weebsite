@@ -1,18 +1,8 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
-import {
-  generateImageSrcForYear,
-  extractYear,
-  extractFileName,
-} from "../../../photolog-utils";
+import { extractYear, extractFileName, photos } from "../../../photolog-utils";
 
 export function getStaticPaths() {
-  const photos: string[] = [
-    ...generateImageSrcForYear("2023"),
-    ...generateImageSrcForYear("2022"),
-    ...generateImageSrcForYear("2021"),
-  ];
-
   return photos.map((photoSrc) => {
     return {
       params: { year: extractYear(photoSrc), index: extractFileName(photoSrc) },

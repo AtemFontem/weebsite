@@ -2,6 +2,7 @@
 
 this is a photo archive.
 
+\- [\[2024\]](/photolog/2024)<br>
 \- [\[2023\]](/photolog/2023)<br>
 \- [\[2022\]](/photolog/2022)<br>
 \- [\[2021\]](/photolog/2021)<br>

@@ -1,9 +1,5 @@
 ---
-import {
-  generateImageSrcForYear,
-  extractYear,
-  extractFileName,
-} from "../photolog-utils";
+import { extractYear, extractFileName, photos } from "../photolog-utils";
 
 type Props = {
   year?: number;
@@ -25,15 +21,10 @@ const makeItThree = (arr: string[]) => {
   return [...newArr, [...arr.slice(lastTriplet)]];
 };
 
-const photos: string[] = [
-  ...generateImageSrcForYear("2023"),
-  ...generateImageSrcForYear("2022"),
-  ...generateImageSrcForYear("2021"),
-];
-
 const filteredByYear = photos.filter((photo) =>
   year ? extractYear(photo) === year : true,
 );
+
 const tripletedFileNames = makeItThree(filteredByYear);
 ---
 
