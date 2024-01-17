@@ -31,13 +31,33 @@ const tripletedFileNames = makeItThree(filteredByYear);
 <script>
   const scrollKey = "SCROLL";
 
-  window.addEventListener("scroll", () => {
+  const saveScrollPositionToSessionStorage = () =>
     window.sessionStorage.setItem(scrollKey, String(window.scrollY));
-  });
 
   window.addEventListener("pageshow", () => {
+    // avoid saving scroll position while we're restoring the old one
+    window.removeEventListener("scroll", saveScrollPositionToSessionStorage);
+    // retrieve from sessionStorage
     const y = Number(sessionStorage.getItem(scrollKey)) || 0;
-    window.scrollTo(0, y);
+
+    // to check if we're stuck trying to scroll somewhere unreachable
+    let prevY = -1;
+
+    const restoreScroll = () => {
+      setTimeout(() => {
+        // break if we've restored position or are stuck
+        if (window.scrollY >= y || window.scrollY == prevY) {
+          // we can start saving scroll positions again
+          window.addEventListener("scroll", saveScrollPositionToSessionStorage);
+          return;
+        }
+        window.scrollTo(0, y);
+        prevY = window.scrollY;
+        restoreScroll();
+      }, 400);
+    };
+
+    restoreScroll();
   });
 </script>
 
