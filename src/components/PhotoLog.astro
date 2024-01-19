@@ -29,16 +29,35 @@ const tripletedFileNames = makeItThree(filteredByYear);
 ---
 
 <script>
-  const scrollKey = "SCROLL";
+  const SCROLL_KEY = "SCROLL";
+  const TWO_MINUTES = 2 * 60 * 1000;
 
   const saveScrollPositionToSessionStorage = () =>
-    window.sessionStorage.setItem(scrollKey, String(window.scrollY));
+    setTimeout(
+      () =>
+        window.sessionStorage.setItem(
+          SCROLL_KEY,
+          JSON.stringify({
+            y: window.scrollY,
+            timestamp: new Date().toISOString(),
+          }),
+        ),
+      500,
+    );
 
   window.addEventListener("pageshow", () => {
+    const now = new Date();
+
     // avoid saving scroll position while we're restoring the old one
     window.removeEventListener("scroll", saveScrollPositionToSessionStorage);
     // retrieve from sessionStorage
-    const y = Number(sessionStorage.getItem(scrollKey)) || 0;
+    const { y, timestamp } = JSON.parse(
+      sessionStorage.getItem(SCROLL_KEY) ??
+        JSON.stringify({
+          y: 0,
+          timestamp: now,
+        }),
+    );
 
     // to check if we're stuck trying to scroll somewhere unreachable
     let prevY = -1;
@@ -54,10 +73,14 @@ const tripletedFileNames = makeItThree(filteredByYear);
         window.scrollTo(0, y);
         prevY = window.scrollY;
         restoreScroll();
-      }, 400);
+      }, 500);
     };
 
-    restoreScroll();
+    if (now.valueOf() - new Date(timestamp).valueOf() < TWO_MINUTES) {
+      restoreScroll();
+    } else {
+      window.addEventListener("scroll", saveScrollPositionToSessionStorage);
+    }
   });
 </script>
 
