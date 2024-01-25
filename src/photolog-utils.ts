@@ -1,7 +1,7 @@
 export const PhotoLogMetadata: {[key: string]: {[key: string]: number}} = {
-  "2024": { count: 8 },
+  "2024": { count: 10 },
   "2023": { count: 291 },
-  "2022": { count: 224 },
+  "2022": { count: 246 },
   "2021": { count: 52 },
 };
 
