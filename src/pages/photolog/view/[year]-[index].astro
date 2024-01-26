@@ -14,6 +14,15 @@ const { year, index } = Astro.params;
 const imageSrc = `/photolog/${year}/${index}.jpeg`;
 ---
 
+<script>
+  const RESTORE_SCROLL_KEY = "RESTORE_SCROLL_KEY";
+
+  // restore scroll because we're coming back from a view page
+  window.addEventListener("beforeunload", () => {
+    window.sessionStorage.setItem(RESTORE_SCROLL_KEY, "1");
+  });
+</script>
+
 <Layout>
   <div class="img-container">
     <img src={imageSrc} />
