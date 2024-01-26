@@ -61,7 +61,7 @@ const tripletedFileNames = makeItThree(filteredByYear);
         }),
     );
     const shouldRestoreScroll =
-      parseInt(window.sessionStorage.getItem(RESTORE_SCROLL_KEY)) ?? false;
+      parseInt(window.sessionStorage.getItem(RESTORE_SCROLL_KEY) ?? "0")
 
     // don't restore scroll pos unless we're combing back from a view page
     window.sessionStorage.setItem(RESTORE_SCROLL_KEY, "0");
