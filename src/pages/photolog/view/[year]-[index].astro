@@ -18,7 +18,7 @@ const imageSrc = `/photolog/${year}/${index}.jpeg`;
   const RESTORE_SCROLL_KEY = "RESTORE_SCROLL_KEY";
 
   // restore scroll because we're coming back from a view page
-  window.addEventListener("beforeunload", () => {
+  window.addEventListener("pagehide", () => {
     window.sessionStorage.setItem(RESTORE_SCROLL_KEY, "1");
   });
 </script>

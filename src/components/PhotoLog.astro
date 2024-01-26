@@ -60,8 +60,9 @@ const tripletedFileNames = makeItThree(filteredByYear);
           timestamp: now,
         }),
     );
-    const shouldRestoreScroll =
-      parseInt(window.sessionStorage.getItem(RESTORE_SCROLL_KEY) ?? "0")
+    const shouldRestoreScroll = parseInt(
+      window.sessionStorage.getItem(RESTORE_SCROLL_KEY) ?? "0",
+    );
 
     // don't restore scroll pos unless we're combing back from a view page
     window.sessionStorage.setItem(RESTORE_SCROLL_KEY, "0");
