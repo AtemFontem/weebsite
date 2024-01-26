@@ -1,6 +1,9 @@
 ---
 // this only runs when the site is built
-const today = new Date();
+// github pages servers always set the date a day ahead of when i push
+// timezones are evil
+const day = 24 * 60 * 60 * 1000;
+const today = new Date(Date.now() - day);
 
 const formatDate = (date: Date) => {
   const year = date.getFullYear();
