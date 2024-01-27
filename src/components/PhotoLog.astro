@@ -7,6 +7,8 @@ type Props = {
 
 const { year } = Astro.props;
 
+const emptyImgSrc = "empty.svg";
+
 const makeItThree = (arr: string[]) => {
   const newArr = [];
 
@@ -18,7 +20,23 @@ const makeItThree = (arr: string[]) => {
     }
   }
 
-  return [...newArr, [...arr.slice(lastTriplet)]];
+  const rest = arr.slice(lastTriplet);
+  let newRest = [];
+  switch (rest.length) {
+    case 1:
+      newRest = [rest[0], emptyImgSrc, emptyImgSrc];
+      break;
+    case 2:
+      newRest = [rest[0], rest[1], emptyImgSrc];
+      break;
+    case 3:
+      newRest = [rest[0], rest[1], rest[2]];
+      break;
+    default:
+      break;
+  }
+
+  return [...newArr, newRest];
 };
 
 const filteredByYear = photos.filter((photo) =>
@@ -102,9 +120,13 @@ const tripletedFileNames = makeItThree(filteredByYear);
         {triplet.map((photoSrc) => (
           <div class="img-container">
             <a
-              href={`/photolog/view/${extractYear(photoSrc)}-${extractFileName(
-                photoSrc,
-              )}`}
+              href={
+                photoSrc === emptyImgSrc
+                  ? "javascript:void(0)"
+                  : `/photolog/view/${extractYear(photoSrc)}-${extractFileName(
+                      photoSrc,
+                    )}`
+              }
             >
               <img src={photoSrc} loading="lazy" />
             </a>
