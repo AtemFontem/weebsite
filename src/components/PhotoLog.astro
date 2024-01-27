@@ -21,7 +21,7 @@ const makeItThree = (arr: string[]) => {
   }
 
   const rest = arr.slice(lastTriplet);
-  let newRest = [];
+  let newRest: string[] = [];
   switch (rest.length) {
     case 1:
       newRest = [rest[0], emptyImgSrc, emptyImgSrc];
