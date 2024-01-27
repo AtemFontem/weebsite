@@ -7,7 +7,7 @@ type Props = {
 
 const { year } = Astro.props;
 
-const emptyImgSrc = "empty.svg";
+const emptyImgSrc = "EMPTY";
 
 const makeItThree = (arr: string[]) => {
   const newArr = [];
@@ -128,7 +128,9 @@ const tripletedFileNames = makeItThree(filteredByYear);
                     )}`
               }
             >
-              <img src={photoSrc} loading="lazy" />
+              {photoSrc !== emptyImgSrc && (
+                <img src={photoSrc} loading="lazy" />
+              )}
             </a>
           </div>
         ))}
