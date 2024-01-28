@@ -24,7 +24,7 @@ const formatDate = (date: Date) => {
   const header = document.getElementById("title");
 
   // don't restore scroll if we were previously on a year page
-  header.addEventListener("click", () => {
+  header?.addEventListener("click", () => {
     const slug = new URL(document.referrer).pathname.match(/[^\/]+/g);
     if (slug && slug.length > 0 && YEARS.includes(slug[slug.length - 1])) {
       window.sessionStorage.setItem(RESTORE_SCROLL_KEY, "2");
