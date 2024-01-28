@@ -121,7 +121,7 @@ const tripletedFileNames = makeItThree(filteredByYear);
       // first call immediately
       restoreScrollInitial();
       // subsequent calls with timeout
-      setTimeout(() => restoreScrollTimeout(), TIMEOUT);
+      restoreScrollTimeout();
     };
 
     if (
