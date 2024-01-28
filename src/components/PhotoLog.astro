@@ -50,7 +50,7 @@ const tripletedFileNames = makeItThree(filteredByYear);
   const TWO_MINUTES = 2 * 60 * 1000;
   const TIMEOUT = 400;
 
-  const saveScrollPositionToSessionStorage = () =>
+  const saveScrollPositionToSessionStorage = () => {
     setTimeout(
       () =>
         window.sessionStorage.setItem(
@@ -62,6 +62,7 @@ const tripletedFileNames = makeItThree(filteredByYear);
         ),
       TIMEOUT,
     );
+  };
 
   window.addEventListener("pageshow", () => {
     const now = new Date();
@@ -88,7 +89,7 @@ const tripletedFileNames = makeItThree(filteredByYear);
     let prevY = -1;
 
     const restoreScroll = () => {
-      const restoreScrollInitial = () => {
+      setTimeout(() => {
         // break if we've restored position or are stuck
         if (window.scrollY >= y || window.scrollY == prevY) {
           // we can start saving scroll positions again
@@ -97,35 +98,16 @@ const tripletedFileNames = makeItThree(filteredByYear);
         }
         window.scrollTo(0, y);
         prevY = window.scrollY;
-      };
 
-      const restoreScrollTimeout = () => {
-        // kinda stinky, but i need to duplicate this logic if i want to break out of this recursive call eventually
-        setTimeout(() => {
-          // break if we've restored position or are stuck
-          if (window.scrollY >= y || window.scrollY == prevY) {
-            // we can start saving scroll positions again
-            window.addEventListener(
-              "scroll",
-              saveScrollPositionToSessionStorage,
-            );
-            return;
-          }
-          window.scrollTo(0, y);
-          prevY = window.scrollY;
-
-          restoreScrollTimeout();
-        }, TIMEOUT);
-      };
-
-      // first call immediately
-      restoreScrollInitial();
-      // subsequent calls with timeout
-      restoreScrollTimeout();
+        restoreScroll();
+      }, TIMEOUT);
     };
 
     if (
-      !!shouldRestoreScroll &&
+      // 1: restore
+      // 2: don't restore, we came from a year page
+      // 0: don't restore
+      shouldRestoreScroll === 1 &&
       now.valueOf() - new Date(timestamp).valueOf() < TWO_MINUTES
     ) {
       restoreScroll();

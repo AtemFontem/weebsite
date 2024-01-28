@@ -17,8 +17,22 @@ const formatDate = (date: Date) => {
 };
 ---
 
+<script>
+  const RESTORE_SCROLL_KEY = "RESTORE_SCROLL_KEY";
+  const YEARS = ["2024", "2023", "2022", "2021"];
+
+  const header = document.getElementById("title");
+
+  // don't restore scroll if we were previously on a year page
+  header.addEventListener("click", () => {
+    const slug = new URL(document.referrer).pathname.match(/[^\/]+/g);
+    if (slug && slug.length > 0 && YEARS.includes(slug[slug.length - 1])) {
+      window.sessionStorage.setItem(RESTORE_SCROLL_KEY, "2");
+    }
+  });
+</script>
 <header>
-  <h1 id="top"><a href="/">aymenis.online</a></h1>
+  <h1 id="top"><a href="/" id="title" }>aymenis.online</a></h1>
   <p>last updated: {formatDate(today)}</p>
 </header>
 

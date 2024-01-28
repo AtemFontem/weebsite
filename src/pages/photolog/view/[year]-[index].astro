@@ -19,7 +19,12 @@ const imageSrc = `/photolog/${year}/${index}.jpeg`;
 
   // restore scroll because we're coming back from a view page
   window.addEventListener("pagehide", () => {
-    window.sessionStorage.setItem(RESTORE_SCROLL_KEY, "1");
+    const shouldRestoreScroll = parseInt(
+      window.sessionStorage.getItem(RESTORE_SCROLL_KEY) ?? "0",
+    );
+    if (shouldRestoreScroll === 0) {
+      window.sessionStorage.setItem(RESTORE_SCROLL_KEY, "1");
+    }
   });
 </script>
 
