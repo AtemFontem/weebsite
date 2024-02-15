@@ -48,6 +48,7 @@ const tripletedFileNames = makeItThree(filteredByYear);
   const SCROLL_KEY = "SCROLL";
   const RESTORE_SCROLL_KEY = "RESTORE_SCROLL_KEY";
   const TWO_MINUTES = 2 * 60 * 1000;
+  const FIRST_TIMEOUT = 100;
   const TIMEOUT = 600;
 
   const saveScrollPositionToSessionStorage = () => {
@@ -88,6 +89,8 @@ const tripletedFileNames = makeItThree(filteredByYear);
     // to check if we're stuck trying to scroll somewhere unreachable
     let prevY = -1;
 
+    let firstTime = true
+
     const restoreScroll = () => {
       setTimeout(() => {
         // break if we've restored position or are stuck
@@ -98,9 +101,10 @@ const tripletedFileNames = makeItThree(filteredByYear);
         }
         window.scrollTo(0, y);
         prevY = window.scrollY;
+        firstTime = false
 
         restoreScroll();
-      }, TIMEOUT);
+      }, firstTime ? FIRST_TIMEOUT : TIMEOUT);
     };
 
     if (

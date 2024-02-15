@@ -10,8 +10,28 @@ export function getStaticPaths() {
   });
 }
 
+const getRandomInt = (max: number) => Math.floor(Math.random() * max);
+
 const { year, index } = Astro.params;
 const imageSrc = `/photolog/${year}/${index}.jpeg`;
+
+const indexOfCurr = photos.indexOf(imageSrc);
+
+const prevImageSrc = indexOfCurr - 1 > -1 ? photos[indexOfCurr - 1] : null;
+const prevYear = prevImageSrc ? extractYear(prevImageSrc) : "";
+const prevFileName = prevImageSrc ? extractFileName(prevImageSrc) : "";
+const prevImageHref = `/photolog/view/${prevYear}-${prevFileName}`;
+
+const randomImageSrc = photos[getRandomInt(photos.length)];
+const randomYear = randomImageSrc ? extractYear(randomImageSrc) : "";
+const randomFileName = randomImageSrc ? extractFileName(randomImageSrc) : "";
+const randomImageHref = `/photolog/view/${randomYear}-${randomFileName}`;
+
+const nextImageSrc =
+  indexOfCurr + 1 < photos.length ? photos[indexOfCurr + 1] : null;
+const nextYear = nextImageSrc ? extractYear(nextImageSrc) : "";
+const nextFileName = nextImageSrc ? extractFileName(nextImageSrc) : "";
+const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
 ---
 
 <script>
@@ -29,25 +49,58 @@ const imageSrc = `/photolog/${year}/${index}.jpeg`;
 </script>
 
 <Layout>
-  <div class="img-container">
+  <div class="container">
+    <div class="nav-container">
+      <p class="prev" style={prevImageSrc == null ? "visibility: hidden" : ""}>
+        <a href={prevImageHref}>[<<]</a>
+      </p>
+      <p class="prev"><a href={randomImageHref}>[**]</a></p>
+      <p class="prev" style={nextImageSrc == null ? "visibility: hidden" : ""}>
+        <a href={nextImageHref}>[>>]</a>
+      </p>
+    </div>
     <img src={imageSrc} />
   </div>
 </Layout>
 
 <style>
-  .img-container {
+  .container {
     display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: center;
     justify-content: center;
-    padding: 72px 0px;
+    padding-bottom: 72px;
+    height: 70vh;
+  }
+
+  .nav-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 400px;
+  }
+  
+  p {
+    font-family: bold;
   }
 
   img {
-    max-width: 60%;
+    height: 100%;
   }
 
   @media only screen and (max-width: 700px) {
+    .container {
+      height: auto;
+    }
+
     img {
       max-width: 100%;
+      height: auto;
+    }
+
+    .nav-container {
+      width: 80%;
     }
   }
 </style>
