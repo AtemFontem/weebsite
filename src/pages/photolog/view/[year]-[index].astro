@@ -10,7 +10,10 @@ export function getStaticPaths() {
   });
 }
 
-const getRandomInt = (max: number) => Math.floor(Math.random() * max);
+const getRandomInt = (max: number, currIndex: number): number => {
+  const rand = Math.floor(Math.random() * max)
+  return rand >= currIndex - 10 && rand <= currIndex + 10 ? getRandomInt(max, currIndex) : rand
+};
 
 const { year, index } = Astro.params;
 const imageSrc = `/photolog/${year}/${index}.jpeg`;
@@ -22,7 +25,7 @@ const prevYear = prevImageSrc ? extractYear(prevImageSrc) : "";
 const prevFileName = prevImageSrc ? extractFileName(prevImageSrc) : "";
 const prevImageHref = `/photolog/view/${prevYear}-${prevFileName}`;
 
-const randomImageSrc = photos[getRandomInt(photos.length)];
+const randomImageSrc = photos[getRandomInt(photos.length, indexOfCurr)];
 const randomYear = randomImageSrc ? extractYear(randomImageSrc) : "";
 const randomFileName = randomImageSrc ? extractFileName(randomImageSrc) : "";
 const randomImageHref = `/photolog/view/${randomYear}-${randomFileName}`;
@@ -71,7 +74,6 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
     align-items: center;
     justify-content: center;
     padding-bottom: 72px;
-    height: 700px;
   }
 
   .nav-container {
@@ -86,7 +88,7 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
   }
 
   img {
-    height: 100%;
+    height: 700px;
   }
 
   @media only screen and (max-width: 700px) {
