@@ -12,7 +12,7 @@ export function getStaticPaths() {
 
 const getRandomInt = (max: number, currIndex: number): number => {
   const rand = Math.floor(Math.random() * max)
-  return rand >= currIndex - 10 && rand <= currIndex + 10 ? getRandomInt(max, currIndex) : rand
+  return rand >= currIndex - 30 && rand <= currIndex + 30 ? getRandomInt(max, currIndex) : rand
 };
 
 const { year, index } = Astro.params;
