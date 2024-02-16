@@ -24,3 +24,27 @@ export const photos: string[] = [
   ...generateImageSrcForYear("2022"),
   ...generateImageSrcForYear("2021"),
   ];
+
+const getRandomInt = (max: number, currIndex: number): number => {
+  const rand = Math.floor(Math.random() * max)
+  // don't return the same index
+  return rand == currIndex ? getRandomInt(max, currIndex) : rand;
+};
+
+const generateUniqueRandomNumbers = (size: number, currIndex: number, rands: number[]): number[] => {
+  if (currIndex < size) {
+    const rand = getRandomInt(size, currIndex)
+
+    if (rands.includes(rand)) {
+      // repeat of something that already exists, try again
+      return generateUniqueRandomNumbers(size, currIndex, rands)
+    }
+
+    return generateUniqueRandomNumbers(size, currIndex + 1, [...rands, rand])
+  }
+
+  return rands
+}
+
+const size = Object.values(PhotoLogMetadata).reduce((acc, curr) => acc += curr.count, 0)
+export const rands = generateUniqueRandomNumbers(size, 0, [])
