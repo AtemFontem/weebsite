@@ -1,6 +1,11 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
-import { extractYear, extractFileName, photos, rands } from "../../../photolog-utils";
+import {
+  extractYear,
+  extractFileName,
+  photos,
+  rands,
+} from "../../../photolog-utils";
 
 export function getStaticPaths() {
   return photos.map((photoSrc) => {
@@ -77,7 +82,7 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
     justify-content: space-between;
     width: 400px;
   }
-  
+
   p {
     font-family: bold;
   }

@@ -35,6 +35,15 @@ const { title } = Astro.props;
     --link: #57a348;
   }
 
+  /* Dark mode */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background: #3c4f34;
+      --text: #fffcf8;
+      --link: #b2ff66;
+    }
+  }
+
   @font-face {
     font-family: bold;
     src: url(/IBMPlexMono-Bold.ttf);

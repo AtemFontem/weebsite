@@ -89,22 +89,28 @@ const tripletedFileNames = makeItThree(filteredByYear);
     // to check if we're stuck trying to scroll somewhere unreachable
     let prevY = -1;
 
-    let firstTime = true
+    let firstTime = true;
 
     const restoreScroll = () => {
-      setTimeout(() => {
-        // break if we've restored position or are stuck
-        if (window.scrollY >= y || window.scrollY == prevY) {
-          // we can start saving scroll positions again
-          window.addEventListener("scroll", saveScrollPositionToSessionStorage);
-          return;
-        }
-        window.scrollTo(0, y);
-        prevY = window.scrollY;
-        firstTime = false
+      setTimeout(
+        () => {
+          // break if we've restored position or are stuck
+          if (window.scrollY >= y || window.scrollY == prevY) {
+            // we can start saving scroll positions again
+            window.addEventListener(
+              "scroll",
+              saveScrollPositionToSessionStorage,
+            );
+            return;
+          }
+          window.scrollTo(0, y);
+          prevY = window.scrollY;
+          firstTime = false;
 
-        restoreScroll();
-      }, firstTime ? FIRST_TIMEOUT : TIMEOUT);
+          restoreScroll();
+        },
+        firstTime ? FIRST_TIMEOUT : TIMEOUT,
+      );
     };
 
     if (
