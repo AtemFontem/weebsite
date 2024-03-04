@@ -1,7 +1,6 @@
 export const PhotoLogMetadata: {[key: string]: {[key: string]: number}} = {
-  "2024": { count: 38 },
-  "2023": { count: 291 },
-  "2022": { count: 246 },
+  "2023": { count: 292 },
+  "2022": { count: 247 },
   "2021": { count: 52 },
 };
 
@@ -19,7 +18,6 @@ export const extractYear = (str: string) => {
 };
 
 export const photos: string[] = [
-  ...generateImageSrcForYear("2024"),
   ...generateImageSrcForYear("2023"),
   ...generateImageSrcForYear("2022"),
   ...generateImageSrcForYear("2021"),
