@@ -41,7 +41,7 @@ const filteredByYear = photos.filter((photo) =>
   year ? extractYear(photo) === year : true,
 );
 
-const tripletedFileNames = makeItThree(filteredByYear);
+// const tripletedFileNames = makeItThree(filteredByYear);
 ---
 
 <script>
@@ -129,25 +129,19 @@ const tripletedFileNames = makeItThree(filteredByYear);
 
 <div class="column">
   {
-    tripletedFileNames.map((triplet) => (
-      <div class="row">
-        {triplet.map((photoSrc) => (
-          <div class="img-container">
-            <a
-              href={
-                photoSrc === emptyImgSrc
-                  ? "javascript:void(0)"
-                  : `/photolog/view/${extractYear(photoSrc)}-${extractFileName(
-                      photoSrc,
-                    )}`
-              }
-            >
-              {photoSrc !== emptyImgSrc && (
-                <img src={photoSrc} loading="lazy" />
-              )}
-            </a>
-          </div>
-        ))}
+    filteredByYear.map((photoSrc) => (
+      <div class="img-container">
+        <a
+          href={
+            photoSrc === emptyImgSrc
+              ? "javascript:void(0)"
+              : `/photolog/view/${extractYear(photoSrc)}-${extractFileName(
+                  photoSrc,
+                )}`
+          }
+        >
+          {photoSrc !== emptyImgSrc && <img src={photoSrc} loading="lazy" />}
+        </a>
       </div>
     ))
   }
@@ -156,18 +150,14 @@ const tripletedFileNames = makeItThree(filteredByYear);
 <style>
   .column {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     gap: 48px;
     padding: 24px;
     margin: 0px 10%;
   }
 
-  .row {
-    display: flex;
-    padding: 0px 20px;
-    width: 100%;
-    height: 100%;
-    gap: 48px;
+  .column > * {
+    flex: 200px;
   }
 
   .img-container {
@@ -180,17 +170,14 @@ const tripletedFileNames = makeItThree(filteredByYear);
   }
 
   @media only screen and (max-width: 700px) {
-    .row {
-      flex-direction: row;
-      gap: 12px;
-      flex: 100%;
-      padding: 0;
-    }
-
     .column {
       gap: 12px;
       margin: 0;
       padding: 0;
+    }
+
+    .column > * {
+      flex: 1 1 40%;
     }
 
     .img-container {
