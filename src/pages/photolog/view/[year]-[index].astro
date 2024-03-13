@@ -50,6 +50,12 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
     }
   });
 
+// Where el is the DOM element you'd like to test for visibility
+  const isHidden = (el: any) => {
+    const style = window.getComputedStyle(el);
+    return (style.visibility === 'hidden')
+  }
+
   window.addEventListener("keydown", (e) => {
     const prevButton = document.getElementById("prev")
     const nextButton = document.getElementById("next")
@@ -58,14 +64,16 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
     switch(e.key) {
       case "ArrowRight":
       case "l":
-        nextButton.click();
+        if (!isHidden(nextButton))
+          nextButton?.click();
         break;
       case "ArrowLeft":
       case "h":
-        prevButton.click();
+        if (!isHidden(prevButton))
+          prevButton?.click();
         break;
       case "*":
-        randButton.click();
+        randButton?.click();
         break;
       default:
         break;
