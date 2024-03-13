@@ -49,17 +49,40 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
       window.sessionStorage.setItem(RESTORE_SCROLL_KEY, "1");
     }
   });
+
+  window.addEventListener("keydown", (e) => {
+    const prevButton = document.getElementById("prev")
+    const nextButton = document.getElementById("next")
+    const randButton = document.getElementById("rand")
+
+    switch(e.key) {
+      case "ArrowRight":
+      case "l":
+        nextButton.click();
+        break;
+      case "ArrowLeft":
+      case "h":
+        prevButton.click();
+        break;
+      case "*":
+        randButton.click();
+        break;
+      default:
+        break;
+    }
+  })
+
 </script>
 
 <Layout>
   <div class="container">
     <div class="nav-container">
-      <p class="prev" style={prevImageSrc == null ? "visibility: hidden" : ""}>
-        <a href={prevImageHref}>[<<]</a>
+      <p style={prevImageSrc == null ? "visibility: hidden" : ""}>
+        <a id="prev" href={prevImageHref}>[<<]</a>
       </p>
-      <p class="prev"><a href={randomImageHref}>[**]</a></p>
-      <p class="prev" style={nextImageSrc == null ? "visibility: hidden" : ""}>
-        <a href={nextImageHref}>[>>]</a>
+      <p><a id="rand" href={randomImageHref}>[**]</a></p>
+      <p style={nextImageSrc == null ? "visibility: hidden" : ""}>
+        <a id="next" href={nextImageHref}>[>>]</a>
       </p>
     </div>
     <img src={imageSrc} />
