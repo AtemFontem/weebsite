@@ -50,27 +50,25 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
     }
   });
 
-// Where el is the DOM element you'd like to test for visibility
+  // Where el is the DOM element you'd like to test for visibility
   const isHidden = (el: any) => {
     const style = window.getComputedStyle(el);
-    return (style.visibility === 'hidden')
-  }
+    return style.visibility === "hidden";
+  };
 
   window.addEventListener("keydown", (e) => {
-    const prevButton = document.getElementById("prev")
-    const nextButton = document.getElementById("next")
-    const randButton = document.getElementById("rand")
+    const prevButton = document.getElementById("prev");
+    const nextButton = document.getElementById("next");
+    const randButton = document.getElementById("rand");
 
-    switch(e.key) {
+    switch (e.key) {
       case "ArrowRight":
       case "l":
-        if (!isHidden(nextButton))
-          nextButton?.click();
+        if (!isHidden(nextButton)) nextButton?.click();
         break;
       case "ArrowLeft":
       case "h":
-        if (!isHidden(prevButton))
-          prevButton?.click();
+        if (!isHidden(prevButton)) prevButton?.click();
         break;
       case "*":
         randButton?.click();
@@ -78,8 +76,7 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
       default:
         break;
     }
-  })
-
+  });
 </script>
 
 <Layout>

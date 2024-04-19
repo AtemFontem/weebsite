@@ -9,7 +9,7 @@
 
 \- [\[github\]](https://github.com/adirar111)<br>
 \- [\[spotify\]](https://open.spotify.com/user/tmhqiyefnhrhazxr09fd3w14k)<br>
-\- [\[soundcloud\]](https://soundcloud.com/psyop-officer/tracks)<br>
+\- [\[soundcloud\]](https://soundcloud.com/psyop-officer)<br>
 \- [\[letterboxd\]](https://letterboxd.com/aymendirar/)<br>
 \- [\[marathon\]](https://marathontv.app/aymendirar)<br>
 \- [\[goodreads\]](https://www.goodreads.com/user/show/151412521-aymen)<br>
