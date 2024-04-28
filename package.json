@@ -8,7 +8,8 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "pretty": "prettier --write \"src/**/*.{astro, ts, md}\""
+    "pretty": "prettier --write \"src/**/*.{astro, ts, md}\"",
+    "exif": "exiftool -all:all= -r -overwrite_original public/photolog/"
   },
   "dependencies": {
     "@astrojs/check": "^0.3.4",
