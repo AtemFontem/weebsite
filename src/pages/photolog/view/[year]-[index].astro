@@ -40,7 +40,7 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
 <script>
   const RESTORE_SCROLL_KEY = "RESTORE_SCROLL_KEY";
 
-  const isYearPageSlug = (slug) => {
+  const isYearPageSlug = (slug: any) => {
     const SLUGS = ["2023", "2022", "2021", "all"];
     return slug && slug.length > 0 && SLUGS.includes(slug[slug.length - 1]);
   };
@@ -66,7 +66,7 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
   });
 
   // Where el is the DOM element you'd like to test for visibility
-  const isHidden = (el) => {
+  const isHidden = (el: any) => {
     const style = window.getComputedStyle(el);
     return style.visibility === "hidden";
   };
