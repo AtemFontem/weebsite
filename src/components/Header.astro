@@ -17,20 +17,6 @@ const formatDate = (date: Date) => {
 };
 ---
 
-<script>
-  const RESTORE_SCROLL_KEY = "RESTORE_SCROLL_KEY";
-  const SLUGS = ["2023", "2022", "2021", "all"];
-
-  const header = document.getElementById("title");
-
-  // don't restore scroll if we were previously on a year page
-  window.addEventListener("load", () => {
-    const slug = new URL(document.referrer).pathname.match(/[^\/]+/g);
-    if (slug && slug.length > 0 && SLUGS.includes(slug[slug.length - 1])) {
-      window.sessionStorage.setItem(RESTORE_SCROLL_KEY, "2");
-    }
-  });
-</script>
 <header>
   <h1 id="top"><a href="/" id="title" }>aymenis.online</a></h1>
   <p>last updated: {formatDate(today)}</p>

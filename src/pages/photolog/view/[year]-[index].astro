@@ -40,18 +40,33 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
 <script>
   const RESTORE_SCROLL_KEY = "RESTORE_SCROLL_KEY";
 
+  const isYearPageSlug = (slug) => {
+    const SLUGS = ["2023", "2022", "2021", "all"];
+    return slug && slug.length > 0 && SLUGS.includes(slug[slug.length - 1]);
+  };
+
   // restore scroll because we're coming back from a view page
   window.addEventListener("pagehide", () => {
     const shouldRestoreScroll = parseInt(
       window.sessionStorage.getItem(RESTORE_SCROLL_KEY) ?? "0",
     );
+    const previousPageSlug = new URL(document.referrer).pathname.match(
+      /[^\/]+/g,
+    );
+
+    // base state
     if (shouldRestoreScroll === 0) {
       window.sessionStorage.setItem(RESTORE_SCROLL_KEY, "1");
+    }
+
+    // if previous page was a year page
+    if (isYearPageSlug(previousPageSlug)) {
+      window.sessionStorage.setItem(RESTORE_SCROLL_KEY, "2");
     }
   });
 
   // Where el is the DOM element you'd like to test for visibility
-  const isHidden = (el: any) => {
+  const isHidden = (el) => {
     const style = window.getComputedStyle(el);
     return style.visibility === "hidden";
   };

@@ -51,6 +51,11 @@ const filteredByYear = photos.filter((photo) =>
   const FIRST_TIMEOUT = 100;
   const TIMEOUT = 600;
 
+  const isYearPageSlug = (slug) => {
+    const SLUGS = ["2023", "2022", "2021", "all"];
+    return slug && slug.length > 0 && SLUGS.includes(slug[slug.length - 1]);
+  };
+
   const saveScrollPositionToSessionStorage = () => {
     setTimeout(
       () =>
@@ -113,12 +118,14 @@ const filteredByYear = photos.filter((photo) =>
       );
     };
 
+    const currentPageSlug = new URL(window.location).pathname.match(/[^\/]+/g);
+    // 2: restore only if current slug is not "/"
+    // 1: restore
+    // 0: don't restore
     if (
-      // 1: restore
-      // 2: don't restore, we came from a year page
-      // 0: don't restore
-      shouldRestoreScroll === 1 &&
-      now.valueOf() - new Date(timestamp).valueOf() < TWO_MINUTES
+      now.valueOf() - new Date(timestamp).valueOf() < TWO_MINUTES &&
+      (shouldRestoreScroll === 1 ||
+        (shouldRestoreScroll === 2 && isYearPageSlug(currentPageSlug)))
     ) {
       restoreScroll();
     } else {

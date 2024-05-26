@@ -1,11 +1,14 @@
-export const PhotoLogMetadata: {[key: string]: {[key: string]: number}} = {
+export const PhotoLogMetadata: { [key: string]: { [key: string]: number } } = {
   "2023": { count: 254 },
   "2022": { count: 234 },
   "2021": { count: 44 },
 };
 
-export const generateImageSrcForYear = (year: string): string[] => 
-  Array.from({length: PhotoLogMetadata[year].count}, (_, i) => `/photolog/${year}/${i + 1}.jpeg`).reverse()
+export const generateImageSrcForYear = (year: string): string[] =>
+  Array.from(
+    { length: PhotoLogMetadata[year].count },
+    (_, i) => `/photolog/${year}/${i + 1}.jpeg`,
+  ).reverse();
 
 export const extractFileName = (str: string) => {
   const extensionIncluded = /\d+.jpeg/g.exec(str)?.[0] ?? "0";
@@ -21,28 +24,35 @@ export const photos: string[] = [
   ...generateImageSrcForYear("2023"),
   ...generateImageSrcForYear("2022"),
   ...generateImageSrcForYear("2021"),
-  ];
+];
 
 const getRandomInt = (max: number, currIndex: number): number => {
-  const rand = Math.floor(Math.random() * max)
+  const rand = Math.floor(Math.random() * max);
   // don't return the same index
   return rand == currIndex ? getRandomInt(max, currIndex) : rand;
 };
 
-const generateUniqueRandomNumbers = (size: number, currIndex: number, rands: number[]): number[] => {
+const generateUniqueRandomNumbers = (
+  size: number,
+  currIndex: number,
+  rands: number[],
+): number[] => {
   if (currIndex < size) {
-    const rand = getRandomInt(size, currIndex)
+    const rand = getRandomInt(size, currIndex);
 
     if (rands.includes(rand)) {
       // repeat of something that already exists, try again
-      return generateUniqueRandomNumbers(size, currIndex, rands)
+      return generateUniqueRandomNumbers(size, currIndex, rands);
     }
 
-    return generateUniqueRandomNumbers(size, currIndex + 1, [...rands, rand])
+    return generateUniqueRandomNumbers(size, currIndex + 1, [...rands, rand]);
   }
 
-  return rands
-}
+  return rands;
+};
 
-const size = Object.values(PhotoLogMetadata).reduce((acc, curr) => acc += curr.count, 0)
-export const rands = generateUniqueRandomNumbers(size, 0, [])
+const size = Object.values(PhotoLogMetadata).reduce(
+  (acc, curr) => (acc += curr.count),
+  0,
+);
+export const rands = generateUniqueRandomNumbers(size, 0, []);
