@@ -44,7 +44,7 @@ const { title } = Astro.props;
     :root {
       --background: #3c4f34;
       --text: #fffcf8;
-      --link: #b2ff66;
+      --link: #D3EEB4;
     }
   }
 
@@ -67,6 +67,11 @@ const { title } = Astro.props;
 
   a {
     color: var(--link);
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
   }
 
   h1 {
@@ -81,16 +86,15 @@ const { title } = Astro.props;
     font-size: 18px;
   }
 
+  body {
+    font-family: semibold;
+    font-size: 16px;
+  }
+
   h1,
   h2,
   h3 {
     font-family: bold;
-  }
-
-  p,
-  footer {
-    font-family: semibold;
-    font-size: 16px;
   }
 
   body {
