@@ -16,7 +16,10 @@ export function getStaticPaths() {
 }
 
 const { year, index } = Astro.params;
-const imageSrc = `/photolog/${year}/${index}.jpeg`;
+// photolog src
+const imageSrc = `/photolog/sq/${year}/${index}.jpeg`;
+// use high quality images for the view pages
+const imageSrcHQ = `/photolog/hq/${year}/${index}.jpeg`;
 
 const indexOfCurr = photos.indexOf(imageSrc);
 
@@ -105,7 +108,7 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
         <a id="next" href={nextImageHref}>[>>]</a>
       </p>
     </div>
-    <img src={imageSrc} />
+    <img src={imageSrcHQ} />
   </div>
 </Layout>
 

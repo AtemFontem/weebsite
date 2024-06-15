@@ -4,10 +4,11 @@ export const PhotoLogMetadata: { [key: string]: { [key: string]: number } } = {
   "2021": { count: 45 },
 };
 
+// use standard quality images for the photolog view
 export const generateImageSrcForYear = (year: string): string[] =>
   Array.from(
     { length: PhotoLogMetadata[year].count },
-    (_, i) => `/photolog/${year}/${i + 1}.jpeg`,
+    (_, i) => `/photolog/sq/${year}/${i + 1}.jpeg`,
   ).reverse();
 
 export const extractFileName = (str: string) => {
