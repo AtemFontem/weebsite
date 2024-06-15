@@ -4,4 +4,4 @@
 
 ## hq
 - jpeg quality high
-- image size full size
+- image size full size (or large)
