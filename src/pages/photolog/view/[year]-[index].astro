@@ -104,7 +104,7 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
 <Layout>
   <div class="container">
     <div class="nav-container">
-      <p style={prevImageSrc == null ? "visibility: hidden" : ""}>
+      <p style={prevImageSrc === null ? "visibility: hidden" : ""}>
         <a id="prev" href={prevImageHref}>[<<]</a>
       </p>
       <p><a id="rand" href={randomImageHref}>[**]</a></p>
@@ -112,9 +112,11 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
         <a id="next" href={nextImageHref}>[>>]</a>
       </p>
     </div>
-    <div class="stack">
-      <img src={imageSrcBlur} class="blur" />
-      <img src={imageSrcHQ} />
+    <div class="img-container">
+      <img
+        src={imageSrcHQ}
+        style={`background-image: url(${imageSrcBlur}); background-size: cover`}
+      />
     </div>
   </div>
 </Layout>
@@ -137,25 +139,15 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
     width: 400px;
   }
 
-  .stack {
-    display: grid;
-    grid-template-columns: 1fr;
-    justify-items: center;
-    align-items: center;
-    > * {
-      grid-area: 1 / 1;
-    }
-  }
-
-  .blur {
-    filter: blur(200);
-    min-height: 400px;
-    width: 100%;
+  .img-container {
+    display: flex;
+    justify-content: center;
+    align-content: center;
   }
 
   img {
-    max-height: 600px;
-    max-width: 100%;
+    max-height: 800px;
+    max-width: 80%;
   }
 
   p {
@@ -168,7 +160,8 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
     }
 
     img {
-      max-height: 500px;
+      max-height: 400px;
+      max-width: 100%;
     }
 
     .nav-container {

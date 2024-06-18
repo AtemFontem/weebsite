@@ -157,10 +157,10 @@ const filteredByYear = photos.filter((photo) =>
             }
           >
             {photoSrc !== emptyImgSrc && (
-              <div class="stack">
-                <img src={photoBlur} loading="lazy" class="blur" />
-                <img src={photoSrc} loading="lazy" />
-              </div>
+              <img
+                src={photoSrc}
+                style={`background-image: url(${photoBlur}); background-size: cover`}
+              />
             )}
           </a>
         </div>
@@ -181,21 +181,8 @@ const filteredByYear = photos.filter((photo) =>
   }
 
   .img-container {
+    display: flex;
     flex: 0 0 250px;
-  }
-
-  .stack {
-    display: grid;
-    grid-template-columns: 1fr;
-    justify-items: center;
-    align-items: center;
-    > * {
-      grid-area: 1 / 1;
-    }
-  }
-
-  .blur {
-    filter: blur(200);
   }
 
   img {
