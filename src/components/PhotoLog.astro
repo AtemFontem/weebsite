@@ -9,6 +9,8 @@ const { year } = Astro.props;
 
 const emptyImgSrc = "EMPTY";
 
+// this used to be for layout, doing it with css now
+/*
 const makeItThree = (arr: string[]) => {
   const newArr = [];
 
@@ -36,6 +38,7 @@ const makeItThree = (arr: string[]) => {
 
   return [...newArr, newRest];
 };
+*/
 
 const filteredByYear = photos.filter((photo) =>
   year ? extractYear(photo) === year : true,
@@ -118,7 +121,10 @@ const filteredByYear = photos.filter((photo) =>
       );
     };
 
-    const currentPageSlug = new URL(window.location.href).pathname.match(/[^\/]+/g);
+    const currentPageSlug = new URL(window.location.href).pathname.match(
+      /[^\/]+/g,
+    );
+
     // 2: restore only if current slug is not "/"
     // 1: restore
     // 0: don't restore

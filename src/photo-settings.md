@@ -1,7 +1,9 @@
-## sq 
+## sq
+
 - jpeg quality high
-- image size medium size
+- image size medium
 
 ## hq
-- jpeg quality high
-- image size full size (or large)
+
+- jpeg quality maximum
+- image size large
