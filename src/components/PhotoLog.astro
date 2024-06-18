@@ -157,10 +157,13 @@ const filteredByYear = photos.filter((photo) =>
             }
           >
             {photoSrc !== emptyImgSrc && (
-              <img
-                src={photoSrc}
-                style={`background-image: url(${photoBlur}); background-size: cover`}
-              />
+              <>
+                <link rel="preload" href={photoBlur} as="image" />
+                <img
+                  src={photoSrc}
+                  style={`background-image: url(${photoBlur}) !important; background-size: cover; background-attachment: local`}
+                />
+              </>
             )}
           </a>
         </div>

@@ -113,9 +113,10 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
       </p>
     </div>
     <div class="img-container">
+      <link rel="preload" href={imageSrcBlur} as="image" />
       <img
         src={imageSrcHQ}
-        style={`background-image: url(${imageSrcBlur}); background-size: cover`}
+        style={`background-image: url(${imageSrcBlur}); background-size: cover; background-attachment: local`}
       />
     </div>
   </div>
