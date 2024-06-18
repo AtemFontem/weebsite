@@ -41,7 +41,7 @@ const makeItThree = (arr: string[]) => {
 */
 
 const filteredByYear = photos.filter((photo) =>
-  year ? extractYear(photo) === year : true,
+  year ? extractYear(photo.sq) === year : true,
 );
 
 // const tripletedFileNames = makeItThree(filteredByYear);
@@ -140,29 +140,39 @@ const filteredByYear = photos.filter((photo) =>
   });
 </script>
 
-<div class="column">
+<div class="grid">
   {
-    filteredByYear.map((photoSrc) => (
-      <div class="img-container">
-        <a
-          href={
-            photoSrc === emptyImgSrc
-              ? "javascript:void(0)"
-              : `/photolog/view/${extractYear(photoSrc)}-${extractFileName(
-                  photoSrc,
-                )}`
-          }
-        >
-          {photoSrc !== emptyImgSrc && <img src={photoSrc} loading="lazy" />}
-        </a>
-      </div>
-    ))
+    filteredByYear.map((photoObj) => {
+      const photoSrc = photoObj.sq;
+      const photoBlur = photoObj.blur;
+      return (
+        <div class="img-container">
+          <a
+            href={
+              photoSrc === emptyImgSrc
+                ? "javascript:void(0)"
+                : `/photolog/view/${extractYear(photoSrc)}-${extractFileName(
+                    photoSrc,
+                  )}`
+            }
+          >
+            {photoSrc !== emptyImgSrc && (
+              <div class="stack">
+                <img src={photoBlur} loading="lazy" class="blur" />
+                <img src={photoSrc} loading="lazy" />
+              </div>
+            )}
+          </a>
+        </div>
+      );
+    })
   }
 </div>
 
 <style>
-  .column {
+  .grid {
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
@@ -174,18 +184,33 @@ const filteredByYear = photos.filter((photo) =>
     flex: 0 0 250px;
   }
 
+  .stack {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    align-items: center;
+    > * {
+      grid-area: 1 / 1;
+    }
+  }
+
+  .blur {
+    filter: blur(200);
+  }
+
   img {
-    max-width: 100%;
+    width: 100%;
+    height: 100%;
   }
 
   @media only screen and (max-width: 800px) {
-    .column {
+    .grid {
       gap: 12px;
       margin: 0;
       padding: 0;
     }
 
-    .column > * {
+    .grid > * {
       flex: 1 0 40%;
     }
   }

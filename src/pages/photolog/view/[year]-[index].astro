@@ -8,7 +8,8 @@ import {
 } from "../../../photolog-utils";
 
 export function getStaticPaths() {
-  return photos.map((photoSrc) => {
+  return photos.map((photoObj) => {
+    const photoSrc = photoObj.sq;
     return {
       params: { year: extractYear(photoSrc), index: extractFileName(photoSrc) },
     };
@@ -16,25 +17,28 @@ export function getStaticPaths() {
 }
 
 const { year, index } = Astro.params;
+// blur src
+const imageSrcBlur = `/photolog/blur/${year}/${index}.jpeg`;
 // photolog src
 const imageSrc = `/photolog/sq/${year}/${index}.jpeg`;
 // use high quality images for the view pages
 const imageSrcHQ = `/photolog/hq/${year}/${index}.jpeg`;
 
-const indexOfCurr = photos.indexOf(imageSrc);
+const photosSq = photos.map((photoObj) => photoObj.sq);
+const indexOfCurr = photosSq.indexOf(imageSrc);
 
-const prevImageSrc = indexOfCurr - 1 > -1 ? photos[indexOfCurr - 1] : null;
+const prevImageSrc = indexOfCurr - 1 > -1 ? photosSq[indexOfCurr - 1] : null;
 const prevYear = prevImageSrc ? extractYear(prevImageSrc) : "";
 const prevFileName = prevImageSrc ? extractFileName(prevImageSrc) : "";
 const prevImageHref = `/photolog/view/${prevYear}-${prevFileName}`;
 
-const randomImageSrc = photos[rands[indexOfCurr]];
+const randomImageSrc = photosSq[rands[indexOfCurr]];
 const randomYear = randomImageSrc ? extractYear(randomImageSrc) : "";
 const randomFileName = randomImageSrc ? extractFileName(randomImageSrc) : "";
 const randomImageHref = `/photolog/view/${randomYear}-${randomFileName}`;
 
 const nextImageSrc =
-  indexOfCurr + 1 < photos.length ? photos[indexOfCurr + 1] : null;
+  indexOfCurr + 1 < photosSq.length ? photosSq[indexOfCurr + 1] : null;
 const nextYear = nextImageSrc ? extractYear(nextImageSrc) : "";
 const nextFileName = nextImageSrc ? extractFileName(nextImageSrc) : "";
 const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
@@ -108,7 +112,10 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
         <a id="next" href={nextImageHref}>[>>]</a>
       </p>
     </div>
-    <img src={imageSrcHQ} />
+    <div class="stack">
+      <img src={imageSrcBlur} class="blur" />
+      <img src={imageSrcHQ} />
+    </div>
   </div>
 </Layout>
 
@@ -116,9 +123,10 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
   .container {
     display: flex;
     flex-direction: column;
-    gap: 24px;
-    align-items: center;
+    flex-wrap: wrap;
     justify-content: center;
+    align-items: center;
+    gap: 24px;
     padding-bottom: 72px;
   }
 
@@ -129,13 +137,28 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
     width: 400px;
   }
 
-  p {
-    font-family: bold;
+  .stack {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    align-items: center;
+    > * {
+      grid-area: 1 / 1;
+    }
+  }
+
+  .blur {
+    filter: blur(200);
+    width: 100%;
   }
 
   img {
     max-height: 600px;
-    max-width: 80%;
+    max-width: 100%;
+  }
+
+  p {
+    font-family: bold;
   }
 
   @media only screen and (max-width: 700px) {
@@ -144,8 +167,7 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
     }
 
     img {
-      max-width: 100%;
-      max-height: 400px;
+      max-height: 500px;
     }
 
     .nav-container {
