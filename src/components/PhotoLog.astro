@@ -146,7 +146,7 @@ const photosBlur = photos.map((photoObj) => photoObj.blur);
   {
     // prefetch blur images
     photosBlur.map((imageSrcBlur) => (
-      <link rel="prefetch" href={imageSrcBlur} as="image" />
+      <link rel="preload" href={imageSrcBlur} as="image" />
     ))
   }
   {
