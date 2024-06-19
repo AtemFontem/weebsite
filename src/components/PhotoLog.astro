@@ -44,6 +44,8 @@ const filteredByYear = photos.filter((photo) =>
   year ? extractYear(photo.sq) === year : true,
 );
 
+const photosBlur = photos.map((photoObj) => photoObj.blur);
+
 // const tripletedFileNames = makeItThree(filteredByYear);
 ---
 
@@ -142,6 +144,12 @@ const filteredByYear = photos.filter((photo) =>
 
 <div class="grid">
   {
+    // prefetch blur images
+    photosBlur.map((imageSrcBlur) => (
+      <link rel="prefetch" href={imageSrcBlur} as="image" />
+    ))
+  }
+  {
     filteredByYear.map((photoObj) => {
       const photoSrc = photoObj.sq;
       const photoBlur = photoObj.blur;
@@ -157,13 +165,11 @@ const filteredByYear = photos.filter((photo) =>
             }
           >
             {photoSrc !== emptyImgSrc && (
-              <>
-                <link rel="preload" href={photoBlur} as="image" />
-                <img
-                  src={photoSrc}
-                  style={`background-image: url(${photoBlur}) !important; background-size: cover; background-attachment: local`}
-                />
-              </>
+              <img
+                loading="lazy"
+                src={photoSrc}
+                style={`background-image: url(${photoBlur}); background-size: cover; background-attachment: local`}
+              />
             )}
           </a>
         </div>
