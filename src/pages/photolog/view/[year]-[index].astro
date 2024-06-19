@@ -1,11 +1,7 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
-import {
-  extractYear,
-  extractFileName,
-  photos,
-  rands,
-} from "../../../photolog-utils";
+import { extractYear, extractFileName, rands } from "../../../photolog-utils";
+import { photos } from "../../../photolog";
 
 export function getStaticPaths() {
   return photos.map((photoObj) => {
@@ -17,15 +13,17 @@ export function getStaticPaths() {
 }
 
 const { year, index } = Astro.params;
-// blur src
-const imageSrcBlur = `/photolog/blur/${year}/${index}.jpeg`;
+
 // photolog src
-const imageSrc = `/photolog/sq/${year}/${index}.jpeg`;
-// use high quality images for the view pages
-const imageSrcHQ = `/photolog/hq/${year}/${index}.jpeg`;
+const photoSrc = `/photolog/sq/${year}/${index}.jpeg`;
 
 const photosSq = photos.map((photoObj) => photoObj.sq);
-const indexOfCurr = photosSq.indexOf(imageSrc);
+const indexOfCurr = photosSq.indexOf(photoSrc);
+
+// use high quality images for the view pages
+const photoSrcHQ = photos[indexOfCurr].hq;
+// base64 placeholder
+const photoBlurUrl = photos[indexOfCurr].blur;
 
 const prevImageSrc = indexOfCurr - 1 > -1 ? photosSq[indexOfCurr - 1] : null;
 const prevYear = prevImageSrc ? extractYear(prevImageSrc) : "";
@@ -113,10 +111,10 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
       </p>
     </div>
     <div class="img-container">
-      <link rel="preload" href={imageSrcBlur} as="image" />
       <img
-        src={imageSrcHQ}
-        style={`background-image: url(${imageSrcBlur}); background-size: cover; background-attachment: local`}
+        loading="lazy"
+        src={photoSrcHQ}
+        style={`background-image: url(${photoBlurUrl}); background-repeat: no-repeat; background-size: cover; background-position: center;`}
       />
     </div>
   </div>

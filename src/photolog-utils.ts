@@ -4,24 +4,11 @@ export const PhotoLogMetadata: { [key: string]: { [key: string]: number } } = {
   "2021": { count: 45 },
 };
 
-type PhotoLogImage = {
+export type PhotoLogImage = {
   blur: string;
   sq: string;
   hq: string;
 };
-
-// use standard quality images for the photolog view
-export const generateImageSrcForYear = (year: string): PhotoLogImage[] =>
-  Array.from(
-    { length: PhotoLogMetadata[year].count },
-    (_, i) => {
-      return { 
-        blur: `/photolog/blur/${year}/${i + 1}.jpeg`,
-        sq: `/photolog/sq/${year}/${i + 1}.jpeg`,
-        hq: `/photolog/hq/${year}/${i + 1}.jpeg`
-      };
-    }
-  ).reverse();
 
 export const extractFileName = (str: string) => {
   const extensionIncluded = /\d+.jpeg/g.exec(str)?.[0] ?? "0";
@@ -32,12 +19,6 @@ export const extractYear = (str: string) => {
   const fileNameIncluded = /\d*\/\d*.jpeg/g.exec(str)?.[0] ?? "0";
   return Number(fileNameIncluded.substring(0, fileNameIncluded.indexOf("/")));
 };
-
-export const photos: PhotoLogImage[] = [
-  ...generateImageSrcForYear("2023"),
-  ...generateImageSrcForYear("2022"),
-  ...generateImageSrcForYear("2021"),
-];
 
 const getRandomInt = (max: number, currIndex: number): number => {
   const rand = Math.floor(Math.random() * max);

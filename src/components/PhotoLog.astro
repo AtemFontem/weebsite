@@ -1,5 +1,6 @@
 ---
-import { extractYear, extractFileName, photos } from "../photolog-utils";
+import { extractYear, extractFileName } from "../photolog-utils";
+import { photos } from "../photolog";
 
 type Props = {
   year?: number;
@@ -7,10 +8,13 @@ type Props = {
 
 const { year } = Astro.props;
 
-const emptyImgSrc = "EMPTY";
+const filteredByYear = photos.filter((photo) =>
+  year ? extractYear(photo.sq) === year : true,
+);
 
 // this used to be for layout, doing it with css now
 /*
+const emptyImgSrc = "EMPTY";
 const makeItThree = (arr: string[]) => {
   const newArr = [];
 
@@ -39,12 +43,6 @@ const makeItThree = (arr: string[]) => {
   return [...newArr, newRest];
 };
 */
-
-const filteredByYear = photos.filter((photo) =>
-  year ? extractYear(photo.sq) === year : true,
-);
-
-const photosBlur = photos.map((photoObj) => photoObj.blur);
 
 // const tripletedFileNames = makeItThree(filteredByYear);
 ---
@@ -144,33 +142,21 @@ const photosBlur = photos.map((photoObj) => photoObj.blur);
 
 <div class="grid">
   {
-    // prefetch blur images
-    photosBlur.map((imageSrcBlur) => (
-      <link rel="preload" href={imageSrcBlur} as="image" />
-    ))
-  }
-  {
     filteredByYear.map((photoObj) => {
       const photoSrc = photoObj.sq;
-      const photoBlur = photoObj.blur;
+      const photoBlurUrl = photoObj.blur;
       return (
         <div class="img-container">
           <a
-            href={
-              photoSrc === emptyImgSrc
-                ? "javascript:void(0)"
-                : `/photolog/view/${extractYear(photoSrc)}-${extractFileName(
-                    photoSrc,
-                  )}`
-            }
+            href={`/photolog/view/${extractYear(photoSrc)}-${extractFileName(
+              photoSrc,
+            )}`}
           >
-            {photoSrc !== emptyImgSrc && (
-              <img
-                loading="lazy"
-                src={photoSrc}
-                style={`background-image: url(${photoBlur}); background-size: cover; background-attachment: local`}
-              />
-            )}
+            <img
+              loading="lazy"
+              src={photoSrc}
+              style={`background-image: url(${photoBlurUrl}); background-repeat: no-repeat; background-size: cover; background-position: center;`}
+            />
           </a>
         </div>
       );

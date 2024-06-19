@@ -8,11 +8,12 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "pretty": "prettier --write \"src/**/*.{astro, ts, md}\"",
+    "pretty": "prettier --write \"src/*.ts\" \"src/**/*.{astro, ts, md}\"",
     "exif": "exiftool -all:all= -r -overwrite_original public/photolog/"
   },
   "dependencies": {
     "@astrojs/check": "^0.3.4",
+    "@types/node": "^20.14.6",
     "astro": "^4.10.3",
     "prettier": "^3.1.1",
     "prettier-plugin-astro": "^0.12.2",
