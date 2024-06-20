@@ -9,14 +9,19 @@
     "preview": "astro preview",
     "astro": "astro",
     "pretty": "prettier --write \"src/*.ts\" \"src/**/*.{astro, ts, md}\"",
-    "exif": "exiftool -all:all= -r -overwrite_original public/photolog/"
+    "exif": "exiftool -all:all= -r -overwrite_original public/photolog/",
+    "photolog": "cd scripts && tsx blurBase64.ts && cd ..",
+    "blur": "cd scripts && ./blur.sh && cd ..",
+    "prep": "run-s blur exif photolog pretty"
   },
   "dependencies": {
     "@astrojs/check": "^0.3.4",
     "@types/node": "^20.14.6",
     "astro": "^4.10.3",
+    "npm-run-all": "^4.1.5",
     "prettier": "^3.1.1",
     "prettier-plugin-astro": "^0.12.2",
+    "tsx": "^4.15.6",
     "typescript": "^5.3.3"
   }
 }
