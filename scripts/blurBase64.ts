@@ -1,9 +1,8 @@
 import fs from "fs";
-import path from "path";
+import path, { dirname } from "path";
+import { fileURLToPath } from "url";
 import type { PhotoLogImage } from "../src/photolog-utils";
 import { PhotoLogMetadata } from "../src/photolog-utils";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
