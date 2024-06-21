@@ -1,6 +1,7 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import { extractYear, extractFileName, rands } from "../../../photolog-utils";
+import { LOADING_SPINNER_URL } from "../../../loading-spinner";
 import { photos } from "../../../photolog";
 
 export function getStaticPaths() {
@@ -114,7 +115,7 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
       <img
         loading="lazy"
         src={photoSrcHQ}
-        style={`background-image: url(${photoBlurUrl}); background-repeat: no-repeat; background-size: cover; background-position: center;`}
+        style={`background-image: url("${LOADING_SPINNER_URL}"), url("${photoBlurUrl}"); background-repeat: no-repeat; background-size: 60px, cover; background-position: center;`}
       />
     </div>
   </div>

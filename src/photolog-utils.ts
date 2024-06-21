@@ -49,4 +49,5 @@ const size = Object.values(PhotoLogMetadata).reduce(
   (acc, curr) => (acc += curr.count),
   0,
 );
+
 export const rands = generateUniqueRandomNumbers(size, 0, []);

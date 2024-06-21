@@ -7,7 +7,7 @@ import { PhotoLogMetadata } from "../src/photolog-utils";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// use blurred, low-res images as placeholder
+// use blurred, low-res images as placeholder while loading
 // use standard quality images for the photolog view
 // use high quality images for the view pages
 export const generateImageSrcForYear = (year: string): PhotoLogImage[] =>

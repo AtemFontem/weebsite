@@ -17,6 +17,11 @@ const { title } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="description" content="photo archive" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <meta
+      name="google-site-verification"
+      content="DFOj9EFSqoA6HGAdofIsI28eL1u38xj9DM4TxCl1XEg"
+    />
     <link rel="icon" type="png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon-iphone.png" />
     <link
@@ -32,11 +37,6 @@ const { title } = Astro.props;
       as="font"
       type="font/ttf"
       crossorigin
-    />
-    <meta name="generator" content={Astro.generator} />
-    <meta
-      name="google-site-verification"
-      content="DFOj9EFSqoA6HGAdofIsI28eL1u38xj9DM4TxCl1XEg"
     />
     <title>{title ? title : "aymenis.online"}</title>
   </head>

@@ -1,5 +1,6 @@
 ---
 import { extractYear, extractFileName } from "../photolog-utils";
+import { LOADING_SPINNER_URL } from "../loading-spinner";
 import { photos } from "../photolog";
 
 type Props = {
@@ -155,7 +156,7 @@ const makeItThree = (arr: string[]) => {
             <img
               loading="lazy"
               src={photoSrc}
-              style={`background-image: url(${photoBlurUrl}); background-repeat: no-repeat; background-size: cover; background-position: center;`}
+              style={`background-image: url("${LOADING_SPINNER_URL}"), url("${photoBlurUrl}"); background-repeat: no-repeat; background-size: 40px, cover; background-position: center;`}
             />
           </a>
         </div>
