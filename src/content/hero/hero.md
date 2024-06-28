@@ -7,7 +7,7 @@
 
 ## \#\# links
 
-\- [\[github\]](https://github.com/adirar111)<br>
+\- [\[github\]](https://github.com/aymendirar)<br>
 \- [\[spotify\]](https://open.spotify.com/user/tmhqiyefnhrhazxr09fd3w14k)<br>
 \- [\[soundcloud\]](https://soundcloud.com/psyop-officer)<br>
 \- [\[letterboxd\]](https://letterboxd.com/aymendirar/)<br>
