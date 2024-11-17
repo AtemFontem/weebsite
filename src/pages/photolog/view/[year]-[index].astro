@@ -102,6 +102,15 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
 
 <Layout>
   <div class="container">
+    <div class="img-container-wrapper">
+      <div class="img-container">
+        <img
+          loading="lazy"
+          src={photoSrcHQ}
+          style={`background-image: url("${LOADING_SPINNER_URL}"), url("${photoBlurUrl}"); background-repeat: no-repeat; background-size: 60px, cover; background-position: center;`}
+        />
+      </div>
+    </div>
     <div class="nav-container">
       <p style={prevImageSrc === null ? "visibility: hidden" : ""}>
         <a id="prev" href={prevImageHref}>[<<]</a>
@@ -111,13 +120,6 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
         <a id="next" href={nextImageHref}>[>>]</a>
       </p>
     </div>
-    <div class="img-container">
-      <img
-        loading="lazy"
-        src={photoSrcHQ}
-        style={`background-image: url("${LOADING_SPINNER_URL}"), url("${photoBlurUrl}"); background-repeat: no-repeat; background-size: 60px, cover; background-position: center;`}
-      />
-    </div>
   </div>
 </Layout>
 
@@ -125,7 +127,6 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
   .container {
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     gap: 24px;
@@ -139,14 +140,23 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
     width: 400px;
   }
 
+  .img-container-wrapper {
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+  }
+
   .img-container {
+    max-height: 100%;
     display: flex;
     justify-content: center;
     align-content: center;
   }
 
   img {
-    max-height: 800px;
+    max-height: 100%;
     max-width: 80%;
   }
 
@@ -160,7 +170,6 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
     }
 
     img {
-      max-height: 400px;
       max-width: 100%;
     }
 
