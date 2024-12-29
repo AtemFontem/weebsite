@@ -7,12 +7,12 @@
 
 ## \#\# links
 
-\- [\[github\]](https://github.com/aymendirar)<br>
-\- [\[spotify\]](https://open.spotify.com/user/tmhqiyefnhrhazxr09fd3w14k)<br>
-\- [\[soundcloud\]](https://soundcloud.com/psyop-officer)<br>
-\- [\[letterboxd\]](https://letterboxd.com/aymendirar/)<br>
-\- [\[marathon\]](https://marathontv.app/aymendirar)<br>
-\- [\[goodreads\]](https://www.goodreads.com/user/show/151412521-aymen)<br>
-\- [\[strava\]](https://www.strava.com/athletes/96242998)<br>
+\- <a href="https://github.com/aymendirar" target="_blank">\[github\]</a><br>
+\- <a href="https://open.spotify.com/user/tmhqiyefnhrhazxr09fd3w14k" target="_blank">\[spotify\]</a><br>
+\- <a href="https://soundcloud.com/psyop-officer" target="_blank">\[soundcloud\]</a><br>
+\- <a href="https://boxd.it/3SJAz" target="_blank">\[letterboxd\]</a><br>
+\- <a href="https://marathontv.app/aymendirar" target="_blank">\[marathon\]</a><br>
+\- <a href="https://www.goodreads.com/user/show/151412521-aymen" target="_blank">\[goodreads\]</a><br>
+\- <a href="https://www.strava.com/athletes/96242998" target="_blank">\[strava\]</a><br>
 
-this website is a member of [\[bob's club\]](https://bobs-club.net/). [\[<<\]](https://bobs-club.net/site/adrawr/pred)&emsp;[\[\*\*\]](https://bobs-club.net/site/adrawr/random)&emsp;[\[>>\]](https://bobs-club.net/site/adrawr/succ)
+this website is a member of <a href="https://bobs-club.net/" target="_blank">\[bob's club\]</a>. <a href="https://bobs-club.net/site/adrawr/pred" target="_blank">\[<<\]</a>&emsp;<a href="https://bobs-club.net/site/adrawr/random" target="_blank">\[\*\*\]</a>&emsp;<a href="https://bobs-club.net/site/adrawr/succ" target="_blank">\[>>\]</a>
