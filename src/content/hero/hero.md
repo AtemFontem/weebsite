@@ -11,7 +11,6 @@
 \- <a href="https://open.spotify.com/user/tmhqiyefnhrhazxr09fd3w14k" target="_blank">\[spotify\]</a><br>
 \- <a href="https://soundcloud.com/psyop-officer" target="_blank">\[soundcloud\]</a><br>
 \- <a href="https://boxd.it/3SJAz" target="_blank">\[letterboxd\]</a><br>
-\- <a href="https://marathontv.app/aymendirar" target="_blank">\[marathon\]</a><br>
 \- <a href="https://www.goodreads.com/user/show/151412521-aymen" target="_blank">\[goodreads\]</a><br>
 \- <a href="https://www.strava.com/athletes/96242998" target="_blank">\[strava\]</a><br>
 
