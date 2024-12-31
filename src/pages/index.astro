@@ -10,3 +10,26 @@ import PhotoLog from "../components/PhotoLog.astro";
   <Spacer />
   <PhotoLog />
 </FooteredLayout>
+
+<script>
+  const isInstagram = () => /(Instagram)/.test(navigator.userAgent);
+  const isIOS = () => /(iPhone|iPad|iPod)/.test(navigator.userAgent);
+  const isAndroid = () => /(Android)/.test(navigator.userAgent);
+
+  const redirectURL = () => {
+    if (isInstagram()) {
+      const withoutPrefix = window.location.href.substring(
+        window.location.href.indexOf("://") + 3,
+      );
+      if (isIOS()) {
+        const iosURL = `x-safari-https://${withoutPrefix}`;
+        window.location.href = iosURL;
+      } else if (isAndroid()) {
+        const androidURL = `googlechromes://${withoutPrefix}`;
+        window.location.href = androidURL;
+      }
+    }
+  };
+
+  redirectURL();
+</script>
