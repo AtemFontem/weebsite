@@ -3,7 +3,7 @@
 trash ../public/photolog/blur
 mkdir -p ../public/photolog/blur
 
-for year in {2021..2023}; do 
+for year in {2021..2024}; do 
   mkdir -p ../public/photolog/blur/$year
     for img in ../public/photolog/sq/$year/*.jpeg; do
       if [[ $img =~ [0-9]+\.jpeg$ ]]; then
