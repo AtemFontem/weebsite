@@ -23,11 +23,10 @@ import PhotoLog from "../components/PhotoLog.astro";
     new URL(window.location.href).searchParams.get("redirected") === "true";
 
   const withoutPrefixAndParams = () => {
-    const url = new URL(
-      window.location.href.substring(window.location.href.indexOf("://") + 3),
-    );
+    const url = new URL(window.location.href);
     url.search = "";
-    return url.toString();
+    const urlStr = url.toString();
+    return urlStr.substring(urlStr.indexOf("://") + 3);
   };
 
   const redirectURL = () => {
