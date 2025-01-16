@@ -15,24 +15,31 @@ import PhotoLog from "../components/PhotoLog.astro";
   // https://stackoverflow.com/questions/76888215/open-link-in-system-browser-instead-of-in-app-browser
 
   const isInstagram = () => /(Instagram)/.test(navigator.userAgent);
+  const isTwitter = () => /(Twitter)/.test(navigator.userAgent);
   const isIOS = () => /(iPhone|iPad|iPod)/.test(navigator.userAgent);
   const isAndroid = () => /(Android)/.test(navigator.userAgent);
 
   const wasRedirected = () =>
     new URL(window.location.href).searchParams.get("redirected") === "true";
 
+  const withoutPrefixAndParams = () => {
+    const url = new URL(
+      window.location.href.substring(window.location.href.indexOf("://") + 3),
+    );
+    url.search = "";
+    return url.toString();
+  };
+
   const redirectURL = () => {
     if (wasRedirected()) return;
 
-    if (isInstagram()) {
-      const withoutPrefix = window.location.href.substring(
-        window.location.href.indexOf("://") + 3,
-      );
+    if (isInstagram() || isTwitter()) {
+      const baseUrl = withoutPrefixAndParams();
       if (isIOS()) {
-        const iosURL = `x-safari-https://${withoutPrefix}?redirected=true`;
+        const iosURL = `x-safari-https://${baseUrl}?redirected=true`;
         window.location.href = iosURL;
       } else if (isAndroid()) {
-        const androidURL = `intent://${withoutPrefix}?redirected=true#Intent;scheme=https;package=com.android.chrome;end`;
+        const androidURL = `intent://${baseUrl}?redirected=true#Intent;scheme=https;package=com.android.chrome;end`;
         window.location.href = androidURL;
       }
     }
