@@ -29,6 +29,12 @@ import PhotoLog from "../components/PhotoLog.astro";
     return urlStr.substring(urlStr.indexOf("://") + 3);
   };
 
+  const incrementPageCounter = () =>
+    fetch(
+      "https://bobs-server.net/api/counters/cm6bqe9jn000flnext4xu6cbs/actions/cm6bqecxd000glnex0xfqeabb",
+      { method: "POST" },
+    );
+
   const redirectURL = () => {
     if (wasRedirected()) return;
 
@@ -45,4 +51,5 @@ import PhotoLog from "../components/PhotoLog.astro";
   };
 
   redirectURL();
+  incrementPageCounter();
 </script>
