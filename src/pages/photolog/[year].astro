@@ -4,6 +4,8 @@ import PhotoLog from "../../components/PhotoLog.astro";
 
 export function getStaticPaths() {
   return [
+    { params: { year: "2026" } },
+    { params: { year: "2025" } },
     { params: { year: "2024" } },
     { params: { year: "2023" } },
     { params: { year: "2022" } },
