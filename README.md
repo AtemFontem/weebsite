@@ -1,3 +1,3 @@
-# aymen.zip
+# FullWashAndSet
 
-my website. current iteration: photo archive.
+digicam photo + video archive by atem fontem
