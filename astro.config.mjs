@@ -2,10 +2,7 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  // Make sure output is not set to 'static' only
-  // If you have output: 'static', change it to:
+  site: 'https://atemfontem.github.io',
+  base: '/weebsite',
   output: 'static',
-
-  site: 'https://atemfontem.github.io/weebsite',
-  // ... rest of config
 });

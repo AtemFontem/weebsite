@@ -1,24 +1,22 @@
 ---
 // src/components/HeroContent.astro
-// Always renders the same HTML. Uses client-side JS to show/hide based on current page.
+const base = import.meta.env.BASE_URL;
+
+const years = ['2026', '2025', '2024', '2023', '2022', '2021', 'all'];
 ---
 
 <div class="hero-wrapper">
   <nav class="year-sidebar" aria-label="Year navigation" id="year-sidebar">
-    <a href="/photolog/2026" data-year="2026">[2026]</a>
-    <a href="/photolog/2025" data-year="2025">[2025]</a>
-    <a href="/photolog/2024" data-year="2024">[2024]</a>
-    <a href="/photolog/2023" data-year="2023">[2023]</a>
-    <a href="/photolog/2022" data-year="2022">[2022]</a>
-    <a href="/photolog/2021" data-year="2021">[2021]</a>
-    <a href="/photolog/all" data-year="all">[all]</a>
+    {years.map((y) => (
+      <a href={`${base}photolog/${y}`} data-year={y}>[{y}]</a>
+    ))}
   </nav>
 
   <div class="main-content">
     <div class="other-links" id="other-links">
       <a href="https://instagram.com/full_wash_and_set" target="_blank" id="link-instagram">[instagram]</a>
-      <a href="/guestbook" id="link-guestbook">[guestbook]</a>
-      <a href="/about" id="link-about">[about]</a>
+      <a href={`${base}guestbook`} id="link-guestbook">[guestbook]</a>
+      <a href={`${base}about`} id="link-about">[about]</a>
       <a href="javascript:history.back()" class="go-back" id="link-goback" style="display: none;">[go back]</a>
     </div>
     <slot />
@@ -29,7 +27,9 @@
   function updateHeroVisibility() {
     if (typeof window === "undefined") return;
 
-    const path = window.location.pathname;
+    // Strip the base path so path matching still works
+    const base = "/weebsite";
+    const path = window.location.pathname.replace(base, "") || "/";
 
     const isGuestbook = path === "/guestbook";
     const isAbout = path === "/about";

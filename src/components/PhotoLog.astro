@@ -4,6 +4,8 @@ import { extractYear, extractFileName } from "../photolog-utils";
 import { LOADING_SPINNER_URL } from "../loading-spinner";
 import { photos } from "../photolog";
 
+const base = import.meta.env.BASE_URL;
+
 type Props = {
   year?: number;
   layout?: 'grid' | 'single';
@@ -15,6 +17,26 @@ const filteredByYear = photos.filter((photo) =>
   year ? extractYear(photo.sq) === year : true,
 );
 ---
+<div class={`grid ${layout === 'single' ? 'single-column' : ''}`}>
+  {
+    filteredByYear.map((photoObj) => {
+      const photoSrc = photoObj.sq;
+      return (
+        <a
+          class="img-container"
+          href={`${base}photolog/view/${extractYear(photoSrc)}-${extractFileName(photoSrc)}`}
+        >
+          <img
+            loading="lazy"
+            src={`${base}${photoSrc.replace(/^\//, '')}`}
+            style={`background-image: url("${LOADING_SPINNER_URL}"); background-repeat: no-repeat; background-size: 40px; background-position: center;`}
+          />
+        </a>
+      );
+    })
+  }
+</div>
+
 
 <script>
   const SCROLL_KEY = "SCROLL";
