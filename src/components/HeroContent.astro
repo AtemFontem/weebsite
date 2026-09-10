@@ -1,6 +1,7 @@
 ---
 // src/components/HeroContent.astro
-const base = import.meta.env.BASE_URL;
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith('/') ? rawBase : rawBase + '/';
 
 const years = ['2026', '2025', '2024', '2023', '2022', '2021', 'all'];
 ---

@@ -4,7 +4,8 @@ import { extractYear, extractFileName } from "../photolog-utils";
 import { LOADING_SPINNER_URL } from "../loading-spinner";
 import { photos } from "../photolog";
 
-const base = import.meta.env.BASE_URL;
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith('/') ? rawBase : rawBase + '/';
 
 type Props = {
   year?: number;
