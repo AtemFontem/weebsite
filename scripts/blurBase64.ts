@@ -28,6 +28,8 @@ export const generateImageSrcForYear = (year: string): PhotoLogImage[] =>
   }).reverse();
 
 export const photos: PhotoLogImage[] = [
+  ...generateImageSrcForYear("2026"),
+  ...generateImageSrcForYear("2025"),
   ...generateImageSrcForYear("2024"),
   ...generateImageSrcForYear("2023"),
   ...generateImageSrcForYear("2022"),

@@ -1,9 +1,54 @@
 ---
-import Layout from "./Layout.astro";
+// src/layouts/FooteredLayout.astro
+import Header from "../components/Header.astro";
+import LastUpdated from "../components/LastUpdated.astro";
+import HeroContent from "../components/HeroContent.astro";
 import Footer from "../components/Footer.astro";
+import "../styles/global.css";
+import "../styles/fonts.css";
+import { ViewTransitions } from "astro:transitions";
+
+interface Props {
+  title?: string;
+  showYearNav?: boolean;
+  showFooter?: boolean;
+}
+
+const { title, showYearNav = true, showFooter = true } = Astro.props;
 ---
 
-<Layout>
-  <slot />
-  <Footer />
-</Layout>
+<script>
+  history.scrollRestoration = "manual";
+</script>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="photo archive" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <meta
+      name="google-site-verification"
+      content="OoIqI529E4dGjvyJuqx6vzAt_KD9Z1eqmSZBdHvi4Iw"
+    />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon-iphone.png" />
+    <title>{title ? title : "full wash and set"}</title>
+    <ViewTransitions />
+  </head>
+  <body>
+    <div
+      transition:persist="header"
+      data-astro-transition-persist="header"
+      style="width: 100%;"
+    >
+      <Header />
+    </div>
+    <LastUpdated />
+    <HeroContent showYearNav={showYearNav}>
+      <slot />
+    </HeroContent>
+    {showFooter && <Footer />}
+  </body>
+</html>

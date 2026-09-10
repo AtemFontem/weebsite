@@ -1,6 +1,11 @@
 ---
+// src/pages/photolog/all.astro
 import FooteredLayout from "../../layouts/FooteredLayout.astro";
 import PhotoLog from "../../components/PhotoLog.astro";
 ---
 
-<FooteredLayout><PhotoLog /></FooteredLayout>
+<FooteredLayout title="All Photos">
+  <main>
+    <PhotoLog year={undefined} />
+  </main>
+</FooteredLayout>

@@ -1,25 +1,11 @@
 ---
-// this only runs when the site is built
-// github pages servers always set the date a day ahead of when i push
-// timezones are evil
-const day = 24 * 60 * 60 * 1000;
-const today = new Date(Date.now() - day);
-
-const formatDate = (date: Date) => {
-  const year = date.getFullYear();
-  const month =
-    date.getMonth() + 1 > 9
-      ? `${date.getMonth() + 1}`
-      : `0${date.getMonth() + 1}`;
-  const day = date.getDate() > 9 ? `${date.getDate()}` : `0${date.getDate()}`;
-
-  return `${year}-${month}-${day}`;
-};
+// src/components/Header.astro
 ---
 
 <header>
-  <h1 id="top"><a href="/" id="title" }>full wash and set</a></h1>
-  <p>last updated: {formatDate(today)}</p>
+  <h1 id="top">
+    <a href="/" id="title" class="animated-title">full wash and set</a>
+  </h1>
 </header>
 
 <style>
@@ -27,19 +13,57 @@ const formatDate = (date: Date) => {
     display: flex;
     flex-direction: column;
     gap: 0;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 4px;
   }
 
   h1 {
     margin-bottom: 0;
+    width: 100%;
+    text-align: center;
+    word-break: break-word;
   }
 
-  p {
-    margin: 0;
+  .animated-title {
+    font-family: 'Times Roman Hollow bold', 'Times New Roman', Times, serif !important;
+    font-size: 53px;
+    font-weight: normal;
+
+    background-image: url('/site-images/postGridEdit.png');
+    background-size: 200px 200px;
+
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent !important;
+    text-decoration: none;
+
+    animation: scrollDiagonalReversed 12s linear infinite;
+    will-change: background-position;
+    backface-visibility: hidden;
+    transform: translateZ(0);
   }
 
-  @media only screen and (max-width: 700px) {
-    header {
-      text-align: center;
+  @keyframes scrollDiagonalReversed {
+    0% {
+      background-position: 100% 100%;
+    }
+    100% {
+      background-position: 0% 0%;
+    }
+  }
+
+  .animated-title:hover {
+    animation-play-state: running;
+  }
+
+  @supports not (background-clip: text) {
+    .animated-title {
+      color: #800080 !important;
+      background-image: none !important;
+      background-clip: unset !important;
+      -webkit-background-clip: unset !important;
     }
   }
 </style>

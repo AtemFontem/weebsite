@@ -1,8 +1,8 @@
 export const PhotoLogMetadata: { [key: string]: { [key: string]: number } } = {
-  "2024": { count: 324 },
-  "2023": { count: 228 },
-  "2022": { count: 213 },
-  "2021": { count: 37 },
+  "2024": { count: 11 },
+  "2023": { count: 11 },
+  "2022": { count: 11 },
+  "2021": { count: 11 },
 };
 
 export type PhotoLogImage = {
@@ -21,29 +21,18 @@ export const extractYear = (str: string) => {
   return Number(fileNameIncluded.substring(0, fileNameIncluded.indexOf("/")));
 };
 
-const getRandomInt = (max: number, currIndex: number): number => {
-  const rand = Math.floor(Math.random() * max);
-  // don't return the same index
-  return rand == currIndex ? getRandomInt(max, currIndex) : rand;
-};
-
-const generateUniqueRandomNumbers = (
-  size: number,
-  currIndex: number,
-  rands: number[],
-): number[] => {
-  if (currIndex < size) {
-    const rand = getRandomInt(size, currIndex);
-
-    if (rands.includes(rand)) {
-      // repeat of something that already exists, try again
-      return generateUniqueRandomNumbers(size, currIndex, rands);
-    }
-
-    return generateUniqueRandomNumbers(size, currIndex + 1, [...rands, rand]);
+// Generate a shuffled array of unique random numbers (0 to size-1)
+const generateUniqueRandomNumbers = (size: number): number[] => {
+  // Step 1: Create an array of all numbers from 0 to size-1
+  const arr = Array.from({ length: size }, (_, i) => i);
+  
+  // Step 2: Shuffle the array using Fisher-Yates algorithm
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]]; // Swap elements
   }
-
-  return rands;
+  
+  return arr;
 };
 
 const size = Object.values(PhotoLogMetadata).reduce(
@@ -51,4 +40,4 @@ const size = Object.values(PhotoLogMetadata).reduce(
   0,
 );
 
-export const rands = generateUniqueRandomNumbers(size, 0, []);
+export const rands = generateUniqueRandomNumbers(size);

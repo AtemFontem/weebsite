@@ -1,0 +1,65 @@
+---
+// src/pages/about.astro
+import FooteredLayout from "../layouts/FooteredLayout.astro";
+---
+
+<FooteredLayout title="about">
+  <main class="about-page">
+    <h1>about</h1>
+    
+    <section>
+      <p>
+        full wash and set was created by 
+        <strong><a href="mailto:atemfontem1@gmail.com">atem fontem</a></strong> in 2026.
+        
+        <br>thank you 
+        <strong><a href="https://alina.nikitina.us/">alina</a></strong>
+        and 
+        <strong><a href="https://aymen.zip/">aymen</a></strong>
+         for the love and support.
+         </br>
+    
+    </section>
+  </main>
+</FooteredLayout>
+
+<style>
+  .about-page {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+
+
+  .about-page h2 {
+    font-size: 20px;
+    margin-top: 32px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+  }
+
+  .about-page p {
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+
+  .about-page ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .about-page ul li {
+    padding: 6px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .about-page a {
+    color: var(--link, #ff0000);
+  }
+
+  .about-page a:hover {
+    text-decoration: underline;
+  }
+</style>

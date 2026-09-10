@@ -1,8 +1,10 @@
 ---
-import { Content } from "../content/404/404.md";
-import Layout from "../layouts/Layout.astro";
+import FooteredLayout from "../layouts/FooteredLayout.astro";
 ---
 
-<Layout title="404">
-  <Content />
-</Layout>
+<FooteredLayout title="404" showFooter={false}>
+  <div style="display: flex; justify-content: center; align-items: center; min-height: 50vh; flex-direction: column; text-align: center; padding: 40px 20px;">
+    <h1>not found</h1>
+    <p><a href="/">come back home</a></p>
+  </div>
+</FooteredLayout>

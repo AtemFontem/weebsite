@@ -1,5 +1,8 @@
 ---
-import Layout from "../../../layouts/Layout.astro";
+// src/pages/photolog/view/[year]-[index].astro
+export const prerender = true;
+
+import FooteredLayout from "../../../layouts/FooteredLayout.astro";
 import { extractYear, extractFileName, rands } from "../../../photolog-utils";
 import { LOADING_SPINNER_URL } from "../../../loading-spinner";
 import { photos } from "../../../photolog";
@@ -100,7 +103,7 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
   });
 </script>
 
-<Layout>
+<FooteredLayout title="Photo">
   <div class="container">
     <div class="img-container-wrapper">
       <div class="img-container">
@@ -121,7 +124,7 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
       </p>
     </div>
   </div>
-</Layout>
+</FooteredLayout>
 
 <style>
   .container {
@@ -131,6 +134,7 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
     align-items: center;
     gap: 24px;
     padding-bottom: 72px;
+    width: 100%;
   }
 
   .nav-container {
@@ -141,23 +145,25 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
   }
 
   .img-container-wrapper {
-    height: 500px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-content: center;
+    align-items: center;
   }
 
   .img-container {
-    max-height: 100%;
+    width: 100%;
     display: flex;
     justify-content: center;
-    align-content: center;
+    align-items: center;
   }
 
   img {
-    max-height: 100%;
-    max-width: 80%;
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    display: block;
   }
 
   p {
@@ -165,16 +171,8 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
   }
 
   @media only screen and (max-width: 700px) {
-    .img-container-wrapper {
-      height: 400px;
-    }
-
     .container {
       height: auto;
-    }
-
-    img {
-      max-width: 100%;
     }
 
     .nav-container {

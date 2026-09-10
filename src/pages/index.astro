@@ -1,55 +1,11 @@
 ---
+// src/pages/index.astro
 import FooteredLayout from "../layouts/FooteredLayout.astro";
-import Hero from "../components/Hero.astro";
-import Spacer from "../components/Spacer.astro";
 import PhotoLog from "../components/PhotoLog.astro";
 ---
 
-<FooteredLayout>
-  <Hero />
-  <Spacer />
-  <PhotoLog />
+<FooteredLayout title="full wash and set">
+  <main>
+    <PhotoLog layout="single" />
+  </main>
 </FooteredLayout>
-
-<script>
-  // https://stackoverflow.com/questions/76888215/open-link-in-system-browser-instead-of-in-app-browser
-
-  const isInstagram = () => /(Instagram)/.test(navigator.userAgent);
-  const isTwitter = () => /(Twitterbot)/.test(navigator.userAgent);
-  const isIOS = () => /(iPhone|iPad|iPod)/.test(navigator.userAgent);
-  const isAndroid = () => /(Android)/.test(navigator.userAgent);
-
-  const wasRedirected = () =>
-    new URL(window.location.href).searchParams.get("redirected") === "true";
-
-  const withoutPrefixAndParams = () => {
-    const url = new URL(window.location.href);
-    url.search = "";
-    const urlStr = url.toString();
-    return urlStr.substring(urlStr.indexOf("://") + 3);
-  };
-
-  const incrementPageCounter = () =>
-    fetch(
-      "https://bobs-server.net/api/counters/cm6bqe9jn000flnext4xu6cbs/actions/cm6bqecxd000glnex0xfqeabb",
-      { method: "POST" },
-    );
-
-  const redirectURL = () => {
-    if (wasRedirected()) return;
-
-    if (isInstagram() || isTwitter()) {
-      const baseUrl = withoutPrefixAndParams();
-      if (isIOS()) {
-        const iosURL = `x-safari-https://${baseUrl}?redirected=true`;
-        window.location.href = iosURL;
-      } else if (isAndroid()) {
-        const androidURL = `intent://${baseUrl}?redirected=true#Intent;scheme=https;package=com.android.chrome;end`;
-        window.location.href = androidURL;
-      }
-    }
-  };
-
-  redirectURL();
-  incrementPageCounter();
-</script>

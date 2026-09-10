@@ -1,6 +1,11 @@
-import { defineConfig } from "astro/config";
+// astro.config.mjs
+import { defineConfig } from 'astro/config';
 
-// https://astro.build/config
 export default defineConfig({
+  // Make sure output is not set to 'static' only
+  // If you have output: 'static', change it to:
+  output: 'server', // or 'hybrid'
+
   site: 'https://atemfontem.github.io/weebsite',
-})
+  // ... rest of config
+});

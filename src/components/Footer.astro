@@ -1,9 +1,36 @@
+---
+// src/components/Footer.astro
+// Detect the current page URL
+const currentPath = Astro.url.pathname;
+
+// Show "top" link only on index and /photolog/all
+const showTopLink = currentPath === '/' || currentPath === '/photolog/all';
+
+// Show Bob's Club section only on about page
+const showBobsClub = currentPath === '/about';
+---
+
 <footer>
-  <a href="#top">top</a>
+  {/* "top" link - only on index and /photolog/all */}
+  {showTopLink && (
+    <a href="#top">top</a>
+  )}
+  
+  {/* Bob's Club section - only on about page */}
+  {showBobsClub && (
+    <>
+      <br />
+      this website is a member of <a href="https://bobs-club.net/" target="_blank">[bob's club]</a>.<br />
+      <a href="https://bobs-club.net/site/adrawr/pred" target="_blank">[&lt;&lt;]</a>&emsp;
+      <a href="https://bobs-club.net/site/adrawr/random" target="_blank">[**]</a>&emsp;
+      <a href="https://bobs-club.net/site/adrawr/succ" target="_blank">[&gt;&gt;]</a>
+    </>
+  )}
 </footer>
 
 <style>
   footer {
     text-align: center;
+    padding: 20px 0;
   }
 </style>

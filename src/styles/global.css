@@ -1,0 +1,103 @@
+/* src/styles/global.css */
+
+:root {
+  --background: #ffffffff;
+  --text: #000000ff;
+  --link: #ff0000ff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #ffffffff;
+    --text: #000000ff;
+    --link: #ff0000ff;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  background-color: var(--background);
+  color: var(--text);
+  scroll-behavior: smooth;
+  font-family: "Times New Roman", Times, serif;
+}
+
+body {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+h1 {
+  font-size: 32px;
+  font-family: "Times New Roman", Times, serif;
+}
+
+h2 {
+  font-size: 24px;
+  font-family: "Times New Roman", Times, serif;
+}
+
+h3 {
+  font-size: 18px;
+  font-family: "Times New Roman", Times, serif;
+}
+
+ul {
+  list-style-type: none;
+}
+
+/* ============================================================
+   VIEW TRANSITIONS - Fade only for main-content
+   ============================================================ */
+
+::view-transition-old(main-content) {
+  animation: fade-out 0.3s ease forwards;
+}
+
+::view-transition-new(main-content) {
+  animation: fade-in 0.4s ease forwards;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}

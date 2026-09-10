@@ -1,21 +1,24 @@
 ---
+// src/pages/photolog/[year].astro
+export const prerender = true;
+
 import FooteredLayout from "../../layouts/FooteredLayout.astro";
 import PhotoLog from "../../components/PhotoLog.astro";
+import { PhotoLogMetadata } from "../../photolog-utils.ts";
 
-export function getStaticPaths() {
-  return [
-    { params: { year: "2026" } },
-    { params: { year: "2025" } },
-    { params: { year: "2024" } },
-    { params: { year: "2023" } },
-    { params: { year: "2022" } },
-    { params: { year: "2021" } },
-  ];
+export async function getStaticPaths() {
+  const years = Object.keys(PhotoLogMetadata);
+  return [...years, 'all'].map(year => ({
+    params: { year }
+  }));
 }
 
 const { year } = Astro.params;
+const yearNum = year === 'all' ? undefined : parseInt(year);
 ---
 
-<FooteredLayout>
-  <PhotoLog year={Number(year)} />
+<FooteredLayout title={`Photo Archive - ${year}`}>
+  <main>
+    <PhotoLog year={yearNum} layout="grid" />
+  </main>
 </FooteredLayout>

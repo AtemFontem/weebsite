@@ -1,0 +1,56 @@
+---
+// src/components/LastUpdated.astro
+const day = 24 * 60 * 60 * 1000;
+const today = new Date(Date.now() - day);
+
+const formatDate = (date: Date) => {
+  const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 
+                  'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+  const month = months[date.getMonth()];
+  const day = date.getDate();
+  const year = date.getFullYear();
+  return `${month} ${day} ${year}`;
+};
+
+const currentPath = Astro.url.pathname;
+
+// Use the real current year (no one-day offset)
+const currentYear = String(new Date().getFullYear());
+
+// Check if we're on /photolog/<currentYear>
+const yearMatch = currentPath.match(/^\/photolog\/(\d{4})$/);
+const isCurrentYearPage = yearMatch !== null && yearMatch[1] === currentYear;
+
+// Show on index, /photolog/all, and /photolog/<currentYear>
+const showLastUpdated =
+  currentPath === '/' ||
+  currentPath === '/photolog/all' ||
+  isCurrentYearPage;
+---
+
+<p class={`updated ${!showLastUpdated ? 'hidden' : ''}`}>
+  last updated: {formatDate(today)}
+</p>
+
+<style>
+  p {
+    margin: 0;
+    width: 100%;
+    display: block;
+    height: 1.5em;
+    line-height: 1.5;
+    text-align: left;
+    padding-left: 4px;
+  }
+
+  p.hidden {
+    visibility: hidden;
+  }
+
+  @media only screen and (max-width: 700px) {
+    p {
+      text-align: center;
+      padding: 0 4px;
+    }
+  }
+</style>
