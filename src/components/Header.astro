@@ -1,13 +1,11 @@
 ---
-// src/components/Header.astro
----
 const rawBase = import.meta.env.BASE_URL;
 const base = rawBase.endsWith('/') ? rawBase : rawBase + '/';
-
+---
 
 <header>
   <h1 id="top">
-    <a href="/" id="title" class="animated-title">full wash and set</a>
+    <a href={base} id="title" class="animated-title">full wash and set</a>
   </h1>
 </header>
 
@@ -49,12 +47,8 @@ const base = rawBase.endsWith('/') ? rawBase : rawBase + '/';
   }
 
   @keyframes scrollDiagonalReversed {
-    0% {
-      background-position: 100% 100%;
-    }
-    100% {
-      background-position: 0% 0%;
-    }
+    0% { background-position: 100% 100%; }
+    100% { background-position: 0% 0%; }
   }
 
   .animated-title:hover {

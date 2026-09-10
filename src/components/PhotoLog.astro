@@ -18,26 +18,6 @@ const filteredByYear = photos.filter((photo) =>
   year ? extractYear(photo.sq) === year : true,
 );
 ---
-<div class={`grid ${layout === 'single' ? 'single-column' : ''}`}>
-  {
-    filteredByYear.map((photoObj) => {
-      const photoSrc = photoObj.sq;
-      return (
-        <a
-          class="img-container"
-          href={`${base}photolog/view/${extractYear(photoSrc)}-${extractFileName(photoSrc)}`}
-        >
-          <img
-            loading="lazy"
-            src={`${base}${photoSrc.replace(/^\//, '')}`}
-            style={`background-image: url("${LOADING_SPINNER_URL}"); background-repeat: no-repeat; background-size: 40px; background-position: center;`}
-          />
-        </a>
-      );
-    })
-  }
-</div>
-
 
 <script>
   const SCROLL_KEY = "SCROLL";
@@ -67,20 +47,14 @@ const filteredByYear = photos.filter((photo) =>
 
   window.addEventListener("pageshow", () => {
     const now = new Date();
-
     window.removeEventListener("scroll", saveScrollPositionToSessionStorage);
-
     const { y, timestamp } = JSON.parse(
       sessionStorage.getItem(SCROLL_KEY) ??
-        JSON.stringify({
-          y: 0,
-          timestamp: now,
-        }),
+        JSON.stringify({ y: 0, timestamp: now }),
     );
     const shouldRestoreScroll = parseInt(
       window.sessionStorage.getItem(RESTORE_SCROLL_KEY) ?? "0",
     );
-
     window.sessionStorage.setItem(RESTORE_SCROLL_KEY, "0");
 
     let prevY = -1;
@@ -90,25 +64,19 @@ const filteredByYear = photos.filter((photo) =>
       setTimeout(
         () => {
           if (window.scrollY >= y || window.scrollY == prevY) {
-            window.addEventListener(
-              "scroll",
-              saveScrollPositionToSessionStorage,
-            );
+            window.addEventListener("scroll", saveScrollPositionToSessionStorage);
             return;
           }
           window.scrollTo(0, y);
           prevY = window.scrollY;
           firstTime = false;
-
           restoreScroll();
         },
         firstTime ? FIRST_TIMEOUT : TIMEOUT,
       );
     };
 
-    const currentPageSlug = new URL(window.location.href).pathname.match(
-      /[^\/]+/g,
-    );
+    const currentPageSlug = new URL(window.location.href).pathname.match(/[^\/]+/g);
 
     if (
       now.valueOf() - new Date(timestamp).valueOf() < TWO_MINUTES &&
@@ -126,18 +94,16 @@ const filteredByYear = photos.filter((photo) =>
   {
     filteredByYear.map((photoObj) => {
       const photoSrc = photoObj.sq;
-      const photoBlurUrl = photoObj.blur;
+      const cleanSrc = photoSrc.replace(/^\//, '');
       return (
         <a
           class="img-container"
-          href={`/photolog/view/${extractYear(photoSrc)}-${extractFileName(
-            photoSrc,
-          )}`}
+          href={`${base}photolog/view/${extractYear(photoSrc)}-${extractFileName(photoSrc)}`}
         >
           <img
             loading="lazy"
-            src={photoSrc}
-            style={`background-image: url("${LOADING_SPINNER_URL}"), url("${photoBlurUrl}"); background-repeat: no-repeat; background-size: 40px, cover; background-position: center;`}
+            src={`${base}${cleanSrc}`}
+            style={`background-image: url("${LOADING_SPINNER_URL}"); background-repeat: no-repeat; background-size: 40px; background-position: center;`}
           />
         </a>
       );
@@ -166,7 +132,7 @@ const filteredByYear = photos.filter((photo) =>
     border-radius: 0;
     overflow: hidden;
     box-sizing: border-box;
-    line-height: 0;  /* Removes extra space below image */
+    line-height: 0;
   }
 
   img {
@@ -175,9 +141,6 @@ const filteredByYear = photos.filter((photo) =>
     display: block;
   }
 
-  /* ============================================================
-     SINGLE COLUMN LAYOUT (for index page)
-     ============================================================ */
   .grid.single-column {
     gap: 32px;
     margin: 0 auto;
@@ -192,99 +155,35 @@ const filteredByYear = photos.filter((photo) =>
     border-radius: 0;
   }
 
-  /* ============================================================
-     RESPONSIVE GRID - Fill whitespace with more columns
-     ============================================================ */
-
-  /* Extra Large screens: 6+ columns */
   @media only screen and (min-width: 1600px) {
-    .img-container {
-      width: 180px;
-    }
-    .grid {
-      gap: 20px;
-      margin: 0 6%;
-      margin-top: 20px;
-    }
+    .img-container { width: 180px; }
+    .grid { gap: 20px; margin: 0 6%; margin-top: 20px; }
   }
 
-  /* Large screens: 5-6 columns */
   @media only screen and (min-width: 1200px) and (max-width: 1599px) {
-    .img-container {
-      width: 190px;
-    }
-    .grid {
-      gap: 20px;
-      margin: 0 4%;
-      margin-top: 20px;
-    }
+    .img-container { width: 190px; }
+    .grid { gap: 20px; margin: 0 4%; margin-top: 20px; }
   }
 
-  /* Desktop: 4-5 columns */
   @media only screen and (min-width: 1024px) and (max-width: 1199px) {
-    .img-container {
-      width: 200px;
-    }
-    .grid {
-      gap: 18px;
-      margin: 0 3%;
-      margin-top: 20px;
-    }
+    .img-container { width: 200px; }
+    .grid { gap: 18px; margin: 0 3%; margin-top: 20px; }
   }
 
-  /* Tablet: 3-4 columns */
   @media only screen and (min-width: 768px) and (max-width: 1023px) {
-    .img-container {
-      width: 180px;
-    }
-    .grid {
-      gap: 16px;
-      margin: 0 2%;
-      margin-top: 16px;
-    }
+    .img-container { width: 180px; }
+    .grid { gap: 16px; margin: 0 2%; margin-top: 16px; }
   }
 
-  /* Small tablet / large mobile: 2-3 columns */
   @media only screen and (min-width: 500px) and (max-width: 767px) {
-    .img-container {
-      width: 160px;
-    }
-    .grid {
-      gap: 14px;
-      margin: 0 1%;
-      margin-top: 12px;
-    }
+    .img-container { width: 160px; }
+    .grid { gap: 14px; margin: 0 1%; margin-top: 12px; }
   }
 
-  /* ============================================================
-     MOBILE: Default is 2 columns (for /photolog/all, year pages)
-     ============================================================ */
   @media only screen and (max-width: 499px) {
-    .grid {
-      gap: 10px;
-      margin: 0;
-      padding: 0 6px;
-      margin-top: 8px;
-    }
-
-    .img-container {
-      width: 46% !important;
-      flex: 1 0 auto !important;
-      border-width: 6px;
-      border-radius: 0;
-    }
-  }
-
-  /* ============================================================
-     MOBILE - SINGLE COLUMN (for index page)
-     ============================================================ */
-  @media only screen and (max-width: 499px) {
-    .grid.single-column {
-      gap: 24px !important;
-      padding: 0 16px !important;
-      max-width: 100% !important;
-    }
-
+    .grid { gap: 10px; margin: 0; padding: 0 6px; margin-top: 8px; }
+    .img-container { width: 46% !important; flex: 1 0 auto !important; border-width: 6px; border-radius: 0; }
+    .grid.single-column { gap: 24px !important; padding: 0 16px !important; max-width: 100% !important; }
     .grid.single-column .img-container {
       width: 100% !important;
       max-width: 500px !important;
@@ -295,27 +194,10 @@ const filteredByYear = photos.filter((photo) =>
     }
   }
 
-  /* Small mobile: 1 column (default for all pages if screen is very small) */
   @media only screen and (max-width: 350px) {
-    .img-container {
-      width: 92% !important;
-      flex: 1 0 auto !important;
-      border-width: 6px;
-      border-radius: 0;
-    }
-    .grid {
-      gap: 14px;
-    }
-
-    .grid.single-column .img-container {
-      width: 100% !important;
-      max-width: 350px !important;
-      border-width: 8px !important;
-      border-radius: 0 !important;
-    }
-    .grid.single-column {
-      gap: 20px !important;
-      padding: 0 12px !important;
-    }
+    .img-container { width: 92% !important; flex: 1 0 auto !important; border-width: 6px; border-radius: 0; }
+    .grid { gap: 14px; }
+    .grid.single-column .img-container { width: 100% !important; max-width: 350px !important; border-width: 8px !important; border-radius: 0 !important; }
+    .grid.single-column { gap: 20px !important; padding: 0 12px !important; }
   }
 </style>

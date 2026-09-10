@@ -7,6 +7,9 @@ import { extractYear, extractFileName, rands } from "../../../photolog-utils";
 import { LOADING_SPINNER_URL } from "../../../loading-spinner";
 import { photos } from "../../../photolog";
 
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith('/') ? rawBase : rawBase + '/';
+
 export function getStaticPaths() {
   return photos.map((photoObj) => {
     const photoSrc = photoObj.sq;
@@ -28,22 +31,23 @@ const indexOfCurr = photosSq.indexOf(photoSrc);
 const photoSrcHQ = photos[indexOfCurr].hq;
 // base64 placeholder
 const photoBlurUrl = photos[indexOfCurr].blur;
+const cleanHQSrc = photoSrcHQ.replace(/^\//, '');
 
 const prevImageSrc = indexOfCurr - 1 > -1 ? photosSq[indexOfCurr - 1] : null;
 const prevYear = prevImageSrc ? extractYear(prevImageSrc) : "";
 const prevFileName = prevImageSrc ? extractFileName(prevImageSrc) : "";
-const prevImageHref = `/photolog/view/${prevYear}-${prevFileName}`;
+const prevImageHref = `${base}photolog/view/${prevYear}-${prevFileName}`;
 
 const randomImageSrc = photosSq[rands[indexOfCurr]];
 const randomYear = randomImageSrc ? extractYear(randomImageSrc) : "";
 const randomFileName = randomImageSrc ? extractFileName(randomImageSrc) : "";
-const randomImageHref = `/photolog/view/${randomYear}-${randomFileName}`;
+const randomImageHref = `${base}photolog/view/${randomYear}-${randomFileName}`;
 
 const nextImageSrc =
   indexOfCurr + 1 < photosSq.length ? photosSq[indexOfCurr + 1] : null;
 const nextYear = nextImageSrc ? extractYear(nextImageSrc) : "";
 const nextFileName = nextImageSrc ? extractFileName(nextImageSrc) : "";
-const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
+const nextImageHref = `${base}photolog/view/${nextYear}-${nextFileName}`;
 ---
 
 <script>
@@ -54,7 +58,6 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
     return slug && slug.length > 0 && SLUGS.includes(slug[slug.length - 1]);
   };
 
-  // restore scroll because we're coming back from a view page
   window.addEventListener("pagehide", () => {
     const shouldRestoreScroll = parseInt(
       window.sessionStorage.getItem(RESTORE_SCROLL_KEY) ?? "0",
@@ -63,18 +66,15 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
       /[^\/]+/g,
     );
 
-    // base state
     if (shouldRestoreScroll === 0) {
       window.sessionStorage.setItem(RESTORE_SCROLL_KEY, "1");
     }
 
-    // if previous page was a year page
     if (isYearPageSlug(previousPageSlug)) {
       window.sessionStorage.setItem(RESTORE_SCROLL_KEY, "2");
     }
   });
 
-  // Where el is the DOM element you'd like to test for visibility
   const isHidden = (el: any) => {
     const style = window.getComputedStyle(el);
     return style.visibility === "hidden";
@@ -109,18 +109,18 @@ const nextImageHref = `/photolog/view/${nextYear}-${nextFileName}`;
       <div class="img-container">
         <img
           loading="lazy"
-          src={photoSrcHQ}
+          src={`${base}${cleanHQSrc}`}
           style={`background-image: url("${LOADING_SPINNER_URL}"), url("${photoBlurUrl}"); background-repeat: no-repeat; background-size: 60px, cover; background-position: center;`}
         />
       </div>
     </div>
     <div class="nav-container">
       <p style={prevImageSrc === null ? "visibility: hidden" : ""}>
-        <a id="prev" href={prevImageHref}>[<<]</a>
+        <a id="prev" href={prevImageHref}>[&lt;&lt;]</a>
       </p>
       <p><a id="rand" href={randomImageHref}>[**]</a></p>
       <p style={nextImageSrc == null ? "visibility: hidden" : ""}>
-        <a id="next" href={nextImageHref}>[>>]</a>
+        <a id="next" href={nextImageHref}>[&gt;&gt;]</a>
       </p>
     </div>
   </div>

@@ -28,7 +28,6 @@ const years = ['2026', '2025', '2024', '2023', '2022', '2021', 'all'];
   function updateHeroVisibility() {
     if (typeof window === "undefined") return;
 
-    // Strip the base path so path matching still works
     const base = "/weebsite";
     const path = window.location.pathname.replace(base, "") || "/";
 
@@ -70,9 +69,7 @@ const years = ['2026', '2025', '2024', '2023', '2022', '2021', 'all'];
       if (linkGoBack) linkGoBack.style.display = "none";
     }
 
-    const yearLinks = document.querySelectorAll(
-      ".year-sidebar a[data-year]"
-    );
+    const yearLinks = document.querySelectorAll(".year-sidebar a[data-year]");
     const currentYearMatch = path.match(/\/photolog\/(\d+|all)$/);
     const currentYear = currentYearMatch ? currentYearMatch[1] : null;
 
@@ -132,9 +129,7 @@ const years = ['2026', '2025', '2024', '2023', '2022', '2021', 'all'];
     white-space: nowrap;
   }
 
-  .year-sidebar a:hover {
-    text-decoration: underline;
-  }
+  .year-sidebar a:hover { text-decoration: underline; }
 
   .year-sidebar a.placeholder {
     color: var(--text, #000);
@@ -158,9 +153,7 @@ const years = ['2026', '2025', '2024', '2023', '2022', '2021', 'all'];
   }
 
   .other-links a:nth-child(2),
-  .other-links .placeholder:nth-child(2) {
-    margin: 0 auto;
-  }
+  .other-links .placeholder:nth-child(2) { margin: 0 auto; }
 
   .other-links a,
   .other-links .placeholder,
@@ -182,9 +175,7 @@ const years = ['2026', '2025', '2024', '2023', '2022', '2021', 'all'];
     text-decoration: none;
   }
 
-  .other-links .go-back:hover {
-    text-decoration: underline;
-  }
+  .other-links .go-back:hover { text-decoration: underline; }
 
   .main-content {
     width: 100%;
@@ -195,10 +186,7 @@ const years = ['2026', '2025', '2024', '2023', '2022', '2021', 'all'];
   }
 
   @media only screen and (min-width: 1024px) {
-    .hero-wrapper {
-      flex-direction: column;
-      padding: 0 24px;
-    }
+    .hero-wrapper { flex-direction: column; padding: 0 24px; }
 
     .year-sidebar {
       flex-direction: column;
@@ -251,17 +239,8 @@ const years = ['2026', '2025', '2024', '2023', '2022', '2021', 'all'];
   }
 
   @media only screen and (max-width: 700px) {
-    .year-sidebar {
-      gap: 8px 12px;
-    }
-
-    .other-links {
-      gap: 8px 12px;
-      max-width: 100%;
-    }
-
-    .main-content {
-      max-width: 100%;
-    }
+    .year-sidebar { gap: 8px 12px; }
+    .other-links { gap: 8px 12px; max-width: 100%; }
+    .main-content { max-width: 100%; }
   }
 </style>
