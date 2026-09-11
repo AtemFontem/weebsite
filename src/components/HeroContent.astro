@@ -28,8 +28,7 @@ const years = ['2026', '2025', '2024', '2023', '2022', '2021', 'all'];
   function updateHeroVisibility() {
     if (typeof window === "undefined") return;
 
-    const base = "/weebsite";
-    const path = window.location.pathname.replace(base, "") || "/";
+    const path = window.location.pathname;
 
     const isGuestbook = path === "/guestbook";
     const isAbout = path === "/about";
