@@ -1,17 +1,19 @@
 ---
 // src/pages/guestbook.astro
 import FooteredLayout from "../layouts/FooteredLayout.astro";
+import { ViewTransitions } from "astro:transitions";
 
-// YOUR TURNSTILE SITE KEY - Get this from Cloudflare
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith('/') ? rawBase : rawBase + '/';
+
 const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
 ---
 
 <FooteredLayout title="guestbook">
-  <main class="guestbook-page" transition:name="guestbook">
+  <main class="guestbook-page">
     <h1>guestbook</h1>
 
-    <!-- Submission Form -->
-    <form id="guestbook-form" method="POST" action="/api/guestbook" class="guestbook-form">
+    <form id="guestbook-form" method="POST" action={`${base}api/guestbook`} class="guestbook-form">
       <div class="form-group">
         <input type="text" id="name" name="name" required minlength="2" maxlength="20" placeholder="your name" />
       </div>
@@ -21,7 +23,6 @@ const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
         <span class="char-count" id="char-count">0 / 50</span>
       </div>
 
-      <!-- Invisible Turnstile CAPTCHA -->
       <div class="form-group turnstile-container">
         <div
           class="cf-turnstile"
@@ -34,22 +35,19 @@ const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
       <button type="submit" class="submit-btn" id="submit-btn">sign</button>
     </form>
 
-    <!-- Success/Error Messages -->
     <div id="form-message" style="display: none;"></div>
 
     <hr />
 
-    <!-- Display Messages -->
     <div class="entries-header">
       <h2>previous messages</h2>
     </div>
-    <div id="guestbook-entries">
-      <p id="loading-message">loading messages...</p>
+    <div id="guestbook-entries" class="guestbook-entries">
+      <p id="loading-message" class="placeholder-message">loading messages...</p>
     </div>
   </main>
 </FooteredLayout>
 
-<!-- Load Turnstile API -->
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
 <script>
@@ -82,6 +80,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
   var cooldownActive = false;
 
   function startCooldown() {
+    if (!submitBtn) return;
     cooldownActive = true;
     submitBtn.disabled = true;
     submitBtn.style.opacity = '0.3';
@@ -124,10 +123,13 @@ const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
 
     var form = document.getElementById('guestbook-form');
     var formMessage = document.getElementById('form-message');
+    if (!form || !formMessage) return;
+
     var formData = new FormData(form);
+    var action = form.getAttribute('action') || '/api/guestbook';
 
     try {
-      var response = await fetch('/api/guestbook', {
+      var response = await fetch(action, {
         method: 'POST',
         body: formData
       });
@@ -157,20 +159,24 @@ const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
           formMessage.textContent = result.error || 'an error occurred - please refresh the page.';
         }
         cooldownActive = false;
-        submitBtn.disabled = false;
-        submitBtn.style.opacity = '1';
-        submitBtn.style.cursor = 'pointer';
-        submitBtn.textContent = 'sign';
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.style.opacity = '1';
+          submitBtn.style.cursor = 'pointer';
+          submitBtn.textContent = 'sign';
+        }
       }
     } catch (error) {
       formMessage.style.display = 'block';
       formMessage.style.color = '#000000';
       formMessage.textContent = 'an error occurred - please try again.';
       cooldownActive = false;
-      submitBtn.disabled = false;
-      submitBtn.style.opacity = '1';
-      submitBtn.style.cursor = 'pointer';
-      submitBtn.textContent = 'sign';
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = '1';
+        submitBtn.style.cursor = 'pointer';
+        submitBtn.textContent = 'sign';
+      }
     } finally {
       if (window.turnstile) {
         window.turnstile.reset();
@@ -178,7 +184,6 @@ const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
     }
   }
 
-  // Format date as "mmm dd yyyy hh:mm am/pm" with lowercase month
   function formatDate(dateString) {
     var date = new Date(dateString);
     var months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun',
@@ -208,13 +213,13 @@ const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
     if (loadingMsg) loadingMsg.remove();
 
     var entryHTML = `
-      <div class="entry ${pending ? 'pending' : 'approved'}" style="padding: 12px 16px; margin-bottom: 12px; border: 1px solid #eee; border-radius: 8px; background: #fafafa;">
-        <div style="display: flex; justify-content: space-between; align-items: baseline; width: 100%; margin-bottom: 4px;">
-          <span style="font-style: italic; font-weight: bold; font-size: 14px; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; min-width: 0; padding-right: 16px;">${escapeHtml(entry.name)}</span>
-          <span style="color: #000000; font-size: 12px; text-align: right; white-space: nowrap; flex-shrink: 0;">${formatDate(entry.timestamp)}</span>
+      <div class="entry ${pending ? 'pending' : 'approved'}">
+        <div class="entry-header">
+          <span class="entry-name">${escapeHtml(entry.name)}</span>
+          <span class="entry-date">${formatDate(entry.timestamp)}</span>
         </div>
-        <p style="margin: 8px 0 0 0; word-wrap: break-word;">${escapeHtml(entry.message)}</p>
-        ${pending ? '<span style="display: inline-block; background: #ff9800; color: white; font-size: 11px; padding: 2px 10px; border-radius: 10px; margin-top: 6px;">pending approval</span>' : ''}
+        <p class="entry-message">${escapeHtml(entry.message)}</p>
+        ${pending ? '<span class="pending-badge">pending approval</span>' : ''}
       </div>
     `;
 
@@ -226,7 +231,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
     if (!container) return;
 
     try {
-      var response = await fetch('/api/guestbook');
+      var response = await fetch(`${base}api/guestbook`);
       var data = await response.json();
 
       var loadingMsg = document.getElementById('loading-message');
@@ -240,12 +245,14 @@ const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
           addEntryToDOM(entries[i], false);
         }
       } else {
-        container.innerHTML = '<p class="no-entries">no messages yet.</p>';
+        container.innerHTML = '<p class="no-entries placeholder-message">no messages yet.</p>';
       }
     } catch (error) {
       console.error('Error loading entries:', error);
       var loadingMsg = document.getElementById('loading-message');
-      if (loadingMsg) loadingMsg.textContent = 'failed to load messages. please refresh the page.';
+      if (loadingMsg) {
+        loadingMsg.textContent = 'failed to load messages. please refresh the page.';
+      }
     }
   }
 
@@ -281,7 +288,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
 
   .guestbook-page h1 {
     font-size: 32px;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
     text-align: left;
   }
 
@@ -290,8 +297,8 @@ const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    margin-top: 32px;
-    margin-bottom: 16px;
+    margin-top: 24px;
+    margin-bottom: 12px;
   }
 
   .entries-header h2 {
@@ -299,11 +306,11 @@ const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
   }
 
   .guestbook-form {
-    margin: 20px 0;
+    margin: 16px 0;
   }
 
   .form-group {
-    margin-bottom: 16px;
+    margin-bottom: 12px;
   }
 
   .form-group input,
@@ -369,7 +376,21 @@ const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
   hr {
     border: none;
     border-top: 1px solid #eee;
-    margin: 24px 0;
+    margin: 20px 0;
+  }
+
+  /* ============================================================
+     Reserve space for the entries container so content loading
+     doesn't shift the page below it.
+     ============================================================ */
+  .guestbook-entries {
+    min-height: 400px;
+  }
+
+  .placeholder-message {
+    color: #999;
+    text-align: center;
+    padding: 20px;
   }
 
   .entry {
@@ -388,6 +409,50 @@ const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
 
   .entry.approved {
     background: #fafafa;
+  }
+
+  .entry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    width: 100%;
+    margin-bottom: 4px;
+  }
+
+  .entry-name {
+    font-style: italic;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+    min-width: 0;
+    padding-right: 16px;
+  }
+
+  .entry-date {
+    color: #000000;
+    font-size: 12px;
+    text-align: right;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .entry-message {
+    margin: 8px 0 0 0;
+    word-wrap: break-word;
+  }
+
+  .pending-badge {
+    display: inline-block;
+    background: #ff9800;
+    color: white;
+    font-size: 11px;
+    padding: 2px 10px;
+    border-radius: 10px;
+    margin-top: 6px;
   }
 
   .no-entries {
@@ -410,6 +475,11 @@ const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
 
     .entry-date {
       text-align: left;
+    }
+
+    .entry-name {
+      white-space: normal;
+      padding-right: 0;
     }
   }
 </style>

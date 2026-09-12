@@ -15,50 +15,47 @@ const formatDate = (date: Date) => {
 const rawBase = import.meta.env.BASE_URL;
 const base = rawBase.endsWith('/') ? rawBase : rawBase + '/';
 
-// Strip the base prefix so path checks work both locally and on GitHub Pages
 const rawPath = Astro.url.pathname;
 const currentPath =
   base !== '/' && rawPath.startsWith(base)
     ? rawPath.slice(base.length - 1) || '/'
     : rawPath;
 
-// Use the real current year (no one-day offset)
 const currentYear = String(new Date().getFullYear());
 
-// Check if we're on /photolog/<currentYear>
-const yearMatch = currentPath.match(/^\/photolog\/(\d{4})$/);
+const yearMatch = currentPath.match(/^\/photolog\/(\d{4})\/?$/);
 const isCurrentYearPage = yearMatch !== null && yearMatch[1] === currentYear;
 
-// Show on index, /photolog/all, and /photolog/<currentYear>
 const showLastUpdated =
   currentPath === '/' ||
   currentPath === '/photolog/all' ||
+  currentPath === '/photolog/all/' ||
   isCurrentYearPage;
 ---
 
-<p class={`updated ${!showLastUpdated ? 'hidden' : ''}`}>
-  last updated: {formatDate(today)}
-</p>
+{showLastUpdated && (
+  <p class="updated">
+    last updated: {formatDate(today)}
+  </p>
+)}
 
 <style>
-  p {
+  p.updated {
     margin: 0;
     width: 100%;
     display: block;
-    height: 1.5em;
-    line-height: 1.5;
+    line-height: 1.2;
     text-align: left;
     padding-left: 4px;
-  }
-
-  p.hidden {
-    visibility: hidden;
+    margin-bottom: 2px;
   }
 
   @media only screen and (max-width: 700px) {
-    p {
+    p.updated {
       text-align: center;
       padding: 0 4px;
+      line-height: 1.2;
+      margin-bottom: 2px;
     }
   }
 </style>

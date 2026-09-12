@@ -1,6 +1,7 @@
 ---
 // src/layouts/FooteredLayout.astro
 import Header from "../components/Header.astro";
+import NavLinks from "../components/NavLinks.astro";
 import LastUpdated from "../components/LastUpdated.astro";
 import HeroContent from "../components/HeroContent.astro";
 import Footer from "../components/Footer.astro";
@@ -45,7 +46,17 @@ const { title, showYearNav = true, showFooter = true } = Astro.props;
     >
       <Header />
     </div>
+
+    <div
+      transition:persist="nav-links"
+      data-astro-transition-persist="nav-links"
+      style="width: 100%;"
+    >
+      <NavLinks />
+    </div>
+
     <LastUpdated />
+
     <HeroContent showYearNav={showYearNav}>
       <slot />
     </HeroContent>
