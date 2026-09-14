@@ -1,0 +1,11 @@
+name = "fullwashandset"
+compatibility_date = "2026-09-14"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "weebsite-guestbook"
+database_id = "94eb7d71-b01d-4d59-b75d-e82784cce9c4"
+
+[[kv_namespaces]]
+binding = "SESSION"
+id = "0c95ca02a2964feebeb54348af117c8e"

@@ -14,7 +14,10 @@ export function getStaticPaths() {
   return photos.map((photoObj) => {
     const photoSrc = photoObj.sq;
     return {
-      params: { year: extractYear(photoSrc), index: extractFileName(photoSrc) },
+      params: {
+        year: String(extractYear(photoSrc)),
+        index: String(extractFileName(photoSrc)),
+      },
     };
   });
 }
@@ -27,9 +30,7 @@ const photoSrc = `/photolog/sq/${year}/${index}.jpeg`;
 const photosSq = photos.map((photoObj) => photoObj.sq);
 const indexOfCurr = photosSq.indexOf(photoSrc);
 
-// use high quality images for the view pages
 const photoSrcHQ = photos[indexOfCurr].hq;
-// base64 placeholder
 const photoBlurUrl = photos[indexOfCurr].blur;
 const cleanHQSrc = photoSrcHQ.replace(/^\//, '');
 

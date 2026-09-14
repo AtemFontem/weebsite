@@ -1,36 +1,30 @@
 // src/pages/api/guestbook/delete.ts
 import type { APIRoute } from 'astro';
-import { deleteEntry } from '../guestbook';
+import { env } from 'cloudflare:workers';
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    const body = await request.json();
+    const db = env.DB;
+    const body = await request.json() as { id?: string };
     const { id } = body;
-    
+
     if (!id) {
       return new Response(
-        JSON.stringify({ error: 'Entry ID is required' }),
+        JSON.stringify({ error: 'entry id is required.' }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
-    
-    const success = await deleteEntry(id);
-    
-    if (success) {
-      return new Response(
-        JSON.stringify({ success: true, message: 'Entry deleted successfully' }),
-        { status: 200, headers: { 'Content-Type': 'application/json' } }
-      );
-    } else {
-      return new Response(
-        JSON.stringify({ error: 'Entry not found' }),
-        { status: 404, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
+
+    await db.prepare('DELETE FROM guestbook WHERE id = ?').bind(id).run();
+
+    return new Response(
+      JSON.stringify({ success: true }),
+      { status: 200, headers: { 'Content-Type': 'application/json' } }
+    );
   } catch (error) {
     console.error('Delete error:', error);
     return new Response(
-      JSON.stringify({ error: 'An error occurred' }),
+      JSON.stringify({ error: 'an error occurred.' }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }

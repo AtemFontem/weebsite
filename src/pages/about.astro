@@ -6,19 +6,13 @@ import FooteredLayout from "../layouts/FooteredLayout.astro";
 <FooteredLayout title="about">
   <main class="about-page">
     <h1>about</h1>
-    
+
     <section>
       <p>
-        full wash and set was created by 
-        <strong><a href="mailto:atemfontem1@gmail.com">atem fontem</a></strong> in 2026.
-        
-        <br>thank you 
-        <strong><a href="https://alina.nikitina.us/">alina</a></strong>
-        and 
-        <strong><a href="https://aymen.zip/">aymen</a></strong>
-         for the love and support.
-         </br>
-    
+        full wash and set was created by <strong><a href="mailto:atemfontem1@gmail.com">atem fontem</a></strong> in 2026.
+        <br>
+        thank you <strong><a href="https://alina.nikitina.us/">alina</a></strong> and <strong><a href="https://aymen.zip/">aymen</a></strong> for the love and support.
+      </p>
     </section>
   </main>
 </FooteredLayout>
@@ -28,9 +22,16 @@ import FooteredLayout from "../layouts/FooteredLayout.astro";
     max-width: 700px;
     margin: 0 auto;
     padding: 0 16px;
+    min-height: calc(100vh - 260px);
+    display: flex;
+    flex-direction: column;
   }
 
-
+  .about-page h1 {
+    font-size: 32px;
+    margin-bottom: 16px;
+    text-align: left;
+  }
 
   .about-page h2 {
     font-size: 20px;

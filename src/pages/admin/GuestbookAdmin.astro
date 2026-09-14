@@ -1,448 +1,247 @@
 ---
 // src/pages/admin/GuestbookAdmin.astro
 import FooteredLayout from "../../layouts/FooteredLayout.astro";
-import { getAllEntries, getVisitorCount } from "../api/guestbook";
 
-// Get all entries (including pending)
-const allEntries = getAllEntries();
-const pendingEntries = allEntries.filter(entry => !entry.approved);
-const approvedEntries = allEntries.filter(entry => entry.approved);
-const visitorCount = getVisitorCount();
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith('/') ? rawBase : rawBase + '/';
 ---
 
-<FooteredLayout title="Admin - Guestbook">
+<FooteredLayout title="Admin - Guestbook" showFooter={false}>
   <div class="admin-container" id="admin-container">
     <!-- Login Form -->
     <div id="login-form" class="login-container">
-      <h1>Guestbook Admin</h1>
-      <p>Please log in to manage guestbook entries.</p>
+      <h1>guestbook admin</h1>
+      <p>please log in to manage guestbook entries.</p>
       <form id="admin-login" class="login-form">
         <div class="form-group">
-          <label for="admin-username">Username:</label>
+          <label for="admin-username">username:</label>
           <input type="text" id="admin-username" name="username" required autocomplete="username" />
         </div>
         <div class="form-group">
-          <label for="admin-password">Password:</label>
+          <label for="admin-password">password:</label>
           <input type="password" id="admin-password" name="password" required autocomplete="current-password" />
         </div>
         <div id="login-error" class="login-error" style="display: none;"></div>
-        <button type="submit" class="submit-btn" id="login-btn">Login</button>
+        <button type="submit" class="submit-btn" id="login-btn">login</button>
       </form>
     </div>
 
     <!-- Admin Content -->
     <div id="admin-content" style="display: none;">
       <div class="admin-header">
-        <h1>Guestbook Admin</h1>
+        <h1>guestbook admin</h1>
         <div class="admin-stats">
-          <span class="stat">👥 Visitors: {visitorCount}</span>
-          <span class="stat">⏳ Pending: {pendingEntries.length}</span>
-          <span class="stat">✅ Approved: {approvedEntries.length}</span>
-          <button id="logout-btn" class="logout-btn">Logout</button>
+          <span class="stat" id="stat-visitors">👥 visitors: —</span>
+          <span class="stat" id="stat-pending">⏳ pending: —</span>
+          <span class="stat" id="stat-approved">✅ approved: —</span>
+          <button id="logout-btn" class="logout-btn">logout</button>
         </div>
       </div>
-      
+
       <section>
-        <h2>Pending Approval ({pendingEntries.length})</h2>
-        {pendingEntries.length === 0 ? (
-          <p>No pending messages.</p>
-        ) : (
-          <ul class="entry-list">
-            {pendingEntries.map(entry => (
-              <li class="entry pending" data-id={entry.id}>
-                <div class="entry-header">
-                  <strong>{entry.name}</strong>
-                  <span class="timestamp">{new Date(entry.timestamp).toLocaleString()}</span>
-                </div>
-                <p class="message">{entry.message}</p>
-                <div class="entry-actions">
-                  <button 
-                    class="approve-btn"
-                    data-id={entry.id}
-                    onclick="approveEntry(this.dataset.id)"
-                  >
-                    Approve
-                  </button>
-                  <button 
-                    class="delete-btn"
-                    data-id={entry.id}
-                    onclick="deleteEntry(this.dataset.id)"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
+        <h2 id="pending-heading">pending approval</h2>
+        <ul class="entry-list" id="pending-list"></ul>
       </section>
 
       <section>
-        <h2>Approved Messages ({approvedEntries.length})</h2>
-        {approvedEntries.length === 0 ? (
-          <p>No approved messages yet.</p>
-        ) : (
-          <ul class="entry-list">
-            {approvedEntries.map(entry => (
-              <li class="entry approved">
-                <div class="entry-header">
-                  <strong>{entry.name}</strong>
-                  <span class="timestamp">{new Date(entry.timestamp).toLocaleString()}</span>
-                </div>
-                <p class="message">{entry.message}</p>
-                <div class="entry-actions">
-                  <button 
-                    class="delete-btn"
-                    data-id={entry.id}
-                    onclick="deleteEntry(this.dataset.id)"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
+        <h2 id="approved-heading">approved messages</h2>
+        <ul class="entry-list" id="approved-list"></ul>
       </section>
     </div>
   </div>
 </FooteredLayout>
 
 <script>
-  // Admin login - plain JavaScript (no TypeScript annotations)
-  var loginForm = document.getElementById('admin-login');
-  var loginError = document.getElementById('login-error');
-  var loginContainer = document.getElementById('login-form');
-  var adminContent = document.getElementById('admin-content');
-  var loginBtn = document.getElementById('login-btn');
+  const base = "/";
+
+  const loginForm = document.getElementById("admin-login");
+  const loginError = document.getElementById("login-error");
+  const loginContainer = document.getElementById("login-form");
+  const adminContent = document.getElementById("admin-content");
+  const loginBtn = document.getElementById("login-btn");
+
+  function escapeHtml(text) {
+    var div = document.createElement("div");
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  function formatTimestamp(ts) {
+    return new Date(ts).toLocaleString();
+  }
+
+  function renderEntries(entries) {
+    const pendingList = document.getElementById("pending-list");
+    const approvedList = document.getElementById("approved-list");
+    const pending = entries.filter((e) => !e.approved);
+    const approved = entries.filter((e) => e.approved);
+
+    document.getElementById("stat-pending").textContent =
+      "⏳ pending: " + pending.length;
+    document.getElementById("stat-approved").textContent =
+      "✅ approved: " + approved.length;
+
+    pendingList.innerHTML = pending.length
+      ? pending
+          .map(
+            (e) => `
+          <li class="entry pending" data-id="${escapeHtml(e.id)}">
+            <div class="entry-header">
+              <strong>${escapeHtml(e.name)}</strong>
+              <span class="timestamp">${formatTimestamp(e.timestamp)}</span>
+            </div>
+            <p class="message">${escapeHtml(e.message)}</p>
+            <div class="entry-actions">
+              <button class="approve-btn" data-id="${escapeHtml(e.id)}">approve</button>
+              <button class="delete-btn" data-id="${escapeHtml(e.id)}">delete</button>
+            </div>
+          </li>`
+          )
+          .join("")
+      : "<li>no pending messages.</li>";
+
+    approvedList.innerHTML = approved.length
+      ? approved
+          .map(
+            (e) => `
+          <li class="entry approved" data-id="${escapeHtml(e.id)}">
+            <div class="entry-header">
+              <strong>${escapeHtml(e.name)}</strong>
+              <span class="timestamp">${formatTimestamp(e.timestamp)}</span>
+            </div>
+            <p class="message">${escapeHtml(e.message)}</p>
+            <div class="entry-actions">
+              <button class="delete-btn" data-id="${escapeHtml(e.id)}">delete</button>
+            </div>
+          </li>`
+          )
+          .join("")
+      : "<li>no approved messages yet.</li>";
+  }
+
+  async function loadAdminData() {
+    try {
+      const response = await fetch(base + "api/guestbook/admin");
+      const data = await response.json();
+      document.getElementById("stat-visitors").textContent =
+        "👥 visitors: " + (data.visitorCount ?? 0);
+      renderEntries(data.entries || []);
+    } catch (err) {
+      console.error("Failed to load admin data:", err);
+    }
+  }
+
+  async function approveEntry(id) {
+    if (!confirm("approve this message?")) return;
+    await fetch(base + "api/guestbook/approve", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    });
+    loadAdminData();
+  }
+
+  async function deleteEntry(id) {
+    if (!confirm("delete this message?")) return;
+    await fetch(base + "api/guestbook/delete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    });
+    loadAdminData();
+  }
+
+  document.addEventListener("click", (e) => {
+    const target = e.target;
+    if (!(target instanceof HTMLElement)) return;
+    if (target.classList.contains("approve-btn")) {
+      approveEntry(target.dataset.id);
+    } else if (target.classList.contains("delete-btn")) {
+      deleteEntry(target.dataset.id);
+    }
+  });
 
   if (loginForm) {
-    loginForm.addEventListener('submit', async function(e) {
+    loginForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      
-      if (loginBtn) {
-        loginBtn.disabled = true;
-        loginBtn.textContent = 'Logging in...';
-      }
-      
-      var usernameInput = document.getElementById('admin-username');
-      var passwordInput = document.getElementById('admin-password');
-      
-      var username = usernameInput ? usernameInput.value : '';
-      var password = passwordInput ? passwordInput.value : '';
-      
-      loginError.style.display = 'none';
-      
+      loginError.style.display = "none";
+      loginBtn.disabled = true;
+      loginBtn.textContent = "logging in...";
+
+      const username = document.getElementById("admin-username").value;
+      const password = document.getElementById("admin-password").value;
+
       try {
-        var response = await fetch('/api/admin-login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ username: username, password: password })
+        const response = await fetch(base + "api/admin-login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
         });
-        
-        var result = await response.json();
-        console.log('Login result:', result);
-        
+        const result = await response.json();
         if (result.success) {
-          sessionStorage.setItem('admin_logged_in', 'true');
-          if (loginContainer) loginContainer.style.display = 'none';
-          if (adminContent) adminContent.style.display = 'block';
-          if (passwordInput) passwordInput.value = '';
+          sessionStorage.setItem("admin_logged_in", "true");
+          loginContainer.style.display = "none";
+          adminContent.style.display = "block";
+          loadAdminData();
         } else {
-          loginError.textContent = result.error || 'Invalid credentials';
-          loginError.style.display = 'block';
+          loginError.textContent = result.error || "invalid credentials.";
+          loginError.style.display = "block";
         }
-      } catch (error) {
-        console.error('Login fetch error:', error);
-        loginError.textContent = 'Network error. Please try again.';
-        loginError.style.display = 'block';
+      } catch {
+        loginError.textContent = "network error. please try again.";
+        loginError.style.display = "block";
       } finally {
-        if (loginBtn) {
-          loginBtn.disabled = false;
-          loginBtn.textContent = 'Login';
-        }
+        loginBtn.disabled = false;
+        loginBtn.textContent = "login";
       }
     });
   }
 
-  // Logout
-  var logoutBtn = document.getElementById('logout-btn');
+  const logoutBtn = document.getElementById("logout-btn");
   if (logoutBtn) {
-    logoutBtn.addEventListener('click', function() {
-      sessionStorage.removeItem('admin_logged_in');
-      if (loginContainer) loginContainer.style.display = 'block';
-      if (adminContent) adminContent.style.display = 'none';
-      location.reload();
+    logoutBtn.addEventListener("click", () => {
+      sessionStorage.removeItem("admin_logged_in");
+      loginContainer.style.display = "block";
+      adminContent.style.display = "none";
     });
   }
 
-  // Check login status on page load
-  if (sessionStorage.getItem('admin_logged_in') === 'true') {
-    if (loginContainer) loginContainer.style.display = 'none';
-    if (adminContent) adminContent.style.display = 'block';
+  if (sessionStorage.getItem("admin_logged_in") === "true") {
+    loginContainer.style.display = "none";
+    adminContent.style.display = "block";
+    loadAdminData();
   }
-
-  // Admin approve function
-  async function approveEntry(id) {
-    if (!confirm('Approve this message?')) return;
-    
-    try {
-      var response = await fetch('/api/guestbook/approve', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ id: id })
-      });
-      
-      if (response.ok) {
-        location.reload();
-      } else {
-        var result = await response.json();
-        alert(result.error || 'Failed to approve entry');
-      }
-    } catch (error) {
-      alert('An error occurred');
-    }
-  }
-
-  // Admin delete function
-  async function deleteEntry(id) {
-    if (!confirm('Delete this message? This action cannot be undone.')) return;
-    
-    try {
-      var response = await fetch('/api/guestbook/delete', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ id: id })
-      });
-      
-      if (response.ok) {
-        location.reload();
-      } else {
-        var result = await response.json();
-        alert(result.error || 'Failed to delete entry');
-      }
-    } catch (error) {
-      alert('An error occurred');
-    }
-  }
-
-  // Make functions available globally
-  window.approveEntry = approveEntry;
-  window.deleteEntry = deleteEntry;
-
-
-  // Re-initialize after view transitions
-document.addEventListener('astro:page-load', function() {
-  // Check if we're already logged in
-  if (sessionStorage.getItem('admin_logged_in') === 'true') {
-    document.getElementById('login-form').style.display = 'none';
-    document.getElementById('admin-content').style.display = 'block';
-  }
-});
 </script>
 
-
-
 <style>
-  .admin-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-
-  .admin-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-    gap: 12px;
-  }
-
-  .admin-header h1 {
-    margin: 0;
-  }
-
-  .admin-stats {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-
-  .admin-stats .stat {
-    font-size: 14px;
-    color: #555;
-  }
-
-  .logout-btn {
-    background: #ff4444;
-    color: white;
-    border: none;
-    padding: 6px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 14px;
-  }
-
-  .logout-btn:hover {
-    background: #cc0000;
-  }
-
-  /* Login Styles */
-  .login-container {
-    max-width: 400px;
-    margin: 40px auto;
-    padding: 30px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background: #fafafa;
-  }
-
-  .login-container h1 {
-    text-align: center;
-    margin-bottom: 8px;
-  }
-
-  .login-container p {
-    text-align: center;
-    color: #666;
-    margin-bottom: 20px;
-  }
-
-  .login-form .form-group {
-    margin-bottom: 16px;
-  }
-
-  .login-form .form-group label {
-    display: block;
-    margin-bottom: 4px;
-    font-weight: bold;
-  }
-
-  .login-form .form-group input {
-    width: 100%;
-    padding: 8px 12px;
-    box-sizing: border-box;
-    font-family: inherit;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-
-  .login-error {
-    color: #ff0000;
-    text-align: center;
-    margin: 8px 0;
-    padding: 8px;
-    background: #ffeeee;
-    border-radius: 4px;
-  }
-
-  .submit-btn {
-    background: var(--link, #ff0000);
-    color: #fff;
-    border: none;
-    padding: 10px 24px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    font-family: inherit;
-    width: 100%;
-  }
-
-  .submit-btn:hover {
-    opacity: 0.8;
-  }
-
-  .submit-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  /* Entry Styles */
-  h2 {
-    margin-top: 30px;
-    border-bottom: 2px solid var(--link, #ff0000);
-    padding-bottom: 8px;
-  }
-
-  .entry-list {
-    list-style: none;
-    padding: 0;
-  }
-
-  .entry {
-    padding: 16px;
-    margin-bottom: 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background: #f9f9f9;
-  }
-
-  .entry.pending {
-    border-left: 4px solid #ff9800;
-  }
-
-  .entry.approved {
-    border-left: 4px solid #4caf50;
-  }
-
-  .entry-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-  }
-
-  .timestamp {
-    font-size: 12px;
-    color: #666;
-  }
-
-  .message {
-    margin: 8px 0;
-    word-wrap: break-word;
-  }
-
-  .entry-actions {
-    display: flex;
-    gap: 8px;
-    margin-top: 8px;
-  }
-
-  .approve-btn {
-    background: #4caf50;
-    color: white;
-    border: none;
-    padding: 6px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-family: inherit;
-  }
-
-  .approve-btn:hover {
-    background: #45a049;
-  }
-
-  .delete-btn {
-    background: #ff4444;
-    color: white;
-    border: none;
-    padding: 6px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-family: inherit;
-  }
-
-  .delete-btn:hover {
-    background: #cc0000;
-  }
+  .admin-container { max-width: 800px; margin: 0 auto; padding: 20px; }
+  .admin-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 20px; gap: 12px; }
+  .admin-header h1 { margin: 0; }
+  .admin-stats { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .admin-stats .stat { font-size: 14px; color: #555; }
+  .logout-btn { background: #ff4444; color: white; border: none; padding: 6px 16px; border-radius: 4px; cursor: pointer; font-family: inherit; font-size: 14px; }
+  .logout-btn:hover { background: #cc0000; }
+  .login-container { max-width: 400px; margin: 40px auto; padding: 30px; border: 1px solid #ddd; border-radius: 8px; background: #fafafa; }
+  .login-container h1 { text-align: center; margin-bottom: 8px; }
+  .login-container p { text-align: center; color: #666; margin-bottom: 20px; }
+  .login-form .form-group { margin-bottom: 16px; }
+  .login-form .form-group label { display: block; margin-bottom: 4px; font-weight: bold; }
+  .login-form .form-group input { width: 100%; padding: 8px 12px; box-sizing: border-box; font-family: inherit; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; }
+  .login-error { color: #ff0000; text-align: center; margin: 8px 0; padding: 8px; background: #ffeeee; border-radius: 4px; }
+  .submit-btn { background: var(--link, #ff0000); color: #fff; border: none; padding: 10px 24px; border-radius: 4px; cursor: pointer; font-size: 16px; font-family: inherit; width: 100%; }
+  .submit-btn:hover { opacity: 0.8; }
+  .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  h2 { margin-top: 30px; border-bottom: 2px solid var(--link, #ff0000); padding-bottom: 8px; }
+  .entry-list { list-style: none; padding: 0; }
+  .entry { padding: 16px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 8px; background: #f9f9f9; }
+  .entry.pending { border-left: 4px solid #ff9800; }
+  .entry.approved { border-left: 4px solid #4caf50; }
+  .entry-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .timestamp { font-size: 12px; color: #666; }
+  .message { margin: 8px 0; word-wrap: break-word; }
+  .entry-actions { display: flex; gap: 8px; margin-top: 8px; }
+  .approve-btn { background: #4caf50; color: white; border: none; padding: 6px 16px; border-radius: 4px; cursor: pointer; font-family: inherit; }
+  .approve-btn:hover { background: #45a049; }
+  .delete-btn { background: #ff4444; color: white; border: none; padding: 6px 16px; border-radius: 4px; cursor: pointer; font-family: inherit; }
+  .delete-btn:hover { background: #cc0000; }
 </style>

@@ -32,7 +32,7 @@ body {
   display: flex;
   flex-direction: column;
   padding: 12px;
-  gap: 24px;
+  gap: 6px; /* was 24px — reduced for tighter header spacing */
   max-width: 1400px;
   margin: 0 auto;
   box-sizing: border-box;

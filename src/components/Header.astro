@@ -1,4 +1,5 @@
 ---
+// src/components/Header.astro
 const rawBase = import.meta.env.BASE_URL;
 const base = rawBase.endsWith('/') ? rawBase : rawBase + '/';
 ---
@@ -28,27 +29,49 @@ const base = rawBase.endsWith('/') ? rawBase : rawBase + '/';
   }
 
   .animated-title {
+    /* Custom hollow font */
     font-family: 'Times Roman Hollow bold', 'Times New Roman', Times, serif !important;
-    font-size: 53px;
+    font-size: 38px;
     font-weight: normal;
 
+    /* Animated background image */
     background-image: url('/site-images/postGridEdit.png');
-    background-size: 200px 200px;
+    /* Compensate for the horizontal stretch so the image
+       does not appear stretched. 200 / 1.4 ≈ 142.86px */
+    background-size: calc(200px / 1.4) 200px;
+    background-repeat: repeat;
 
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent !important;
     text-decoration: none;
 
-    animation: scrollDiagonalReversed 20s linear infinite;
+    /* ============================================================
+       SEAMLESS SOUTHEAST SCROLL
+       Travel exactly one tile diagonally:
+         X: 0 → (200/1.4)px = 142.857px
+         Y: 0 → 200px
+       Since both distances equal the tile size, the loop is
+       invisible — the background at 100% is identical to 0%.
+       ============================================================ */
+    animation: scrollSoutheast 18s linear infinite;
     will-change: background-position;
     backface-visibility: hidden;
-    transform: translateZ(0);
+
+    /* Horizontal stretch — 1.4 = 40% wider than normal */
+    display: inline-block;
+    transform: scaleX(1.4);
+    transform-origin: center center;
   }
 
-  @keyframes scrollDiagonalReversed {
-    0% { background-position: 100% 100%; }
-    100% { background-position: 0% 0%; }
+  /* Background appears to travel southeast (top-left → bottom-right) */
+  @keyframes scrollSoutheast {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: calc(200px / 1.4) 200px;
+    }
   }
 
   .animated-title:hover {
@@ -61,6 +84,13 @@ const base = rawBase.endsWith('/') ? rawBase : rawBase + '/';
       background-image: none !important;
       background-clip: unset !important;
       -webkit-background-clip: unset !important;
+    }
+  }
+
+  @media only screen and (max-width: 700px) {
+    .animated-title {
+      transform: scaleX(1.4);
+      background-size: calc(200px / 1.4) 200px;
     }
   }
 </style>

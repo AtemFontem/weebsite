@@ -1,36 +1,40 @@
 // src/pages/api/guestbook/approve.ts
 import type { APIRoute } from 'astro';
-import { approveEntry } from '../guestbook';
+import { env } from 'cloudflare:workers';
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    const body = await request.json();
+    const db = env.DB;
+    const body = await request.json() as { id?: string };
     const { id } = body;
-    
+
     if (!id) {
       return new Response(
-        JSON.stringify({ error: 'Entry ID is required' }),
+        JSON.stringify({ error: 'entry id is required.' }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
-    
-    const success = await approveEntry(id);
-    
-    if (success) {
+
+    const result = await db
+      .prepare('UPDATE guestbook SET approved = 1 WHERE id = ?')
+      .bind(id)
+      .run();
+
+    if (result.meta.changes > 0) {
       return new Response(
-        JSON.stringify({ success: true, message: 'Entry approved successfully' }),
+        JSON.stringify({ success: true }),
         { status: 200, headers: { 'Content-Type': 'application/json' } }
       );
-    } else {
-      return new Response(
-        JSON.stringify({ error: 'Entry not found' }),
-        { status: 404, headers: { 'Content-Type': 'application/json' } }
-      );
     }
+
+    return new Response(
+      JSON.stringify({ error: 'entry not found.' }),
+      { status: 404, headers: { 'Content-Type': 'application/json' } }
+    );
   } catch (error) {
     console.error('Approval error:', error);
     return new Response(
-      JSON.stringify({ error: 'An error occurred' }),
+      JSON.stringify({ error: 'an error occurred.' }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }

@@ -5,9 +5,9 @@ const base = rawBase.endsWith('/') ? rawBase : rawBase + '/';
 ---
 
 <div class="other-links" id="other-links">
-  <a href="https://instagram.com/full_wash_and_set" target="_blank" id="link-instagram" class="link-left">[instagram]</a>
-  <a href={`${base}guestbook`} id="link-guestbook" class="link-center">[guestbook]</a>
-  <a href={`${base}about`} id="link-about" class="link-right">[about]</a>
+  <a href="https://instagram.com/full_wash_and_set" target="_blank" id="link-instagram" class="nav-link">[instagram]</a>
+  <a href={`${base}guestbook`} id="link-guestbook" class="nav-link">[guestbook]</a>
+  <a href={`${base}about`} id="link-about" class="nav-link">[about]</a>
   <a href="javascript:history.back()" class="go-back" id="link-goback" style="display: none;">[go back]</a>
 </div>
 
@@ -29,16 +29,16 @@ const base = rawBase.endsWith('/') ? rawBase : rawBase + '/';
       if (linkInstagram) linkInstagram.style.display = "none";
       if (linkGuestbook) linkGuestbook.style.display = "none";
       if (linkAbout) linkAbout.style.display = "none";
-      if (linkGoBack) linkGoBack.style.display = "block";
+      if (linkGoBack) linkGoBack.style.display = "inline";
     } else {
-      if (linkInstagram) linkInstagram.style.display = "block";
+      if (linkInstagram) linkInstagram.style.display = "inline";
       if (linkGuestbook) {
-        linkGuestbook.style.display = "block";
-        linkGuestbook.className = isGuestbook ? "link-center placeholder" : "link-center";
+        linkGuestbook.style.display = "inline";
+        linkGuestbook.className = isGuestbook ? "nav-link placeholder" : "nav-link";
       }
       if (linkAbout) {
-        linkAbout.style.display = "block";
-        linkAbout.className = isAbout ? "link-right placeholder" : "link-right";
+        linkAbout.style.display = "inline";
+        linkAbout.className = isAbout ? "nav-link placeholder" : "nav-link";
       }
       if (linkGoBack) linkGoBack.style.display = "none";
     }
@@ -50,82 +50,72 @@ const base = rawBase.endsWith('/') ? rawBase : rawBase + '/';
 
 <style>
   /* ============================================================
-     MOBILE: three-column grid = perfectly centered middle link
+     Mobile: equal gaps between links (space-around distributes
+     space evenly on both sides of each item, so the visible
+     whitespace between neighbors is identical)
      ============================================================ */
+  @media only screen and (max-width: 1023px) {
+    .other-links {
+      width: calc(100% + 24px);
+      max-width: calc(100% + 24px);
+      margin-left: -12px;
+      margin-right: -12px;
+      padding: 0 16px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      box-sizing: border-box;
+    }
+  }
+
   .other-links {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    display: flex;
     align-items: center;
     width: 100%;
     max-width: 800px;
     margin: 0 auto;
-    gap: 0 6px;
     margin-bottom: 2px;
     box-sizing: border-box;
     view-transition-name: none !important;
   }
 
-  .link-left {
-    justify-self: start;
-    text-align: left;
-  }
-
-  .link-center {
-    justify-self: center;
-    text-align: center;
-  }
-
-  .link-right {
-    justify-self: end;
-    text-align: right;
-  }
-
-  .other-links a,
-  .other-links .placeholder,
-  .other-links .go-back {
-    display: block;
+  .nav-link {
+    display: inline-block;
     font-size: 16px;
     line-height: 1.3;
-  }
-
-  .other-links .go-back {
-    grid-column: 1 / -1;
-    justify-self: start;
-    color: var(--link, #ff0000);
+    white-space: nowrap;
     text-decoration: none;
+    color: var(--link, #ff0000);
+    padding: 0;
+    margin: 0;
   }
 
-  .other-links .go-back:hover { text-decoration: underline; }
+  .nav-link:hover { text-decoration: underline; }
 
-  .other-links .placeholder {
+  .nav-link.placeholder {
     color: var(--text, #000);
     opacity: 0.3;
     cursor: default;
     pointer-events: none;
   }
 
+  .go-back {
+    display: inline-block;
+    font-size: 16px;
+    line-height: 1.3;
+    color: var(--link, #ff0000);
+    text-decoration: none;
+  }
+
+  .go-back:hover { text-decoration: underline; }
+
   /* ============================================================
-     DESKTOP: revert to the previous flex layout
+     Desktop: keep it in a row with space-between
      ============================================================ */
   @media only screen and (min-width: 1024px) {
     .other-links {
-      display: flex;
-      flex-wrap: wrap;
       justify-content: space-between;
-      gap: 4px 20px;
       margin-bottom: 12px;
-    }
-
-    .link-left,
-    .link-center,
-    .link-right {
-      justify-self: auto;
-      text-align: initial;
-    }
-
-    .other-links a:nth-child(2),
-    .other-links .placeholder:nth-child(2) {
-      margin: 0 auto;
     }
   }
 </style>

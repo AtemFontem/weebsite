@@ -7,7 +7,7 @@ import HeroContent from "../components/HeroContent.astro";
 import Footer from "../components/Footer.astro";
 import "../styles/global.css";
 import "../styles/fonts.css";
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 
 interface Props {
   title?: string;
@@ -36,7 +36,7 @@ const { title, showYearNav = true, showFooter = true } = Astro.props;
     <link rel="icon" type="png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon-iphone.png" />
     <title>{title ? title : "full wash and set"}</title>
-    <ViewTransitions />
+    <ClientRouter />
   </head>
   <body>
     <div
