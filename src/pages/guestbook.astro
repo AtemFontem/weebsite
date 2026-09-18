@@ -274,5 +274,206 @@ const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
 </script>
 
 <style>
-  /* ... your existing styles ... */
+  .guestbook-page {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  .guestbook-page h1 {
+    font-size: 32px;
+    margin-bottom: 16px;
+    text-align: left;
+  }
+
+  .entries-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 24px;
+    margin-bottom: 12px;
+  }
+
+  .entries-header h2 {
+    margin: 0;
+  }
+
+  .guestbook-form {
+    margin: 16px 0;
+  }
+
+  .form-group {
+    margin-bottom: 12px;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 8px 12px;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .form-group textarea {
+    resize: vertical;
+  }
+
+  .char-count {
+    display: block;
+    text-align: right;
+    font-size: 12px;
+    color: #666;
+    margin-top: 4px;
+  }
+
+  .turnstile-container {
+    min-height: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .submit-btn {
+    background: var(--link, #ff0000);
+    color: #fff;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: inherit;
+    width: 100%;
+    transition: opacity 0.3s ease;
+  }
+
+  .submit-btn:hover {
+    opacity: 0.8;
+  }
+
+  .submit-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  #form-message {
+    padding: 12px;
+    margin: 12px 0;
+    border-radius: 4px;
+    text-align: center;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 20px 0;
+  }
+
+  /* ============================================================
+     Reserve space for the entries container so content loading
+     doesn't shift the page below it.
+     ============================================================ */
+  .guestbook-entries {
+    min-height: 400px;
+  }
+
+  .placeholder-message {
+    color: #999;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .entry {
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background: #fafafa;
+    position: relative;
+  }
+
+  .entry.pending {
+    background: #fff8e1;
+    border-color: #ffcc80;
+  }
+
+  .entry.approved {
+    background: #fafafa;
+  }
+
+  .entry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    width: 100%;
+    margin-bottom: 4px;
+  }
+
+  .entry-name {
+    font-style: italic;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+    min-width: 0;
+    padding-right: 16px;
+  }
+
+  .entry-date {
+    color: #000000;
+    font-size: 12px;
+    text-align: right;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .entry-message {
+    margin: 8px 0 0 0;
+    word-wrap: break-word;
+  }
+
+  .pending-badge {
+    display: inline-block;
+    background: #ff9800;
+    color: white;
+    font-size: 11px;
+    padding: 2px 10px;
+    border-radius: 10px;
+    margin-top: 6px;
+  }
+
+  .no-entries {
+    color: #999;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .error {
+    color: #ff0000;
+    text-align: center;
+  }
+
+  @media only screen and (max-width: 500px) {
+    .entry-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+
+    .entry-date {
+      text-align: left;
+    }
+
+    .entry-name {
+      white-space: normal;
+      padding-right: 0;
+    }
+  }
 </style>
