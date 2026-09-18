@@ -120,6 +120,11 @@ const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
       return;
     }
 
+    // Reset the Turnstile widget to get a fresh token for this attempt
+    if (window.turnstile) {
+      window.turnstile.reset();
+    }
+
     startCooldown();
 
     var form = document.getElementById('guestbook-form');
@@ -173,6 +178,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
         submitBtn.textContent = 'sign';
       }
     } finally {
+      // Ensure the widget is reset for the next attempt, even on success
       if (window.turnstile) {
         window.turnstile.reset();
       }
