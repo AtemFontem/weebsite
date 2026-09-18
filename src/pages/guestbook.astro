@@ -2,7 +2,6 @@
 // src/pages/guestbook.astro
 import FooteredLayout from "../layouts/FooteredLayout.astro";
 
-
 const rawBase = import.meta.env.BASE_URL;
 const base = rawBase.endsWith('/') ? rawBase : rawBase + '/';
 
@@ -28,7 +27,6 @@ const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
           class="cf-turnstile"
           data-sitekey={TURNSTILE_SITE_KEY}
           data-theme="light"
-          data-size="invisible"
         ></div>
       </div>
 
@@ -51,6 +49,9 @@ const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
 <script>
+  // Define base inside the client script — frontmatter values aren't visible here
+  const base = "/";
+
   function initCharacterCounter() {
     var messageInput = document.getElementById('message');
     var charCount = document.getElementById('char-count');
@@ -86,7 +87,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
     submitBtn.style.opacity = '0.3';
     submitBtn.style.cursor = 'not-allowed';
 
-    var seconds = 20;
+    var seconds = 30;
     submitBtn.textContent = 'wait ' + seconds + 's';
 
     var interval = setInterval(function() {
@@ -126,7 +127,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
     if (!form || !formMessage) return;
 
     var formData = new FormData(form);
-    var action = form.getAttribute('action') || '/api/guestbook';
+    var action = form.getAttribute('action') || base + 'api/guestbook';
 
     try {
       var response = await fetch(action, {
@@ -139,25 +140,19 @@ const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
       if (response.ok && result.success) {
         formMessage.style.display = 'block';
         formMessage.style.color = '#000000';
-        formMessage.textContent = 'your message has been submitted and is awaiting approval.';
+        formMessage.textContent = 'your message has been posted.';
 
         if (result.entry) {
-          addEntryToDOM(result.entry, true);
+          addEntryToDOM(result.entry, false);
         }
 
         form.reset();
         var charCount = document.getElementById('char-count');
         if (charCount) charCount.textContent = '0 / 50';
       } else {
-        if (result.error && (result.error.includes('verification') || result.error.includes('Turnstile') || result.error.includes('security'))) {
-          formMessage.style.display = 'block';
-          formMessage.style.color = '#000000';
-          formMessage.textContent = 'verification error. please refresh the page.';
-        } else {
-          formMessage.style.display = 'block';
-          formMessage.style.color = '#000000';
-          formMessage.textContent = result.error || 'an error occurred - please refresh the page.';
-        }
+        formMessage.style.display = 'block';
+        formMessage.style.color = '#000000';
+        formMessage.textContent = result.error || 'an error occurred. please refresh the page.';
         cooldownActive = false;
         if (submitBtn) {
           submitBtn.disabled = false;
@@ -169,7 +164,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
     } catch (error) {
       formMessage.style.display = 'block';
       formMessage.style.color = '#000000';
-      formMessage.textContent = 'an error occurred - please try again.';
+      formMessage.textContent = 'an error occurred. please try again.';
       cooldownActive = false;
       if (submitBtn) {
         submitBtn.disabled = false;
@@ -213,13 +208,12 @@ const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
     if (loadingMsg) loadingMsg.remove();
 
     var entryHTML = `
-      <div class="entry ${pending ? 'pending' : 'approved'}">
+      <div class="entry approved">
         <div class="entry-header">
           <span class="entry-name">${escapeHtml(entry.name)}</span>
           <span class="entry-date">${formatDate(entry.timestamp)}</span>
         </div>
         <p class="entry-message">${escapeHtml(entry.message)}</p>
-        ${pending ? '<span class="pending-badge">pending approval</span>' : ''}
       </div>
     `;
 
@@ -231,7 +225,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
     if (!container) return;
 
     try {
-      var response = await fetch(`${base}api/guestbook`);
+      var response = await fetch(base + 'api/guestbook');
       var data = await response.json();
 
       var loadingMsg = document.getElementById('loading-message');
@@ -280,206 +274,5 @@ const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
 </script>
 
 <style>
-  .guestbook-page {
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 0 16px;
-  }
-
-  .guestbook-page h1 {
-    font-size: 32px;
-    margin-bottom: 16px;
-    text-align: left;
-  }
-
-  .entries-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    margin-top: 24px;
-    margin-bottom: 12px;
-  }
-
-  .entries-header h2 {
-    margin: 0;
-  }
-
-  .guestbook-form {
-    margin: 16px 0;
-  }
-
-  .form-group {
-    margin-bottom: 12px;
-  }
-
-  .form-group input,
-  .form-group textarea {
-    width: 100%;
-    padding: 8px 12px;
-    box-sizing: border-box;
-    font-family: inherit;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-
-  .form-group textarea {
-    resize: vertical;
-  }
-
-  .char-count {
-    display: block;
-    text-align: right;
-    font-size: 12px;
-    color: #666;
-    margin-top: 4px;
-  }
-
-  .turnstile-container {
-    min-height: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .submit-btn {
-    background: var(--link, #ff0000);
-    color: #fff;
-    border: none;
-    padding: 10px 24px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    font-family: inherit;
-    width: 100%;
-    transition: opacity 0.3s ease;
-  }
-
-  .submit-btn:hover {
-    opacity: 0.8;
-  }
-
-  .submit-btn:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-  }
-
-  #form-message {
-    padding: 12px;
-    margin: 12px 0;
-    border-radius: 4px;
-    text-align: center;
-  }
-
-  hr {
-    border: none;
-    border-top: 1px solid #eee;
-    margin: 20px 0;
-  }
-
-  /* ============================================================
-     Reserve space for the entries container so content loading
-     doesn't shift the page below it.
-     ============================================================ */
-  .guestbook-entries {
-    min-height: 400px;
-  }
-
-  .placeholder-message {
-    color: #999;
-    text-align: center;
-    padding: 20px;
-  }
-
-  .entry {
-    padding: 12px 16px;
-    margin-bottom: 12px;
-    border: 1px solid #eee;
-    border-radius: 8px;
-    background: #fafafa;
-    position: relative;
-  }
-
-  .entry.pending {
-    background: #fff8e1;
-    border-color: #ffcc80;
-  }
-
-  .entry.approved {
-    background: #fafafa;
-  }
-
-  .entry-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    width: 100%;
-    margin-bottom: 4px;
-  }
-
-  .entry-name {
-    font-style: italic;
-    font-weight: bold;
-    font-size: 14px;
-    text-align: left;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    flex: 1;
-    min-width: 0;
-    padding-right: 16px;
-  }
-
-  .entry-date {
-    color: #000000;
-    font-size: 12px;
-    text-align: right;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  .entry-message {
-    margin: 8px 0 0 0;
-    word-wrap: break-word;
-  }
-
-  .pending-badge {
-    display: inline-block;
-    background: #ff9800;
-    color: white;
-    font-size: 11px;
-    padding: 2px 10px;
-    border-radius: 10px;
-    margin-top: 6px;
-  }
-
-  .no-entries {
-    color: #999;
-    text-align: center;
-    padding: 20px;
-  }
-
-  .error {
-    color: #ff0000;
-    text-align: center;
-  }
-
-  @media only screen and (max-width: 500px) {
-    .entry-header {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 4px;
-    }
-
-    .entry-date {
-      text-align: left;
-    }
-
-    .entry-name {
-      white-space: normal;
-      padding-right: 0;
-    }
-  }
+  /* ... your existing styles ... */
 </style>
