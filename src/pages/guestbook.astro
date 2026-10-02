@@ -172,6 +172,10 @@ const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
     background: #fafafa;
   }
 
+  /* ============================================================
+     FIX: entry header uses flexbox to push name left and
+     timestamp right
+     ============================================================ */
   .entry-header {
     display: flex;
     justify-content: space-between;
@@ -210,11 +214,6 @@ const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
     color: #999;
     text-align: center;
     padding: 20px;
-  }
-
-  .error {
-    color: #ff0000;
-    text-align: center;
   }
 
   @media only screen and (max-width: 500px) {
