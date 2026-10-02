@@ -77,10 +77,6 @@ import FooteredLayout from "../layouts/FooteredLayout.astro";
     border-bottom: 1px solid #f0f0f0;
   }
 
-  /* ============================================================
-     COLORED BODY TITLE: "full wash and set"
-     Decorative text only — no underline, no link behavior.
-     ============================================================ */
   .title-word {
     font-weight: bold;
     margin-right: 0.25em;
@@ -92,18 +88,13 @@ import FooteredLayout from "../layouts/FooteredLayout.astro";
   .title-word.is   { color: #ff0000; }
   .title-word.set  { color: #800080; }
 
-  /* ============================================================
-     CLICKABLE WORDS: subtle dotted underline to signal
-     interactivity. Applies to atem fontem / love / support
-     (real links) and alina / aymen (popup triggers).
-     ============================================================ */
   .clickable-link,
   .popup-word {
-    color: var(--link, #a90000);
+    color: var(--link, #c50e0e);
     font-weight: bold;
     cursor: pointer;
     text-decoration: underline dotted currentColor;
-    text-decoration-thickness: 0.1px;
+    text-decoration-thickness: 1px;
     text-underline-offset: 3px;
     transition: text-decoration-style 0.15s ease;
   }
@@ -115,9 +106,6 @@ import FooteredLayout from "../layouts/FooteredLayout.astro";
     text-decoration: underline solid currentColor;
   }
 
-  /* ============================================================
-     POPUP WORDS: extra tap-target enlargement for touch
-     ============================================================ */
   .popup-word {
     position: relative;
     outline: none;
@@ -139,6 +127,14 @@ import FooteredLayout from "../layouts/FooteredLayout.astro";
 
   /* ============================================================
      POPUP LAYER
+     The layer is always anchored at the CENTER of the word.
+     The card scales up from that anchor:
+       - opening downward → transform-origin: top center
+       - opening upward   → transform-origin: bottom center
+     When the card would overflow a screen edge, JS sets a
+     CSS variable (--popup-shift-x) that slides the card
+     horizontally, but the anchor stays at the word's center,
+     so the animation still grows from the word.
      ============================================================ */
   .popup-layer {
     position: fixed;
@@ -149,7 +145,10 @@ import FooteredLayout from "../layouts/FooteredLayout.astro";
     z-index: 1000;
     pointer-events: none;
     opacity: 0;
-    transition: opacity 0.2s ease;
+    transition: opacity 0.3s ease;
+
+    /* Default shift is 0; JS overrides per-open */
+    --popup-shift-x: 0px;
   }
 
   .popup-layer.visible {
@@ -163,73 +162,43 @@ import FooteredLayout from "../layouts/FooteredLayout.astro";
     left: 0;
     width: 260px;
     max-width: 82vw;
-    background: #eef4775d;
+    background: #fffad3;
     border: 1px solid #e5e5e5;
     border-radius: 10px;
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
     padding: 10px 10px 8px;
     box-sizing: border-box;
 
-    transform: translate(-50%, -8px) scale(0.15);
+    transform:
+      translate(calc(-50% + var(--popup-shift-x)), -8px)
+      scale(0.15);
     transform-origin: top center;
     opacity: 0;
     transition:
-      transform 0.28s cubic-bezier(0.18, 1.2, 0.32, 1),
-      opacity 0.2s ease;
+      transform 0.45s cubic-bezier(0.22, 1.05, 0.36, 1),
+      opacity 0.3s ease;
   }
 
   .popup-layer.visible .popup-card {
-    transform: translate(-50%, 12px) scale(1);
+    transform:
+      translate(calc(-50% + var(--popup-shift-x)), 12px)
+      scale(1);
     opacity: 1;
   }
 
+  /* Opens upward — scales from the bottom-center of the card,
+     which is pinned to the word's center */
   .popup-layer.flip-up .popup-card {
-    transform: translate(-50%, calc(-100% - 12px)) scale(0.15);
+    transform:
+      translate(calc(-50% + var(--popup-shift-x)), calc(-100% - 12px))
+      scale(0.15);
     transform-origin: bottom center;
   }
 
   .popup-layer.flip-up.visible .popup-card {
-    transform: translate(-50%, calc(-100% - 12px)) scale(1);
-    opacity: 1;
-  }
-
-  .popup-layer.flip-left .popup-card {
-    transform: translate(0, 12px) scale(0.15);
-    transform-origin: top left;
-  }
-
-  .popup-layer.flip-left.visible .popup-card {
-    transform: translate(0, 12px) scale(1);
-    opacity: 1;
-  }
-
-  .popup-layer.flip-right .popup-card {
-    transform: translate(-100%, 12px) scale(0.15);
-    transform-origin: top right;
-  }
-
-  .popup-layer.flip-right.visible .popup-card {
-    transform: translate(-100%, 12px) scale(1);
-    opacity: 1;
-  }
-
-  .popup-layer.flip-up.flip-left .popup-card {
-    transform: translate(0, calc(-100% - 12px)) scale(0.15);
-    transform-origin: bottom left;
-  }
-
-  .popup-layer.flip-up.flip-left.visible .popup-card {
-    transform: translate(0, calc(-100% - 12px)) scale(1);
-    opacity: 1;
-  }
-
-  .popup-layer.flip-up.flip-right .popup-card {
-    transform: translate(-100%, calc(-100% - 12px)) scale(0.15);
-    transform-origin: bottom right;
-  }
-
-  .popup-layer.flip-up.flip-right.visible .popup-card {
-    transform: translate(-100%, calc(-100% - 12px)) scale(1);
+    transform:
+      translate(calc(-50% + var(--popup-shift-x)), calc(-100% - 12px))
+      scale(1);
     opacity: 1;
   }
 
@@ -244,7 +213,7 @@ import FooteredLayout from "../layouts/FooteredLayout.astro";
   .popup-caption {
     margin: 8px 0 0 0;
     font-size: 12px;
-    color: #292929;
+    color: #666;
     text-align: center;
     font-style: italic;
   }
@@ -264,29 +233,43 @@ import FooteredLayout from "../layouts/FooteredLayout.astro";
       var card = layer.querySelector('.popup-card');
       if (!card) return;
 
+      // Anchor stays at the word's CENTER, always
       var anchorX = rect.left + rect.width / 2;
       var anchorY = rect.bottom;
 
       layer.style.left = anchorX + 'px';
       layer.style.top = anchorY + 'px';
 
-      layer.classList.remove('flip-up', 'flip-left', 'flip-right');
+      layer.classList.remove('flip-up');
+
+      // Reset horizontal shift before measuring
+      layer.style.setProperty('--popup-shift-x', '0px');
 
       var cardWidth = card.offsetWidth || 260;
       var cardHeight = card.offsetHeight || 220;
 
+      // Vertical flip: if there isn't enough room below, open upward
       var spaceBelow = window.innerHeight - anchorY;
       if (spaceBelow < cardHeight + 24) {
         layer.classList.add('flip-up');
       }
 
+      // Horizontal overflow: keep the anchor at the word's center,
+      // but push the card sideways so it stays on screen.
       var halfW = cardWidth / 2;
-      if (anchorX - halfW < 8) {
-        layer.style.left = rect.left + 'px';
-        layer.classList.add('flip-left');
-      } else if (anchorX + halfW > window.innerWidth - 8) {
-        layer.style.left = rect.right + 'px';
-        layer.classList.add('flip-right');
+      var edgePadding = 8;
+      var shift = 0;
+
+      if (anchorX - halfW < edgePadding) {
+        // Card would overflow the left edge — push it right
+        shift = edgePadding - (anchorX - halfW);
+      } else if (anchorX + halfW > window.innerWidth - edgePadding) {
+        // Card would overflow the right edge — push it left
+        shift = (window.innerWidth - edgePadding) - (anchorX + halfW);
+      }
+
+      if (shift !== 0) {
+        layer.style.setProperty('--popup-shift-x', shift + 'px');
       }
     }
 
