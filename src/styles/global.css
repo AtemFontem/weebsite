@@ -10,7 +10,7 @@
   :root {
     --background: #ffffffff;
     --text: #000000ff;
-    --link: #ff0000ff;
+    --link: rgb(210, 10, 10);
   }
 }
 
