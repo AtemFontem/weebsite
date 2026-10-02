@@ -15,22 +15,22 @@ import FooteredLayout from "../layouts/FooteredLayout.astro";
         <span class="title-word set">set</span>
         was created by <strong><a href="mailto:atemfontem1@gmail.com" class="clickable-link">atem fontem</a></strong> in 2026.
         <br><br>
-        thank you <strong><a href="https://alina.nikitina.us/" class="clickable-link">alina</a></strong> and <strong><a href="https://aymen.zip/" class="clickable-link">aymen</a></strong> for the{' '}
-        <span class="popup-word" data-popup="love" tabindex="0" role="button" aria-label="show alina's tree">love</span>{' '}
+        thank you <strong><span class="popup-word" data-popup="alina" tabindex="0" role="button" aria-label="show alina's tree">alina</span></strong> and <strong><span class="popup-word" data-popup="aymen" tabindex="0" role="button" aria-label="show aymen's tree">aymen</span></strong> for the{' '}
+        <strong><a href="https://alina.nikitina.us/" class="clickable-link">love</a></strong>{' '}
         and{' '}
-        <span class="popup-word" data-popup="support" tabindex="0" role="button" aria-label="show aymen's tree">support</span>.
+        <strong><a href="https://aymen.zip/" class="clickable-link">support</a></strong>.
       </p>
     </section>
   </main>
 
-  <div class="popup-layer" id="popup-love" aria-hidden="true">
+  <div class="popup-layer" id="popup-alina" aria-hidden="true">
     <div class="popup-card">
       <img src="/site-images/alinas%20tree.JPG" alt="alina's tree" />
       <p class="popup-caption">alina's tree (san francisco, ca)</p>
     </div>
   </div>
 
-  <div class="popup-layer" id="popup-support" aria-hidden="true">
+  <div class="popup-layer" id="popup-aymen" aria-hidden="true">
     <div class="popup-card">
       <img src="/site-images/aymens%20tree.JPG" alt="aymen's tree" />
       <p class="popup-caption">aymen's tree (new york city, ny)</p>
@@ -79,8 +79,7 @@ import FooteredLayout from "../layouts/FooteredLayout.astro";
 
   /* ============================================================
      COLORED BODY TITLE: "full wash and set"
-     No underline anywhere on these — they're decorative text,
-     not links.
+     Decorative text only — no underline, no link behavior.
      ============================================================ */
   .title-word {
     font-weight: bold;
@@ -95,8 +94,8 @@ import FooteredLayout from "../layouts/FooteredLayout.astro";
 
   /* ============================================================
      CLICKABLE WORDS: subtle dotted underline to signal
-     interactivity. Applied to atem fontem / alina / aymen
-     (the links) and love / support (the popup triggers).
+     interactivity. Applies to atem fontem / love / support
+     (real links) and alina / aymen (popup triggers).
      ============================================================ */
   .clickable-link,
   .popup-word {
