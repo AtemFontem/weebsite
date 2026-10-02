@@ -70,10 +70,6 @@
       return;
     }
 
-    if (window.turnstile) {
-      window.turnstile.reset();
-    }
-
     startCooldown();
 
     var form = document.getElementById('guestbook-form');
