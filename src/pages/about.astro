@@ -9,9 +9,13 @@ import FooteredLayout from "../layouts/FooteredLayout.astro";
 
     <section>
       <p>
-        full wash and set was created by <strong><a href="mailto:atemfontem1@gmail.com">atem fontem</a></strong> in 2026.
+        <span class="title-word full">full</span>
+        <span class="title-word wash">wash</span>
+        <span class="title-word is">and</span>
+        <span class="title-word set">set</span>
+        was created by <strong><a href="mailto:atemfontem1@gmail.com" class="clickable-link">atem fontem</a></strong> in 2026.
         <br><br>
-        thank you <strong><a href="https://alina.nikitina.us/">alina</a></strong> and <strong><a href="https://aymen.zip/">aymen</a></strong> for the{' '}
+        thank you <strong><a href="https://alina.nikitina.us/" class="clickable-link">alina</a></strong> and <strong><a href="https://aymen.zip/" class="clickable-link">aymen</a></strong> for the{' '}
         <span class="popup-word" data-popup="love" tabindex="0" role="button" aria-label="show alina's tree">love</span>{' '}
         and{' '}
         <span class="popup-word" data-popup="support" tabindex="0" role="button" aria-label="show aymen's tree">support</span>.
@@ -73,32 +77,70 @@ import FooteredLayout from "../layouts/FooteredLayout.astro";
     border-bottom: 1px solid #f0f0f0;
   }
 
-  .about-page a {
-    color: var(--link, #ff0000);
+  /* ============================================================
+     COLORED BODY TITLE: "full wash and set"
+     No underline anywhere on these — they're decorative text,
+     not links.
+     ============================================================ */
+  .title-word {
+    font-weight: bold;
+    margin-right: 0.25em;
+    text-decoration: none;
   }
 
-  .about-page a:hover {
-    text-decoration: underline;
-  }
+  .title-word.full { color: #e6b800; }
+  .title-word.wash { color: #0066cc; }
+  .title-word.is   { color: #ff0000; }
+  .title-word.set  { color: #800080; }
 
+  /* ============================================================
+     CLICKABLE WORDS: subtle dotted underline to signal
+     interactivity. Applied to atem fontem / alina / aymen
+     (the links) and love / support (the popup triggers).
+     ============================================================ */
+  .clickable-link,
   .popup-word {
     color: var(--link, #ff0000);
-    cursor: pointer;
-    position: relative;
     font-weight: bold;
-    outline: none;
-    -webkit-tap-highlight-color: transparent;
-    transition: text-decoration-color 0.15s ease;
-    text-decoration: underline transparent;
+    cursor: pointer;
+    text-decoration: underline dotted currentColor;
+    text-decoration-thickness: 0.1px;
+    text-underline-offset: 3px;
+    transition: text-decoration-style 0.15s ease;
   }
 
+  .clickable-link:hover,
   .popup-word:hover,
   .popup-word:focus-visible,
   .popup-word.active {
-    text-decoration: underline;
-    text-decoration-color: currentColor;
+    text-decoration: underline solid currentColor;
   }
 
+  /* ============================================================
+     POPUP WORDS: extra tap-target enlargement for touch
+     ============================================================ */
+  .popup-word {
+    position: relative;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    display: inline-block;
+  }
+
+  @media (hover: none), (max-width: 700px) {
+    .popup-word::before {
+      content: "";
+      position: absolute;
+      top: -18px;
+      bottom: -18px;
+      left: -14px;
+      right: -14px;
+      z-index: 1;
+    }
+  }
+
+  /* ============================================================
+     POPUP LAYER
+     ============================================================ */
   .popup-layer {
     position: fixed;
     top: 0;
@@ -211,7 +253,6 @@ import FooteredLayout from "../layouts/FooteredLayout.astro";
 
 <script is:inline>
   (function () {
-    // Module-scoped state, reset per page load
     var activeLayer = null;
     var activeWord = null;
 
@@ -288,7 +329,6 @@ import FooteredLayout from "../layouts/FooteredLayout.astro";
     }
 
     function initAboutPopups() {
-      // Reset state every time the about page mounts
       activeLayer = null;
       activeWord = null;
 
@@ -296,7 +336,6 @@ import FooteredLayout from "../layouts/FooteredLayout.astro";
       if (!words.length) return;
 
       words.forEach(function (word) {
-        // Guard against double-binding on the same element
         if (word.dataset.popupBound === 'true') return;
         word.dataset.popupBound = 'true';
 
@@ -326,7 +365,6 @@ import FooteredLayout from "../layouts/FooteredLayout.astro";
       });
     }
 
-    // Window / document listeners: attach once per full page load, not per navigation
     if (!window.__aboutPopupGlobalBound) {
       window.__aboutPopupGlobalBound = true;
 
@@ -350,7 +388,6 @@ import FooteredLayout from "../layouts/FooteredLayout.astro";
       });
     }
 
-    // Bind on initial load and on every Astro navigation
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', initAboutPopups);
     } else {
@@ -358,7 +395,6 @@ import FooteredLayout from "../layouts/FooteredLayout.astro";
     }
 
     document.addEventListener('astro:page-load', function () {
-      // Defer slightly so Astro finishes swapping the DOM
       setTimeout(initAboutPopups, 0);
     });
   })();
