@@ -47,7 +47,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
 </FooteredLayout>
 
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-<script src="/guestbook.js" defer></script>
+<script src="/guestbook.js?v=2" defer></script>
 
 <style>
   .guestbook-page {
@@ -173,8 +173,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.TURNSTILE_SITE_KEY;
   }
 
   /* ============================================================
-     FIX: entry header uses flexbox to push name left and
-     timestamp right
+     ENTRY HEADER: name italic on left, timestamp on right
      ============================================================ */
   .entry-header {
     display: flex;
