@@ -36,9 +36,7 @@ const base = rawBase.endsWith('/') ? rawBase : rawBase + '/';
 
     /* Animated background image */
     background-image: url('/site-images/postGridEdit.png');
-    /* Compensate for the horizontal stretch so the image
-       does not appear stretched. 200 / 1.4 ≈ 142.86px */
-    background-size: calc(200px / 1.4) 200px;
+    background-size: 200px 200px;
     background-repeat: repeat;
 
     background-clip: text;
@@ -48,20 +46,16 @@ const base = rawBase.endsWith('/') ? rawBase : rawBase + '/';
 
     /* ============================================================
        SEAMLESS SOUTHEAST SCROLL
-       Travel exactly one tile diagonally:
-         X: 0 → (200/1.4)px = 142.857px
-         Y: 0 → 200px
+       Travel exactly one tile diagonally (200px in both axes).
        Since both distances equal the tile size, the loop is
        invisible — the background at 100% is identical to 0%.
        ============================================================ */
-    animation: scrollSoutheast 18s linear infinite;
+    animation: scrollSoutheast 20s linear infinite;
     will-change: background-position;
     backface-visibility: hidden;
 
-    /* Horizontal stretch — 1.4 = 40% wider than normal */
     display: inline-block;
-    transform: scaleX(1.4);
-    transform-origin: center center;
+    /* No horizontal stretch — removed scaleX(1.4) */
   }
 
   /* Background appears to travel southeast (top-left → bottom-right) */
@@ -70,7 +64,7 @@ const base = rawBase.endsWith('/') ? rawBase : rawBase + '/';
       background-position: 0 0;
     }
     100% {
-      background-position: calc(200px / 1.4) 200px;
+      background-position: 200px 200px;
     }
   }
 
@@ -89,8 +83,7 @@ const base = rawBase.endsWith('/') ? rawBase : rawBase + '/';
 
   @media only screen and (max-width: 700px) {
     .animated-title {
-      transform: scaleX(1.4);
-      background-size: calc(200px / 1.4) 200px;
+      font-size: 30px;
     }
   }
 </style>
