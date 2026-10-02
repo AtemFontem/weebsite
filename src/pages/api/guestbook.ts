@@ -77,9 +77,9 @@ export const POST: APIRoute = async ({ request }) => {
     const message = formData.get('message')?.toString().trim() || '';
     const turnstileToken = formData.get('cf-turnstile-response')?.toString() || '';
 
-    if (name.length < 2 || name.length > 20) {
+    if (name.length < 2 || name.length > 16) {
       return new Response(
-        JSON.stringify({ error: 'name must be between 2 and 20 characters.' }),
+        JSON.stringify({ error: 'name must be between 2 and 16 characters.' }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
