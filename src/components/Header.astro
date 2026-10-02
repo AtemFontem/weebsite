@@ -31,7 +31,7 @@ const base = rawBase.endsWith('/') ? rawBase : rawBase + '/';
   .animated-title {
     /* Custom hollow font */
     font-family: 'Times Roman Hollow bold', 'Times New Roman', Times, serif !important;
-    font-size: 38px;
+    font-size: 48px;
     font-weight: normal;
 
     /* Animated background image */
@@ -50,7 +50,7 @@ const base = rawBase.endsWith('/') ? rawBase : rawBase + '/';
        Since both distances equal the tile size, the loop is
        invisible — the background at 100% is identical to 0%.
        ============================================================ */
-    animation: scrollSoutheast 20s linear infinite;
+    animation: scrollSoutheast 30s linear infinite;
     will-change: background-position;
     backface-visibility: hidden;
 
@@ -83,7 +83,7 @@ const base = rawBase.endsWith('/') ? rawBase : rawBase + '/';
 
   @media only screen and (max-width: 700px) {
     .animated-title {
-      font-size: 30px;
+      font-size: 45px;
     }
   }
 </style>
