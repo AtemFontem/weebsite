@@ -127,14 +127,6 @@ import FooteredLayout from "../layouts/FooteredLayout.astro";
 
   /* ============================================================
      POPUP LAYER
-     The layer is always anchored at the CENTER of the word.
-     The card scales up from that anchor:
-       - opening downward → transform-origin: top center
-       - opening upward   → transform-origin: bottom center
-     When the card would overflow a screen edge, JS sets a
-     CSS variable (--popup-shift-x) that slides the card
-     horizontally, but the anchor stays at the word's center,
-     so the animation still grows from the word.
      ============================================================ */
   .popup-layer {
     position: fixed;
@@ -147,7 +139,6 @@ import FooteredLayout from "../layouts/FooteredLayout.astro";
     opacity: 0;
     transition: opacity 0.3s ease;
 
-    /* Default shift is 0; JS overrides per-open */
     --popup-shift-x: 0px;
   }
 
@@ -156,6 +147,15 @@ import FooteredLayout from "../layouts/FooteredLayout.astro";
     pointer-events: auto;
   }
 
+  /* ============================================================
+     POPUP CARD
+     Styled to match the photolog image frames:
+       - thick blue border (#0000ff)
+       - no corner radius (square)
+       - images fill the frame with no padding around them
+     Background matches the cream card so the caption area
+     reads as part of the same panel.
+     ============================================================ */
   .popup-card {
     position: absolute;
     top: 0;
@@ -163,10 +163,10 @@ import FooteredLayout from "../layouts/FooteredLayout.astro";
     width: 260px;
     max-width: 82vw;
     background: #fffad3;
-    border: 1px solid #e5e5e5;
-    border-radius: 10px;
+    border: 10px solid #0000ff;
+    border-radius: 0;
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
-    padding: 10px 10px 8px;
+    padding: 0 0 8px 0;
     box-sizing: border-box;
 
     transform:
@@ -186,8 +186,6 @@ import FooteredLayout from "../layouts/FooteredLayout.astro";
     opacity: 1;
   }
 
-  /* Opens upward — scales from the bottom-center of the card,
-     which is pinned to the word's center */
   .popup-layer.flip-up .popup-card {
     transform:
       translate(calc(-50% + var(--popup-shift-x)), calc(-100% - 12px))
@@ -206,7 +204,7 @@ import FooteredLayout from "../layouts/FooteredLayout.astro";
     display: block;
     width: 100%;
     height: auto;
-    border-radius: 6px;
+    border-radius: 0;
     object-fit: cover;
   }
 
@@ -233,7 +231,6 @@ import FooteredLayout from "../layouts/FooteredLayout.astro";
       var card = layer.querySelector('.popup-card');
       if (!card) return;
 
-      // Anchor stays at the word's CENTER, always
       var anchorX = rect.left + rect.width / 2;
       var anchorY = rect.bottom;
 
@@ -242,29 +239,23 @@ import FooteredLayout from "../layouts/FooteredLayout.astro";
 
       layer.classList.remove('flip-up');
 
-      // Reset horizontal shift before measuring
       layer.style.setProperty('--popup-shift-x', '0px');
 
       var cardWidth = card.offsetWidth || 260;
       var cardHeight = card.offsetHeight || 220;
 
-      // Vertical flip: if there isn't enough room below, open upward
       var spaceBelow = window.innerHeight - anchorY;
       if (spaceBelow < cardHeight + 24) {
         layer.classList.add('flip-up');
       }
 
-      // Horizontal overflow: keep the anchor at the word's center,
-      // but push the card sideways so it stays on screen.
       var halfW = cardWidth / 2;
       var edgePadding = 8;
       var shift = 0;
 
       if (anchorX - halfW < edgePadding) {
-        // Card would overflow the left edge — push it right
         shift = edgePadding - (anchorX - halfW);
       } else if (anchorX + halfW > window.innerWidth - edgePadding) {
-        // Card would overflow the right edge — push it left
         shift = (window.innerWidth - edgePadding) - (anchorX + halfW);
       }
 
