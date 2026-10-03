@@ -1,14 +1,13 @@
 {
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
-    "types": ["@astrojs/cloudflare", "@cloudflare/workers-types"],
+    "types": ["@astrojs/cloudflare", "@cloudflare/workers-types", "node"],
     "jsx": "preserve",
     "skipLibCheck": true,
     "strict": true,
-    "baseUrl": ".",
     "paths": {
       "@/*": [
-        "src/*"
+        "./src/*"
       ]
     }
   },
@@ -16,9 +15,11 @@
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.astro",
+    "scripts/**/*.ts",
     "./worker-configuration.d.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "dist"
   ]
 }
